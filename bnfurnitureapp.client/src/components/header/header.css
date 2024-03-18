@@ -1,0 +1,27 @@
+
+.nav-list {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center; 
+  list-style-type: none;
+  padding-left: 94px;
+  padding-top: 12px;
+  padding-bottom: 20px;
+}
+
+.nav-list li {
+  margin-right: 30px;
+}
+
+.nav-list li:last-child {
+  margin-right: 0;
+}
+/* Union */
+.logo{
+position: absolute;
+width: 112px;
+height: 36px;
+padding: 10px;
+}
+
