@@ -1,68 +1,59 @@
-:root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+/* селектор атрибуту для стилізації всіх обєктів де є __container ця частина */
+[class*="__container"]{
+  max-width: 80.208333%; /* 1540px/1920 */
+  padding-left: 1rem;
+  padding-right: 1rem;
+  margin: 0 auto;        /*обмежений по ширині блочний елемент став по центру свого батьківського елементу*/
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
+.wrapper{
+min-height: 100%;
+display: flex;
+flex-direction: column;
 }
-a:hover {
-  color: #535bf2;
-}
-
-body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
+.wrapper > main{
+flex-grow: 1;
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+
+/* Group 182 */
+.Group182{
+position: absolute;
+width: 100%;
+height: 40px;
+
 }
 
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+/* Rectangle 2 */
+.rectangle_2 {
+  position: absolute;
+  width: 100%;
+  height: 40px;
+  left: 0px;
+  top: 0px;
+  background: #839D9A;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
+/* #buy now #вседлядому #швидкотазручно #buy now #вседлядому #швидкотазручно #buy now #вседлядому #швидкотазручно #buy now #вседлядому #швидкотазручно */
+.Group182Text{
+position: absolute;
+width: 100%;
+height: 27px;
+left: -204px;
+top: 6px;
+
+font-family: 'Montserrat';
+font-style: normal;
+font-weight: 500;
+font-size: 20px;
+line-height: 24px;
+
+color: #FFFFFF;
 }
+
+
+
+
+
+
+
