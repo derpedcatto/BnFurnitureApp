@@ -12,13 +12,376 @@
     flex: none;
     order: 0;
     flex-grow: 0;
-
     display: flex;
     flex-direction: row;
-    /* align-items: center;*/
     padding: 10px 10px 10px 0px;
     gap: 10px;
+    margin-top: 50px;
+    margin-bottom: 10px;    
+}
+
+[class*="__homeCard"]{
+    position: relative;     
+    height: 400px;
+    background-color: #292F36; 
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column; 
+    justify-content: flex-end;
+    align-items: stretch; 
+    margin-top: 20px;
+    margin-bottom: 20px;
+    background-size: cover;
+    background-position: center;
+}
+.homeCardFooter{
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+    padding-right: 30px;  
+    height: 80px;
+    background: #B6C4C2;
+    backdrop-filter: blur(5px);
+    border-radius: 0 0 15px 15px;
+}
+.homeCardText {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 29px;
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 29px;
+    text-align: center;
+    text-transform: uppercase;
+    color: #000000;
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+}
+.homeCardSvg {
+    width: 40px;
+    height: 40px;
+    margin-right: 1rem;
+}
+.homeCardrow{
+    display: flex;
+    flex-direction: row;
+}
+.first__homeCard{
+    width: 52%; /* 781px/1540 */
+    background-image: url(/img/1.jpg); 
+}
+.tvelve__homeCard{
+    width:  45%; /* 678px/1540 */
+    background-image: url(/img/2.jpg); 
+    margin-left: auto;
+}
+.tree__homeCard{
+    display: flex;
+    flex-direction: row;
+    background-image: url(/img/3.jpg); 
+}
+.homeCardFooter1{
+    display: flex;
+    justify-content: end; 
+    align-items: center; 
+    border-radius: 0px 15px 15px 0px;
+    background: #B6C4C2;
+    backdrop-filter: blur(5px);
+    padding-left:  20px; 
 }
 
 
+.second__homeCard{
+    display: flex;
+    position: relative;
+    width: 14.220779%; /* 219px/1540 */
+    height: 286px;
+    background: url(.jpg), #D9D9D9;
+    border-radius: 15px;
+    align-items: center;
+    justify-content: flex-end;
+}
+.Frame20{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 20px;
+    gap: 10px;
+    position: relative;
+    width: 75%; /* 191px/286 */
+    height: 40px;
+    background: #FFFFFF;
+    border-radius: 30px;
+    margin-bottom: 20px;
+}
+.Frame20Text{
+    display: flex;
+    flex-direction: row;   
+    align-items: center;    
+    height: 17px;
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 17px;
+    text-align: center;
+    text-transform: uppercase;
+    color: #000000;
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+}
+
+
+.Frame20click{
+    display: flex;
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    background: #000000;
+    transform: rotate(-90deg);
+}
+
+
+
+.homes5-1{
+    display: flex;
+    position: relative;
+    width: 37%; /* 559px/1540 */
+    height: 275px;
+    background: url(/img/homes5-1.jpg), #D9D9D9;
+    border-radius: 15px;
+    margin-bottom: 20px;
+    background-size: cover;
+    background-position: center;
+}
+.homes5-2{
+    display: flex;
+    position: relative;
+    width: 62%; /* 901px/1540 */
+    height: 275px;
+    background: url(/img/homes5-2.jpg), #D9D9D9;
+    border-radius: 15px;
+    margin-left: auto;
+    background-size: cover;
+    background-position: center;
+}
+
+.homes5-3{
+    display: flex;
+    position: relative;
+    width: 62%;
+    height: 676px;
+    background: url(/img/homes5-3.jpg), #D9D9D9;
+    border-radius: 15px;
+    background-size: cover;
+    background-position: center;
+}
+
+.homes5-4{
+    display: flex;
+    position: relative;
+    width: 37%;
+    height: 676px;
+    background: url(/img/homes5-4.jpg), #D9D9D9;
+    border-radius: 15px;
+    margin-left: auto;
+    background-size: cover;
+    background-position: center;
+}
+
+
+[class*="__homeCatalog"]{
+    display: flex;
+    flex-direction: row;
+    background-size:contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 100%; /* 161px/1540 */
+    height: 191px;
+}
+.first__homeCatalog{
+    background-image: url(/img/imgcatalog/catalog1.png);   
+}
+.first2__homeCatalog{
+    background-image: url(/img/imgcatalog/catalog2.png);   
+}
+.first3__homeCatalog{
+    background-image: url(/img/imgcatalog/catalog3.png);   
+}
+.first4__homeCatalog{
+    background-image: url(/img/imgcatalog/catalog4.png);   
+}
+.first5__homeCatalog{
+    background-image: url(/img/imgcatalog/catalog5.png);   
+}
+.first6__homeCatalog{
+    background-image: url(/img/imgcatalog/catalog6.png);   
+}
+.first7__homeCatalog{
+    background-image: url(/img/imgcatalog/catalog7.png);   
+}
+.first8__homeCatalog{
+    background-image: url(/img/imgcatalog/catalog8.png);   
+}
+.first9__homeCatalog{
+    background-image: url(/img/imgcatalog/catalog9.png);   
+}
+.first10__homeCatalog{
+    background-image: url(/img/imgcatalog/catalog10.png);   
+}
+.first11__homeCatalog{
+    background-image: url(/img/imgcatalog/catalog11.png);   
+}
+.first12__homeCatalog{
+    background-image: url(/img/imgcatalog/catalog12.png);   
+}
+.first13__homeCatalog{
+    background-image: url(/img/imgcatalog/catalog13.png);   
+}
+.first14__homeCatalog{
+    background-image: url(/img/imgcatalog/catalog14.png);   
+}
+.first15__homeCatalog{
+    background-image: url(/img/imgcatalog/catalog15.png);   
+}
+.first16__homeCatalog{
+    background-image: url(/img/imgcatalog/catalog16.png);   
+}
+.first17__homeCatalog{
+    background-image: url(/img/imgcatalog/catalog17.png);   
+}
+.first18__homeCatalog{
+    background-image: url(/img/imgcatalog/catalog18.png);   
+}
+.homeCatalogrow{
+    display: flex;
+    justify-content:space-between;    
+}
+.Component19 {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    width: 11.883117%; /* 183px/1540 */
+    height: 204px;   
+}
+.Component19Text{
+    width: 121px;
+    height: 17px; 
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 17px;
+    text-align: center;
+    text-transform: uppercase;
+    color: #000000;
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+}
+
+
+.image-columns {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    position: relative; /* Додаємо позиціонування для можливості змістити SVG-елемент поверх */
+}
+
+.column {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    margin-right: 20px;
+}
+
+.image {    
+    background-size: cover;
+    background-position: center;
+    border-radius: 30px;
+    margin-bottom: 20px; 
+    margin-top: 20px;   
+}
+
+.image.horizontal1 {
+    background-image: url(/img/imgideas/homeideas1.jpg);
+    height: 595px;
+}
+
+.image.horizontal2 {
+    background-image: url(/img/imgideas/homeideas2.jpg);
+    height: 439px;
+}
+
+.image.horizontal3 {
+    background-image: url(/img/imgideas/homeideas3.jpg);
+    height: 595px;
+}
+
+.image.vertical1 {
+    background-image: url(/img/imgideas/homeideas4.jpg);
+    height: 439px;
+}
+
+.image.vertical2 {
+    background-image: url(/img/imgideas/homeideas5.jpg);
+    height: 595px;
+}
+
+.image.vertical3 {
+    background-image: url(/img/imgideas/homeideas6.jpg);
+    height: 439px;
+}
+.svg-overlay {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    z-index: 1; /* Щоб SVG-елемент був поверх інших елементів */
+    margin:20px;
+  }
+
+  .Frame20row{
+    display: flex;
+    flex-direction: row;
+    flex: 1;
+  }
+.Frame21{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;     
+    margin-top: 20px;
+    gap: 10px;
+    position: relative;
+    width: 161px;
+    height: 40px;
+    background: #F2F2F2;
+    border-radius: 30px;
+}
+
+.Frame21Text{
+    width: 121px;
+    height: 17px;
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 17px;
+    text-align: center;
+    text-transform: uppercase;
+    color: #000000;
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+}
 
