@@ -1,5 +1,8 @@
 ﻿namespace BnFurniture.Domain.Entities
 {
+    /// <summary>
+    /// Пример EF-модели, которая моделирует таблицу БД
+    /// </summary>
     public class ExampleEntity
     {
         public DateOnly Date { get; set; }
