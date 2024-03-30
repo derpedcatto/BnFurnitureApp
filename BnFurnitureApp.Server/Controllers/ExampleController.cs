@@ -1,6 +1,6 @@
-﻿using BnFurniture.Application.ExampleController.Commands;
-using BnFurniture.Application.ExampleController.DTO;
-using BnFurniture.Application.ExampleController.Queries;
+﻿using BnFurniture.Application.Controllers.ExampleController.Commands;
+using BnFurniture.Application.Controllers.ExampleController.DTO;
+using BnFurniture.Application.Controllers.ExampleController.Queries;
 using Mediator;
 using Microsoft.AspNetCore.Mvc;
 

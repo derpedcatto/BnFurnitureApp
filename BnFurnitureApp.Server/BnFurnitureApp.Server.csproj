@@ -29,8 +29,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BnFurniture.Application\BnFurniture.Application.csproj" />
-    <ProjectReference Include="..\BnFurniture.Domain\BnFurniture.Domain.csproj" />
-    <ProjectReference Include="..\BnFurniture.Infrastructure\BnFurniture.Infrastructure.csproj" />
     <ProjectReference Include="..\BnFurniture.Shared\BnFurniture.Shared.csproj" />
     <ProjectReference Include="..\bnfurnitureapp.client\bnfurnitureapp.client.esproj">
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
