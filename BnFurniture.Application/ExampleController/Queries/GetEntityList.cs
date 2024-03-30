@@ -19,8 +19,14 @@ namespace BnFurniture.Application.ExampleController.Queries
             }
         }
 
-        public sealed class Handler(IHandlerContext context) : QueryHandler<Query, Response>(context)
+        public sealed class Handler : QueryHandler<Query, Response>
         {
+            public Handler(IHandlerContext context) 
+                : base(context)
+            {
+
+            }
+
             public override ValueTask<Response> Handle(Query request, CancellationToken cancellationToken)
             {
                 // Тут происходит взаимодействие с базой данных DbContext. ...

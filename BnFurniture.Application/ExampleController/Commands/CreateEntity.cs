@@ -17,8 +17,14 @@ namespace BnFurniture.Application.ExampleController.Commands
         }
 
 
-        public sealed class Handler(IHandlerContext context) : CommandHandler<Command, Response>(context)
+        public sealed class Handler : CommandHandler<Command, Response>
         {
+            public Handler(IHandlerContext context) 
+                : base(context)
+            {
+
+            }
+
             public override async ValueTask<Response> Handle(Command request, CancellationToken cancellationToken)
             {
                 // Interaction with the database DbContext happens here.
