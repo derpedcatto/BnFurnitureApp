@@ -3,9 +3,19 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34408.163
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BnFurnitureApp.Server", "BnFurnitureApp.Server\BnFurnitureApp.Server.csproj", "{DFD1E13E-C494-4D7D-8CC6-0D7F4E722DD9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BnFurnitureApp.Server", "BnFurnitureApp.Server\BnFurnitureApp.Server.csproj", "{DFD1E13E-C494-4D7D-8CC6-0D7F4E722DD9}"
 EndProject
 Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "bnfurnitureapp.client", "bnfurnitureapp.client\bnfurnitureapp.client.esproj", "{DF616474-1BB9-40BB-9A6B-1F4A92C24EC7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{7BFF0645-D4A2-482E-B5BA-755557D474C4}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BnFurniture.Domain", "BnFurniture.Domain\BnFurniture.Domain.csproj", "{DFD6385A-DDC9-43DA-A2CE-B0CFF1C0D66F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BnFurniture.Infrastructure", "BnFurniture.Infrastructure\BnFurniture.Infrastructure.csproj", "{A2522B0F-45D9-4E72-A70C-5A867FD82A8D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BnFurniture.Shared", "BnFurniture.Shared\BnFurniture.Shared.csproj", "{670486E5-5555-4E04-81FF-A2164E780C2F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BnFurniture.Application", "BnFurniture.Application\BnFurniture.Application.csproj", "{C012EBC7-916F-45DC-90BF-DE88ACC37BD0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,9 +33,31 @@ Global
 		{DF616474-1BB9-40BB-9A6B-1F4A92C24EC7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DF616474-1BB9-40BB-9A6B-1F4A92C24EC7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{DF616474-1BB9-40BB-9A6B-1F4A92C24EC7}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{DFD6385A-DDC9-43DA-A2CE-B0CFF1C0D66F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DFD6385A-DDC9-43DA-A2CE-B0CFF1C0D66F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DFD6385A-DDC9-43DA-A2CE-B0CFF1C0D66F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DFD6385A-DDC9-43DA-A2CE-B0CFF1C0D66F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A2522B0F-45D9-4E72-A70C-5A867FD82A8D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A2522B0F-45D9-4E72-A70C-5A867FD82A8D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A2522B0F-45D9-4E72-A70C-5A867FD82A8D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A2522B0F-45D9-4E72-A70C-5A867FD82A8D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{670486E5-5555-4E04-81FF-A2164E780C2F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{670486E5-5555-4E04-81FF-A2164E780C2F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{670486E5-5555-4E04-81FF-A2164E780C2F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{670486E5-5555-4E04-81FF-A2164E780C2F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C012EBC7-916F-45DC-90BF-DE88ACC37BD0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C012EBC7-916F-45DC-90BF-DE88ACC37BD0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C012EBC7-916F-45DC-90BF-DE88ACC37BD0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C012EBC7-916F-45DC-90BF-DE88ACC37BD0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{DFD6385A-DDC9-43DA-A2CE-B0CFF1C0D66F} = {7BFF0645-D4A2-482E-B5BA-755557D474C4}
+		{A2522B0F-45D9-4E72-A70C-5A867FD82A8D} = {7BFF0645-D4A2-482E-B5BA-755557D474C4}
+		{670486E5-5555-4E04-81FF-A2164E780C2F} = {7BFF0645-D4A2-482E-B5BA-755557D474C4}
+		{C012EBC7-916F-45DC-90BF-DE88ACC37BD0} = {7BFF0645-D4A2-482E-B5BA-755557D474C4}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D848B978-D663-424B-BC17-361B74AA9832}
