@@ -3,9 +3,12 @@ using Microsoft.Extensions.Logging;
 
 namespace BnFurniture.Application.Abstractions
 {
+    /// <summary>
+    /// Общий контекст всех обработчиков запроса.
+    /// </summary>
     public interface IHandlerContext
     {
-        IDbContext DbContext { get; }
+        ApplicationDbContext DbContext { get; }
         ILogger Logger { get; }
     }
 }

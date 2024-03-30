@@ -4,11 +4,14 @@ using Microsoft.Extensions.Logging;
 
 namespace BnFurniture.Application.Abstractions
 {
+    /// <summary>
+    /// Абстрактный класс, который должны наследовать все Команды (Commands).
+    /// </summary>
     public abstract class CommandHandler<TCommand, TResult> : IRequestHandler<TCommand, TResult>
         where TCommand : IRequest<TResult>
     {
         protected readonly ILogger Logger;
-        protected readonly IDbContext DbContext;
+        protected readonly ApplicationDbContext DbContext;
 
         protected CommandHandler(IHandlerContext context)
         {
