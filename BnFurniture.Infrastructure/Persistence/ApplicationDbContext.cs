@@ -1,25 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using BnFurniture.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 using System.Runtime.CompilerServices;
 
 namespace BnFurniture.Infrastructure.Persistence
 {
-    public interface IDbContext : IDisposable
+    public class ApplicationDbContext(DbContextOptions options) : DbContext(options)
     {
-        /*
-        Пример:
-        public DbSet<Product> Products { get; set; }
-        public DbSet<Customer> Customers { get; set; }
-        public DbSet<Address> Addresses { get; set; }
-        public DbSet<Order> Orders { get; set; }
-        public DbSet<OrderItem> OrderItems { get; set; }
-        */
+        // public DbSet<ExampleEntity> ExampleEntities { get; set; }
 
-        ValueTask<int> SaveChangesAsync(CancellationToken cancellationToken = default, [CallerMemberName] string? callerFunction = null, [CallerFilePath] string? callerFile = null);
-    }
-
-    public class ApplicationDbContext(DbContextOptions options) : DbContext(options), IDbContext
-    {
-        // Реализация интерфейса
 
         protected override void OnConfiguring(DbContextOptionsBuilder builder)
         {
