@@ -1,0 +1,368 @@
+.rekt{
+position: relative;
+width: 590px;
+height: 1343px;
+left: 0px;
+top: -3px;
+display: flex;
+background: url(/public/img/register.jpg);
+}
+
+/* Ім'я */
+.nametext{
+    position: absolute;
+    width: 332px;
+    height: 15px;
+    left: 746px;
+    top: 89px;
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 17px;
+    color: #000000;
+}
+.rec109{
+    box-sizing: border-box;
+    position: absolute;
+    width: 428px;
+    height: 50px;
+    left: 746px;
+    top: 114px;
+    border: 1px solid #646464;
+    border-radius: 5px;
+}
+
+
+/* Фамілія */
+.nametext1{
+    position: absolute;
+    width: 247px;
+    height: 15px;
+    left: 746px;
+    top: 194px;
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 17px;
+    color: #000000;
+}
+
+/* Rectangle 110 */
+.rec110{
+    box-sizing: border-box;
+    position: absolute;
+    width: 428px;
+    height: 50px;
+    left: 746px;
+    top: 219px;
+    border: 1px solid #646464;
+    border-radius: 5px;
+}
+
+/* Дата народження */
+.nametext2{
+    position: absolute;
+    width: 247px;
+    height: 15px;
+    left: 746px;
+    top: 299px;
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 17px;
+    color: #000000;
+}
+
+
+/* Rectangle 111 */
+.rec111{
+    box-sizing: border-box;
+    position: absolute;
+    width: 428px;
+    height: 50px;
+    left: 746px;
+    top: 324px;
+    border: 1px solid #646464;
+    border-radius: 5px;
+}
+
+
+/* Дата народження */
+.nametext3{
+    position: absolute;
+    width: 247px;
+    height: 15px;
+    left: 746px;
+    top: 404px;
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 17px;
+    color: #000000;
+}
+
+/* Rectangle 112 */
+.rec112{
+    box-sizing: border-box;
+    position: absolute;
+    width: 428px;
+    height: 50px;
+    left: 746px;
+    top: 429px;
+    border: 1px solid #646464;
+    border-radius: 5px;
+}
+
+/* Країна */
+.nametext4{
+    position: absolute;
+    width: 247px;
+    height: 15px;
+    left: 746px;
+    top: 509px;
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 17px;
+    color: #000000;
+}
+
+/* Rectangle 112 */
+.rec113{
+    box-sizing: border-box;
+    position: absolute;
+    width: 428px;
+    height: 50px;
+    left: 746px;
+    top: 534px;
+    border: 1px solid #646464;
+    border-radius: 5px;
+}
+
+/* Адреса */
+.nametext5{
+    position: absolute;
+    width: 247px;
+    height: 15px;
+    left: 746px;
+    top: 614px;
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 17px;
+    color: #000000;
+}
+
+/* Rectangle 112 */
+.rec114{
+    box-sizing: border-box;
+    position: absolute;
+    width: 428px;
+    height: 50px;
+    left: 746px;
+    top: 639px;
+    border: 1px solid #646464;
+    border-radius: 5px;
+}
+
+
+/* Мобільний номер */
+.nametext6{
+    position: absolute;
+    width: 247px;
+    height: 15px;
+    left: 746px;
+    top: 719px;
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 17px;
+    color: #000000;
+}
+
+/* Rectangle 112 */
+.rec115{
+    box-sizing: border-box;
+    position: absolute;
+    width: 428px;
+    height: 50px;
+    left: 746px;
+    top: 744px;
+    border: 1px solid #646464;
+    border-radius: 5px;
+}
+
+/* By entering your mobile number and one-time code sign-in option, you agree to receive a one-time verification code via SMS from IKEA. Message and data rates may apply. */
+.text1{
+    position: absolute;
+    width: 423px;
+    height: 42px;
+    left: 746px;
+    top: 804px;
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 15px;
+    color: #646464;
+}
+
+.text2{
+    /* More info about Privacy Policy */
+    position: absolute;
+    width: 423px;
+    height: 14px;
+    left: 746px;
+    top: 856px;
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 15px;
+    text-decoration-line: underline;
+    color: #646464;
+}
+
+/* Електронна пошта */
+.nametext7{
+    position: absolute;
+    width: 247px;
+    height: 15px;
+    left: 746px;
+    top: 900px;
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 17px;
+    color: #000000;
+}
+
+/* Rectangle 112 */
+.rec116{
+box-sizing: border-box;
+
+position: absolute;
+width: 428px;
+height: 50px;
+left: 746px;
+top: 925px;
+
+border: 1px solid #646464;
+border-radius: 5px;
+}
+
+.text3{
+    /* Вам потрібно буде пройти верифікацію */
+    position: absolute;
+    width: 423px;
+    height: 14px;
+    left: 746px;
+    top: 985px;
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 15px;
+    color: #646464;
+}
+/* Пароль */
+.nametext8{
+    position: absolute;
+    width: 247px;
+    height: 15px;
+    left: 746px;
+    top: 1029px;
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 17px;
+    color: #000000;
+}
+
+/* Rectangle 110 */
+.rec117{
+    box-sizing: border-box;
+    position: absolute;
+    width: 428px;
+    height: 50px;
+    left: 746px;
+    top: 1054px;
+    border: 1px solid #646464;
+    border-radius: 5px;
+}
+
+/* Component 41 */
+.butt{
+    /* Auto layout */
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    gap: 10px;
+
+    position: absolute;
+    width: 428px;
+    height: 50px;
+    left: 746px;
+    top: 1191px;
+
+    background: #000000;
+    border-radius: 30px;
+}
+
+/* продовжити */
+.textbut{
+    width: 113px;
+    height: 17px;
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 17px;
+    /* identical to box height */
+    text-align: center;
+    text-transform: uppercase;
+    color: #FFFFFF;
+    /* Inside auto layout */
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+}
+
+
+/* Rectangle 111 */
+.rect11{
+    box-sizing: border-box;
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    left: 746px;
+    top: 1141px;
+    border: 1px solid #646464;
+    border-radius: 5px;
+}
+.textrect11{
+    /* Я, ознайомлений з Політикою конфіденційності з обробки та захисту персональних даних */
+
+    position: absolute;
+    width: 385px;
+    height: 37px;
+    left: 790px;
+    top: 1134px;
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 17px;
+    color: #646464;
+}
