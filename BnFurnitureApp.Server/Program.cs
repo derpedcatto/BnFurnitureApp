@@ -1,3 +1,4 @@
+using ASP_Work.Data;
 using BnFurniture.Application.Abstractions;
 using BnFurniture.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
@@ -10,10 +11,27 @@ builder.Services.AddSwaggerGen(options => { options.CustomSchemaIds(s => s.FullN
 builder.Services.AddLogging();
 
 builder.Services.AddScoped<IHandlerContext, HandlerContext>();
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseMySql(
-        builder.Configuration.GetConnectionString("DefaultConnection"),
-        new MySqlServerVersion(new Version(8, 0, 23))));
+
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+builder.Services.AddDbContext<DataContext>(options =>
+{
+    options.UseMySql(connectionString, new MySqlServerVersion(new Version(8, 0, 30)));
+});
+
+using (var serviceScope = builder.Services.BuildServiceProvider().CreateScope())
+{
+    var dbContext = serviceScope.ServiceProvider.GetRequiredService<DataContext>();
+
+    if (dbContext.Database.CanConnect())
+    {
+        Console.WriteLine("Connected to the database.");
+    }
+    else
+    {
+        Console.WriteLine("Failed to connect to the database.");
+        // Здесь можно предпринять дополнительные действия в случае неудачного подключения
+    }
+}
 
 builder.Services.AddMediator(options =>
 {

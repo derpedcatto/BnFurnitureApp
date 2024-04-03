@@ -1,4 +1,4 @@
-﻿using BnFurniture.Domain.Entities;
+﻿
 using Microsoft.EntityFrameworkCore;
 using System.Runtime.CompilerServices;
 
