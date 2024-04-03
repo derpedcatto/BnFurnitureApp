@@ -1,5 +1,4 @@
-using ASP_Work.Data;
-using BnFurniture.Application.Abstractions;
+п»їusing BnFurniture.Application.Abstractions;
 using BnFurniture.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,28 +9,29 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options => { options.CustomSchemaIds(s => s.FullName?.Replace("+", ".")); });
 builder.Services.AddLogging();
 
-builder.Services.AddScoped<IHandlerContext, HandlerContext>();
-
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-builder.Services.AddDbContext<DataContext>(options =>
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
     options.UseMySql(connectionString, new MySqlServerVersion(new Version(8, 0, 30)));
 });
 
+// TODO: РїРµСЂРµРЅРµСЃС‚Рё СЌС‚Рѕ РІ РѕС‚РґРµР»СЊРЅС‹Р№ РјРµС‚РѕРґ Рё РёСЃРїРѕР»СЊР·РѕРІР°С‚СЊ ILogger
 using (var serviceScope = builder.Services.BuildServiceProvider().CreateScope())
 {
-    var dbContext = serviceScope.ServiceProvider.GetRequiredService<DataContext>();
+    var dbContext = serviceScope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
-    if (dbContext.Database.CanConnect())
+    try 
     {
+        dbContext.Database.CanConnect();
         Console.WriteLine("Connected to the database.");
     }
-    else
+    catch
     {
         Console.WriteLine("Failed to connect to the database.");
-        // Здесь можно предпринять дополнительные действия в случае неудачного подключения
     }
 }
+
+builder.Services.AddScoped<IHandlerContext, HandlerContext>();
 
 builder.Services.AddMediator(options =>
 {
@@ -59,6 +59,7 @@ app.MapControllers();
 app.MapFallbackToFile("/index.html");
 
 app.Run();
+
 
 
 /* MediatR

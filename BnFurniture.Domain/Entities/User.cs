@@ -1,7 +1,8 @@
 ﻿
+using BnFurniture.Domain.Entities;
 using System.ComponentModel.DataAnnotations;
 
-namespace ASP_Work.Data.Entity
+namespace BnFurniture.Domain.Entities
 {
     public class User
     {

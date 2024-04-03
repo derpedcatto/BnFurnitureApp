@@ -1,4 +1,6 @@
-﻿namespace ASP_Work.Data.Entity
+﻿using BnFurniture.Domain.Entities;
+
+namespace BnFurniture.Domain.Entities
 {
     public class UserActivityType
     {

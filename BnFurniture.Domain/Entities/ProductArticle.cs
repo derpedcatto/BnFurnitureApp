@@ -1,5 +1,5 @@
 ﻿
-namespace ASP_Work.Data.Entity
+namespace BnFurniture.Domain.Entities
 {
     public class ProductArticle
     {
