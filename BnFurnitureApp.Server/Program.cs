@@ -1,4 +1,4 @@
-using BnFurniture.Application.Abstractions;
+﻿using BnFurniture.Application.Abstractions;
 using BnFurniture.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,11 +9,29 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options => { options.CustomSchemaIds(s => s.FullName?.Replace("+", ".")); });
 builder.Services.AddLogging();
 
-builder.Services.AddScoped<IHandlerContext, HandlerContext>();
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseMySql(
-        builder.Configuration.GetConnectionString("DefaultConnection"),
-        new MySqlServerVersion(new Version(8, 0, 23))));
+{
+    options.UseMySql(connectionString, new MySqlServerVersion(new Version(8, 0, 30)));
+});
+
+// TODO: перенести это в отдельный метод и использовать ILogger
+using (var serviceScope = builder.Services.BuildServiceProvider().CreateScope())
+{
+    var dbContext = serviceScope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+
+    try 
+    {
+        dbContext.Database.CanConnect();
+        Console.WriteLine("Connected to the database.");
+    }
+    catch
+    {
+        Console.WriteLine("Failed to connect to the database.");
+    }
+}
+
+builder.Services.AddScoped<IHandlerContext, HandlerContext>();
 
 builder.Services.AddMediator(options =>
 {
@@ -41,6 +59,7 @@ app.MapControllers();
 app.MapFallbackToFile("/index.html");
 
 app.Run();
+
 
 
 /* MediatR
