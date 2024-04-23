@@ -1,5 +1,7 @@
 ﻿using BnFurniture.Application.Abstractions;
+using BnFurniture.Application.Behaviors;
 using BnFurniture.Infrastructure.Persistence;
+using Mediator;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -37,6 +39,8 @@ builder.Services.AddMediator(options =>
 {
     options.ServiceLifetime = ServiceLifetime.Scoped;
 });
+
+builder.Services.AddSingleton(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
 
 var app = builder.Build();
 
