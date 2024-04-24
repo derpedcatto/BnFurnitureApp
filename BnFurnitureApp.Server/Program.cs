@@ -1,6 +1,7 @@
 ﻿using BnFurniture.Application.Abstractions;
 using BnFurniture.Application.Behaviors;
 using BnFurniture.Infrastructure.Persistence;
+using BnFurniture.Shared.Utilities.Hash;
 using Mediator;
 using Microsoft.EntityFrameworkCore;
 
@@ -34,6 +35,8 @@ using (var serviceScope = builder.Services.BuildServiceProvider().CreateScope())
 }
 
 builder.Services.AddScoped<IHandlerContext, HandlerContext>();
+
+builder.Services.AddSingleton<IHashServices, Sha1HashService>();
 
 builder.Services.AddMediator(options =>
 {

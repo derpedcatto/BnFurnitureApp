@@ -14,6 +14,7 @@
   <ItemGroup>
     <ProjectReference Include="..\BnFurniture.Domain\BnFurniture.Domain.csproj" />
     <ProjectReference Include="..\BnFurniture.Infrastructure\BnFurniture.Infrastructure.csproj" />
+    <ProjectReference Include="..\BnFurniture.Shared\BnFurniture.Shared.csproj" />
   </ItemGroup>
 
 </Project>
