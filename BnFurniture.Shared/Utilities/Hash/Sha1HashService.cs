@@ -1,8 +1,6 @@
-﻿using System.Text;
-
-namespace BnFurniture.Shared.Utilities.Hash
+﻿namespace BnFurniture.Shared.Utilities.Hash
 {
-    public class Sha1HashService : IHashServices
+    public class Sha1HashService : IHashService
     {
         public string HashString(string source)
         {

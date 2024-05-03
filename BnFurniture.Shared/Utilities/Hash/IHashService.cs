@@ -1,6 +1,6 @@
 ﻿namespace BnFurniture.Shared.Utilities.Hash
 {
-    public interface IHashServices
+    public interface IHashService
     {
         String HashString(String source);
         

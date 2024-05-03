@@ -1,37 +1,35 @@
 ﻿using Mediator;
 using Microsoft.AspNetCore.Mvc;
-using static System.Runtime.InteropServices.JavaScript.JSType;
-using System.Text.RegularExpressions;
-using BnFurniture.Application.Controllers.UserRegisterController.DTO;
-using BnFurniture.Application.Controllers.ExampleController.Commands;
-using BnFurniture.Application.Controllers.UserRegisterController.Commands;
+using BnFurniture.Application.Controllers.UserController.DTO;
+using BnFurniture.Application.Controllers.UserController.Commands;
+using System.ComponentModel.DataAnnotations;
 
-namespace BnFurnitureApp.Server.Controllers
+namespace BnFurnitureApp.Server.Controllers;
+
+[ApiController]
+[Route("[controller]")]
+public class UserRegisterController : ControllerBase
 {
-    [ApiController]
-    [Route("[controller]")]
-    public class UserRegisterController : ControllerBase
+    private readonly IMediator _mediator;
+
+    public UserRegisterController(IMediator mediator)
     {
-        private readonly IMediator _mediator;
+        _mediator = mediator;
+    }
 
-        public UserRegisterController(IMediator mediator)
+    [HttpPost]
+    public async Task<IActionResult> SignUp([FromForm] UserSignUpDTO? model)
+    {
+        try
         {
-            _mediator = mediator;
-        }
-        [HttpPost]
-        public async Task<IActionResult> SignUp(UserSignUpDTO? model)
-        {
-
-            var query = new SignUpCommand.Command(model);
+            var query = new SignUp.Command(model);
             var response = await _mediator.Send(query);
 
             return Ok(response);
         }
-        
-
-           
-           
-
-       
+        catch (ValidationException ex)
+        {
+            return BadRequest(ex.Message);
+        }
     }
 }

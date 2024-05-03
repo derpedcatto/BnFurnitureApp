@@ -1,9 +1,13 @@
 ﻿using BnFurniture.Application.Abstractions;
 using BnFurniture.Application.Behaviors;
+using BnFurniture.Application.Controllers.UserController.DTO;
 using BnFurniture.Infrastructure.Persistence;
 using BnFurniture.Shared.Utilities.Hash;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Mediator;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +15,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options => { options.CustomSchemaIds(s => s.FullName?.Replace("+", ".")); });
 builder.Services.AddLogging();
+Console.OutputEncoding = System.Text.Encoding.UTF8;
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -34,16 +39,23 @@ using (var serviceScope = builder.Services.BuildServiceProvider().CreateScope())
     }
 }
 
-builder.Services.AddScoped<IHandlerContext, HandlerContext>();
-
-builder.Services.AddSingleton<IHashServices, Sha1HashService>();
-
 builder.Services.AddMediator(options =>
 {
     options.ServiceLifetime = ServiceLifetime.Scoped;
 });
 
-builder.Services.AddSingleton(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
+builder.Services.AddScoped<IHandlerContext, HandlerContext>();
+builder.Services.AddSingleton<IHashService, Sha1HashService>();
+
+builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
+// builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+
+// builder.Services.AddScoped<IValidator<UserSignUpDTO>, UserSignUpDTOValidator>();
+// builder.Services.AddValidatorsFromAssemblyContaining<UserSignUpDTOValidator>(includeInternalTypes: true);
+// builder.Services.AddValidatorsFromAssemblyContaining(typeof(ExampleEntityFormDTOValidator));
+builder.Services.AddValidatorsFromAssemblyContaining(typeof(UserSignUpDTOValidator), includeInternalTypes: true);
+// builder.Services.AddFluentValidationAutoValidation();
+// builder.Services.AddFluentValidationAutoValidation().AddFluentValidationClientsideAdapters();
 
 var app = builder.Build();
 
@@ -68,6 +80,12 @@ app.MapFallbackToFile("/index.html");
 app.Run();
 
 
+/* Mediator
+builder.Services.AddMediator(options =>
+{
+    options.ServiceLifetime = ServiceLifetime.Scoped;
+});
+*/
 
 /* MediatR
 builder.Services.AddMediatR(cfg => {
