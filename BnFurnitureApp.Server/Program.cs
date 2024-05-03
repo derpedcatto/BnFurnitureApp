@@ -48,7 +48,7 @@ builder.Services.AddScoped<IHandlerContext, HandlerContext>();
 builder.Services.AddSingleton<IHashService, Sha1HashService>();
 
 builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
-// builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 
 // builder.Services.AddScoped<IValidator<UserSignUpDTO>, UserSignUpDTOValidator>();
 // builder.Services.AddValidatorsFromAssemblyContaining<UserSignUpDTOValidator>(includeInternalTypes: true);

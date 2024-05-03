@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BnFurniture.Infrastructure"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BnFurniture.Shared", "BnFurniture.Shared\BnFurniture.Shared.csproj", "{670486E5-5555-4E04-81FF-A2164E780C2F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BnFurniture.Application", "BnFurniture.Application\BnFurniture.Application.csproj", "{C012EBC7-916F-45DC-90BF-DE88ACC37BD0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BnFurniture.Application", "BnFurniture.Application\BnFurniture.Application.csproj", "{C012EBC7-916F-45DC-90BF-DE88ACC37BD0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
