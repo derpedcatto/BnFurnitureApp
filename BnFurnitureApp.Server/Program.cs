@@ -38,7 +38,6 @@ using (var serviceScope = builder.Services.BuildServiceProvider().CreateScope())
         Console.WriteLine("Failed to connect to the database.");
     }
 }
-
 builder.Services.AddMediator(options =>
 {
     options.ServiceLifetime = ServiceLifetime.Scoped;
@@ -50,10 +49,15 @@ builder.Services.AddSingleton<IHashService, Sha1HashService>();
 builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
 builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 
+// builder.Services.AddValidatorsFromAssemblyContaining<Program>(ServiceLifetime.Scoped, includeInternalTypes: true);
+// builder.Services.AddValidatorsFromAssemblyContaining<UserSignUpDTOValidator>(ServiceLifetime.Transient, includeInternalTypes: true);
 // builder.Services.AddScoped<IValidator<UserSignUpDTO>, UserSignUpDTOValidator>();
+// builder.Services.AddValidatorsFromAssembly(Assembly.GetAssembly(typeof(UserSignUpDTOValidator)));
 // builder.Services.AddValidatorsFromAssemblyContaining<UserSignUpDTOValidator>(includeInternalTypes: true);
-// builder.Services.AddValidatorsFromAssemblyContaining(typeof(ExampleEntityFormDTOValidator));
-builder.Services.AddValidatorsFromAssemblyContaining(typeof(UserSignUpDTOValidator), includeInternalTypes: true);
+// builder.Services.AddValidatorsFromAssemblyContaining(typeof(UserSignUpDTOValidator));
+// builder.Services.AddValidatorsFromAssemblyContaining(typeof(UserSignUpDTOValidator), includeInternalTypes: true);
+
+// Эти методы прокладывают мост между ASP.NET Pipeline и Mediator Pipeline
 // builder.Services.AddFluentValidationAutoValidation();
 // builder.Services.AddFluentValidationAutoValidation().AddFluentValidationClientsideAdapters();
 

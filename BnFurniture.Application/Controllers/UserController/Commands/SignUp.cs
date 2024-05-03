@@ -30,6 +30,7 @@ public static class SignUp
         public override async ValueTask<Response> Handle(Command request, CancellationToken cancellationToken)
         {
             var model = request.entityForm;
+            
             /*
             var validator = new UserSignUpDTOValidator(DbContext);
             validator.ValidateAndThrow(model);
