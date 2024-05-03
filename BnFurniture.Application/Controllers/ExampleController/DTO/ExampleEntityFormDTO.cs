@@ -12,7 +12,7 @@ namespace BnFurniture.Application.Controllers.ExampleController.DTO
         public int TemperatureC { get; set; }
         public string? Summary { get; set; }
     }
-
+    /*
     public class ExampleEntityFormDTOValidator : AbstractValidator<ExampleEntityFormDTO>
     {
         public ExampleEntityFormDTOValidator() 
@@ -25,4 +25,5 @@ namespace BnFurniture.Application.Controllers.ExampleController.DTO
                 .GreaterThan(-250);
         }
     }
+    */
 }

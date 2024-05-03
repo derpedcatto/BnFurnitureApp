@@ -22,7 +22,7 @@ public class UserRegisterController : ControllerBase
     {
         try
         {
-            var query = new SignUp.Command(model);
+            var query = new SignUpCommand(model);
             var response = await _mediator.Send(query);
 
             return Ok(response);

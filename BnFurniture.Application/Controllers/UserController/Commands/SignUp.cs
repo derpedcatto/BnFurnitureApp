@@ -6,6 +6,55 @@ using FluentValidation;
 
 namespace BnFurniture.Application.Controllers.UserController.Commands;
 
+public sealed record SignUpCommand(UserSignUpDTO entityForm) : IRequest<SignUpResponse>;
+
+public sealed class SignUpResponse
+{
+
+}
+
+public sealed class SignUpHandler : CommandHandler<SignUpCommand, SignUpResponse>
+{
+    private readonly IHashService _hashService;
+
+    public SignUpHandler(IHandlerContext context, IHashService hashService)
+        : base(context)
+    {
+        _hashService = hashService;
+    }
+
+    public override async ValueTask<SignUpResponse> Handle(SignUpCommand request, CancellationToken cancellationToken)
+    {
+        var model = request.entityForm;
+
+        /*
+        var validator = new UserSignUpDTOValidator(DbContext);
+        validator.ValidateAndThrow(model);
+        */
+
+        // await SaveUser(model);
+        return new SignUpResponse();
+    }
+
+    private async Task SaveUser(UserSignUpDTO dto)
+    {
+        await DbContext.AddAsync(new Domain.Entities.User
+        {
+            Id = Guid.NewGuid(),
+            Email = dto.Login,
+            Phonenumber = dto.Phone,
+            Password = _hashService.HashString(dto.Password),
+            FirstName = dto.Name,
+            LastName = dto.LastName,
+            Address = dto.Address,
+            Created = DateTime.Now
+        });
+        await DbContext.SaveChangesAsync();
+    }
+}
+
+
+/*
 public static class SignUp
 {
     public sealed record Command(UserSignUpDTO entityForm) : IRequest<Response>;
@@ -31,10 +80,10 @@ public static class SignUp
         {
             var model = request.entityForm;
             
-            /*
-            var validator = new UserSignUpDTOValidator(DbContext);
-            validator.ValidateAndThrow(model);
-            */
+            
+            // var validator = new UserSignUpDTOValidator(DbContext);
+            // validator.ValidateAndThrow(model);
+            
 
             // await SaveUser(model);
             return new Response();
@@ -57,6 +106,7 @@ public static class SignUp
         }
     }
 }
+*/
 
 /*
 var validationResult = validator.Validate(model);

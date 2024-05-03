@@ -1,5 +1,6 @@
 ﻿using BnFurniture.Application.Abstractions;
 using BnFurniture.Application.Behaviors;
+using BnFurniture.Application.Controllers.ExampleController.DTO;
 using BnFurniture.Application.Controllers.UserController.DTO;
 using BnFurniture.Infrastructure.Persistence;
 using BnFurniture.Shared.Utilities.Hash;
@@ -46,14 +47,17 @@ builder.Services.AddMediator(options =>
 builder.Services.AddScoped<IHandlerContext, HandlerContext>();
 builder.Services.AddSingleton<IHashService, Sha1HashService>();
 
-builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
-builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+builder.Services.AddSingleton(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
+builder.Services.AddSingleton(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 
-// builder.Services.AddValidatorsFromAssemblyContaining<Program>(ServiceLifetime.Scoped, includeInternalTypes: true);
-// builder.Services.AddValidatorsFromAssemblyContaining<UserSignUpDTOValidator>(ServiceLifetime.Transient, includeInternalTypes: true);
+// builder.Services.AddScoped<IValidator<UserSignUpDTO>, UserSignUpDTOValidator>();
+// builder.Services.AddScoped<IValidator<ExampleEntityFormDTO>, ExampleEntityFormDTOValidator>();
+
+// builder.Services.AddValidatorsFromAssemblyContaining<UserSignUpDTOValidator>(includeInternalTypes: true);
+builder.Services.AddValidatorsFromAssemblyContaining<UserSignUpDTOValidator>(ServiceLifetime.Transient, includeInternalTypes: true);
 // builder.Services.AddScoped<IValidator<UserSignUpDTO>, UserSignUpDTOValidator>();
 // builder.Services.AddValidatorsFromAssembly(Assembly.GetAssembly(typeof(UserSignUpDTOValidator)));
-// builder.Services.AddValidatorsFromAssemblyContaining<UserSignUpDTOValidator>(includeInternalTypes: true);
+// builder.Services.AddValidatorsFromAssemblyContaining<Program>(ServiceLifetime.Scoped, includeInternalTypes: true);
 // builder.Services.AddValidatorsFromAssemblyContaining(typeof(UserSignUpDTOValidator));
 // builder.Services.AddValidatorsFromAssemblyContaining(typeof(UserSignUpDTOValidator), includeInternalTypes: true);
 

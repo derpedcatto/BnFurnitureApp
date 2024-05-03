@@ -6,6 +6,39 @@ namespace BnFurniture.Application.Behaviors;
 public class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
         where TRequest : IRequest<TResponse>
 {
+    private readonly IValidator<TRequest> _validator;
+
+    public ValidationBehavior(IValidator<TRequest> validator)
+    {
+        _validator = validator;
+    }
+
+    public async ValueTask<TResponse> Handle(
+        TRequest request,
+        CancellationToken cancellationToken,
+        MessageHandlerDelegate<TRequest, TResponse> next)
+    {
+        var context = new ValidationContext<TRequest>(request);
+        var failures = _validator.Validate(context).Errors
+            .Where(x => x != null)
+            .Distinct()
+            .ToList();
+
+        if (failures.Count != 0)
+        {
+            throw new ValidationException(failures);
+        }
+
+        return await next(request, cancellationToken);
+    }
+}
+
+
+// IEnumerable
+/*
+public class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
+        where TRequest : IRequest<TResponse>
+{
     private readonly IEnumerable<IValidator<TRequest>> _validators;
 
     public ValidationBehavior(IEnumerable<IValidator<TRequest>> validators)
@@ -14,7 +47,7 @@ public class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TReques
     }
 
     public async ValueTask<TResponse> Handle(
-        TRequest request, 
+        TRequest request,
         CancellationToken cancellationToken,
         MessageHandlerDelegate<TRequest, TResponse> next)
     {
@@ -34,6 +67,45 @@ public class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TReques
         return await next(request, cancellationToken);
     }
 }
+*/
+
+// IValidator
+/*
+public class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
+        where TRequest : IRequest<TResponse>
+{
+    private readonly IValidator<TRequest> _validator;
+
+    public ValidationBehavior(IValidator<TRequest> validator)
+    {
+        _validator = validator;
+    }
+
+    public async ValueTask<TResponse> Handle(
+        TRequest request,
+        CancellationToken cancellationToken,
+        MessageHandlerDelegate<TRequest, TResponse> next)
+    {
+        var context = new ValidationContext<TRequest>(request);
+        var failures = _validator.Validate(context).Errors
+            .Where(x => x != null)
+            .Distinct()
+            .ToList();
+
+        if (failures.Count != 0)
+        {
+            throw new ValidationException(failures);
+        }
+
+        return await next(request, cancellationToken);
+    }
+}
+*/
+
+
+
+
+
 
 /*
 public class ValidationResult<TRequest, TResponse>
@@ -78,6 +150,22 @@ return await next (request, cancellationToken);
 
 
 // .Select(failure => new ErrorModel (failure.PropertyName, failure.ErrorMessage))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /*
 return new ValidationResult<TRequest, TResponse>
