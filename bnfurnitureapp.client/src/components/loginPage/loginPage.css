@@ -1,301 +1,177 @@
-.rectangle-2 {
-  position: absolute;
+
+.login {
+  display: flex;
+  flex-direction: row;
+}
+.loginLeft {
   width: 590px;
   height: 939px;
-  left: 0px;
-  top: -3px;
   background: url(/img/1.jpg);
+  position: relative;   
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  background-size: cover; 
+  background-position: center;
+  background-repeat: no-repeat;
 }
-
-.rectangle-109 {
-  box-sizing: border-box;
+.loginVector {
   position: absolute;
-  width: 428px;
-  height: 50px;
-  left: 746px;
-  top: 198px;
-  border: 1px solid #646464;
-  border-radius: 5px;
-}
-
-.email-or-phone {
-  position: absolute;
-  width: 332px;
-  height: 15px;
-  left: 746px;
-  top: 173px;
-  font-family: 'Montserrat';
-  font-style: normal;
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 17px;
-  color: #000000;
-}
-
-.verification-text {
-  position: absolute;
-  width: 423px;
+  width: 42px;
   height: 42px;
-  left: 747px;
-  top: 258px;
+  left: 40px;
+  top: 40px;
+}
+.loginText1{
+  width: 478px;
+  height: 78px;  
   font-family: 'Montserrat';
   font-style: normal;
-  font-weight: 400;
-  font-size: 12px;
-  line-height: 15px;
-  color: #646464;
+  font-weight: 600;
+  font-size: 32px;
+  line-height: 39px;
+  text-align:center;
+  text-transform: uppercase;
+  color: #1F1F1F;
+  padding-top: 200px; 
+  }
+ 
+ /* Права частина */
+ .formLogin{
+  position: relative;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content:flex-start;     
+  align-items: flex-start;
+  margin-top: 100px;  
 }
-
-.privacy-policy {
-  position: absolute;
-  width: 423px;
-  height: 14px;
-  left: 747px;
-  top: 310px;
-  font-family: 'Montserrat';
-  font-style: normal;
-  font-weight: 400;
-  font-size: 12px;
-  line-height: 15px;
-  text-decoration-line: underline;
-  color: #646464;
-}
-
-.rectangle-110 {
-  box-sizing: border-box;
-  position: absolute;
-  width: 428px;
-  height: 50px;
-  left: 746px;
-  top: 389px;
-  border: 1px solid #646464;
-  border-radius: 5px;
-}
-
-.password {
-  position: absolute;
-  width: 247px;
-  height: 15px;
-  left: 746px;
-  top: 364px;
+/* Загальні стилі для тексту та інпутів */
+ .loginText2, .loginText3, .loginText5, .loginTextPrivacy {
   font-family: 'Montserrat';
   font-style: normal;
   font-weight: 500;
   font-size: 14px;
   line-height: 17px;
   color: #000000;
+  margin-bottom: 10px;
+  margin-top: 20px;
+  margin-left: 100px;
+  margin-right: 10px;
 }
-
-.forgot-password {
-  position: absolute;
-  width: 247px;
-  height: 15px;
-  left: 746px;
-  top: 449px;
+.loginText4{
   font-family: 'Montserrat';
   font-style: normal;
-  font-weight: 600;
+  font-weight: 500;
   font-size: 14px;
   line-height: 17px;
-  text-decoration-line: underline;
   color: #646464;
-}
+  margin-bottom: 10px;
+  margin-top: 10px;
+  margin-left: 100px;
+  margin-right: 10px;
+  text-decoration-line: underline;
 
-.create-account {
-  position: absolute;
-  width: 412px;
-  height: 15px;
-  left: 746px;
-  top: 678px;
-  font-family: 'Montserrat';
-  font-style: normal;
-  font-weight: 600;
-  font-size: 14px;
-  line-height: 17px;
-  color: #000000;
 }
-
-.vector {
-  position: absolute;
-  left: 59.17%;
-  right: 39.69%;
-  top: 43.48%;
-  bottom: 54.91%;
-  background: #000000;
-}
-
-.frame-16 {
+.loginCheck {
   display: flex;
   flex-direction: row;
+  justify-content: flex-start;
   align-items: center;
-  padding: 10px 10px 10px 0px;
-  gap: 10px;
-  position: absolute;
-  width: 488px;
-  height: 71px;
-  left: 51px;
-  top: 245px;
-}
-
-.component-39 {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  padding: 10px;
-  gap: 10px;
-  position: absolute;
   width: 428px;
   height: 50px;
-  left: 746px;
-  top: 548px;
-  background: #000000;
-  border-radius: 30px;
+  margin-top: 20px;
+  margin-left: 100px;
+}
+.loginCheck :last-child {
+  margin-left: auto; /* Розташовує останній елемент справа */
+  margin-right: 10px;
+}
+.loginCheckbox {
+  width: 20px;
+  height: 20px;
+}
+.loginCheckText{
+  margin-left: 10px;
 }
 
-.component-40 {
+.loginInput1, .loginInput2 {
+  margin-bottom: 10px;   
   box-sizing: border-box;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  padding: 10px;
-  gap: 10px;
-  position: absolute;
   width: 428px;
   height: 50px;
-  left: 747px;
-  top: 713px;
-  border: 2px solid #000000;
-  border-radius: 30px;
+  border: 1px solid #646464;
+  border-radius: 5px;
+  margin-left: 100px;    
+}  
+.passwordInputContainer {
+  position: relative;
+  display: inline-block;
+  justify-content:center;     
+  align-items: flex-start; 
 }
-/* продовжити */
-.dontknow{
-width: 113px;
-height: 17px;
-
-font-family: 'Montserrat';
-font-style: normal;
-font-weight: 600;
-font-size: 14px;
-line-height: 17px;
-/* identical to box height */
-text-align: center;
-text-transform: uppercase;
-
-color: #FFFFFF;
-
-
-/* Inside auto layout */
-flex: none;
-order: 0;
-flex-grow: 0;
-}
-
-.dontknow2{
-    width: 157px;
-    height: 17px;
-    font-family: 'Montserrat';
-    font-style: normal;
-    font-weight: 600;
-    font-size: 14px;
-    line-height: 17px;
-    text-align: center;
-    text-transform: uppercase;
-    color: #000000;
-    flex: none;
-    order: 0;
-    flex-grow: 0;
-}
-.dontknow3{
-    position: absolute;
-    width: 412px;
-    height: 15px;
-    left: 746px;
-    top: 678px;
-    font-family: 'Montserrat';
-    font-style: normal;
-    font-weight: 600;
-    font-size: 14px;
-    line-height: 17px;
-    color: #000000;
-}
-
-/* заповніть вхід до облікового запису */
-.loginText1{
-width: 478px;
-height: 78px;
-
-font-family: 'Montserrat';
-font-style: normal;
-font-weight: 600;
-font-size: 32px;
-line-height: 39px;
-text-align: center;
-text-transform: uppercase;
-color: #1F1F1F;
-flex: none;
-order: 0;
-flex-grow: 0;
-}
-.loginVector{
-position: absolute;
-width: 42px;
-height: 42px;
-left: 40px;
-top: 40px;
-}
-.password-input{
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-}
-.toggle-password {
-  position: absolute;  
-  right: 10px;
+.passwordIcon {
+  position: absolute;
+  right: 10px; 
   top: 50%;
-  transform: translateY(-50%);
-  background: none;
-  border: none;
+  transform: translateY(-90%);
   cursor: pointer;
 }
 
-.group-96 {
-  position: relative;  
-  display: flex; 
+.buttonLogin {
+  margin-top: 20px;
+  padding: 10px 20px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
   align-items: center;
-  width: 291px;
-  height: 24px;
-  left: 746px;
-  top: 484px;  
+  padding: 10px;
+  gap: 10px;
+  margin-left: 100px;
+  margin-bottom: 50px;
+  width: 428px;
+  height: 50px;
+  background: #000000;
+  border-radius: 30px
 }
-.Rectangle111 {  
-  position: relative;
-  width: 24px;
-  height: 24px;
-  box-sizing: border-box;
-  border: 1px solid #646464;
-  border-radius: 5px;
-}
-
-.save-info-text {
-  position: relative;
-  width: 247px;
-  height: 20px;
-  margin-left: 10px;
-  font-family: 'Montserrat', sans-serif;
+.buttonLoginText{
+  font-family: 'Montserrat';
   font-style: normal;
-  font-weight: 400;
+  font-weight: 600;
   font-size: 14px;
   line-height: 17px;
-  color: #646464;
+  text-align: center;
+  text-transform: uppercase;
+  color: #FFFFFF;
 }
-.svg-con {
+
+.buttonLoginRegister {
+  margin-top: 20px;
+  padding: 10px 20px;
+  cursor: pointer;
   display: flex;
+  flex-direction: row;
+  justify-content: center;
   align-items: center;
-  justify-content: center; 
+  padding: 10px;
+  gap: 10px;
+  margin-left: 100px;
+  margin-bottom: 50px;
+  width: 428px;
+  height: 50px;
+  background: #FFFFFF;
+  border: 2px solid #000000;
+  border-radius: 30px
+
 }
-.log-colm{
-  display: flex;
-  flex-direction: column;  
+.buttonLoginRegisterText{
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 17px;
+  text-align: center;
+  text-transform: uppercase;
+  color: #000000;
 }

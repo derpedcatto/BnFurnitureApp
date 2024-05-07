@@ -1,23 +1,24 @@
-/* Ліва частина */
-.registerPage{
+
+.register{
     display: flex;
     flex-direction: row;
 }
-.registerpageLeft {
+/* Ліва частина */
+.registerLeft {
+    width: 590px;
+    height: 1343px;
+    background: url(/img/register.jpg);
     position: relative;   
-    width: 590px;/**/
-    height: 1343px;/* має бути така висота*/
     display: flex;
     justify-content: center;
-    align-items: center;
-    background: url(/img/register.jpg);
-    background-size: cover; /* або 'contain', залежно від вашого вибору */
+    align-items: flex-start;
+    background-size: cover; 
     background-position: center;
     background-repeat: no-repeat;
   }
-  
+ 
   /* Права частина */
-  .form-container {
+  .formRegister{
     position: relative;
     padding: 20px;
     display: flex;
@@ -40,7 +41,7 @@
     margin-right: 10px;
   }
   
-  .rec109, .rec110, .rec114, .rec115, .rec116, .rec117 {
+  .registerInput1, .registerInput2, .registerInput3, .registerInput4, .registerInput5, .registerInput6 {
     margin-bottom: 10px;   
     box-sizing: border-box;
     width: 428px;
@@ -49,16 +50,22 @@
     border-radius: 5px;
     margin-left: 100px;    
   }
-  .rect11 {
+  .registerCheck {
     display: flex;
     flex-direction: row;
+    justify-content: center;
+    align-items: center;
     width: 428px;
     height: 50px;
     margin-top: 20px;
     margin-left: 100px;
   }
+  .registerCheckbox {
+    width: 40px;
+    height: 40px;
+  }
 
-  .textrect11{
+  .registerCheckText{
     margin-left: 10px;
   }
   .error {
@@ -96,19 +103,16 @@
     text-transform: uppercase;
     color: #FFFFFF;
   }
+
   @media (max-width: 1150px) {
-    .registerText1, .registerText2, .registerText3, .registerText4, .registerText5, .registerText6, .error {
+    .registerInput1, .registerInput2, .registerInput3, .registerInput4, .registerInput5, .registerInput6, .error {
       margin-left: 10px;
       margin-right: 5px;
     }
   
-    .rec109, .rec110, .rec114, .rec115, .rec116, .rec117, .buttonRegister {
+    .registerInput1, .registerInput2, .registerInput3, .registerInput4, .registerInput5, .registerInput6, .buttonRegister, .registerCheck {
       margin-left: 10px;
       margin-right: 5px;
     }
-  
-    .rect11 {
-      margin-left: 10px;
-      margin-right: 5px;
-    }
+
   }

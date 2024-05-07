@@ -88,7 +88,7 @@ const FormComponent1: React.FC = () => {
         body: JSON.stringify(formData)
       });
 
-      const data = await response.json();
+      const data = await response.json(); //отримуємо відповідь від сервера у форматі JSON і розбирає її в об'єкт JavaScript
 
     if (response.ok) {
       setSubmitted(true);
@@ -111,8 +111,8 @@ const FormComponent1: React.FC = () => {
   }, [submitted]);
 
   return (
-    <div className='registerPage'>
-      <div className='registerpageLeft'>
+    <div className='register'>
+      <div className='registerLeft'>
         <button className='loginVector'>
           <Link to="/">
             <svg width="42" height="42" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -122,10 +122,10 @@ const FormComponent1: React.FC = () => {
         </button>
       </div>
       
-      <form className="form-container" onSubmit={handleSubmit}>
+      <form className="formRegister" onSubmit={handleSubmit}>
       <div className="registerText1">Ім'я</div>
       <input
-        className="rec109"
+        className="registerInput1"
         type="text"
         name="firstName"
         value={formData.firstName}
@@ -135,7 +135,7 @@ const FormComponent1: React.FC = () => {
 
       <div className="registerText2">Фамілія</div>
       <input
-        className="rec110"
+        className="registerInput2"
         type="text"
         name="lastName"
         value={formData.lastName}
@@ -143,9 +143,9 @@ const FormComponent1: React.FC = () => {
       />
       {errors.lastName && <div className="error">{errors.lastName}</div>}
 
-      <div className="registerText3">Адреса</div>
+      <div className="registerText2">Адреса</div>
       <input
-        className="rec114"
+        className="registerInput3"
         type="text"
         name="address"
         value={formData.address}
@@ -154,7 +154,7 @@ const FormComponent1: React.FC = () => {
       {errors.address && <div className="error">{errors.address}</div>}
       <div className="registerText4">Мобільний номер</div>
       <input
-        className="rec115"
+        className="registerInput4"
         type="text"
         name="mobileNumber"
         value={formData.mobileNumber}
@@ -162,7 +162,7 @@ const FormComponent1: React.FC = () => {
       />
       <div className="registerText5">Електронна пошта</div>
       <input
-        className="rec116"
+        className="registerInput5"
         type="text"
         name="email"
         value={formData.email}
@@ -172,7 +172,7 @@ const FormComponent1: React.FC = () => {
 
       <div className="registerText6">Пароль</div>
       <input
-        className="rec117"
+        className="registerInput6"
         type="password"
         name="password"
         value={formData.password}
@@ -184,9 +184,9 @@ const FormComponent1: React.FC = () => {
       <u>More info about Privacy Policy</u>
       </div>
      </Link>
-      <div className="rect11">
+      <div className="registerCheck">
       <input
-        className='Rectangle111'
+        className='registerCheckbox'
         type="checkbox"
         id="saveDataCheckbox"
         name="saveDataCheckbox"
@@ -194,7 +194,7 @@ const FormComponent1: React.FC = () => {
         onChange={handleCheckboxChange}
       />
       
-      <div className="textrect11">     
+      <div className="registerCheckText">     
         Я, ознайомлений з Політикою конфіденційності з обробки та захисту персональних даних
       </div>
     
