@@ -1,56 +1,22 @@
+
+
 /* селектор атрибуту для стилізації всіх обєктів де є __container ця частина */
 [class*="__container"]{
-  max-width: 80vw; /* 1540px/1920 */
+
+  max-width: 80.208333%; /* 1540px/1920 */
   padding-left: 1rem;
   padding-right: 1rem;
-  margin: 0 auto;        /*обмежений по ширині блочний елемент став по центру свого батьківського елементу*/
+  margin: 0 auto;        /*обмежений по ширині блочний елемент став по центру свого батьківського елементу*/ 
 }
 
 .wrapper{
-min-height: 100%;
-display: flex;
-flex-direction: column;
-}
-.wrapper > main{
-flex-grow: 1;
-}
-
-
-/* Group 182 */
-.Group182{
-position: absolute;
-width: 100%;
-height: 40px;
-
-}
-
-/* Rectangle 2 */
-.rectangle_2 {
-  position: absolute;
-  width: 100%;
-  height: 40px;
-  left: 0px;
-  top: 0px;
-  background: #839D9A;
-}
-
-/* #buy now #вседлядому #швидкотазручно #buy now #вседлядому #швидкотазручно #buy now #вседлядому #швидкотазручно #buy now #вседлядому #швидкотазручно */
-.Group182Text{
-position: absolute;
-width: 100%;
-height: 27px;
-left: -204px;
-top: 6px;
-
-font-family: 'Montserrat';
-font-style: normal;
-font-weight: 500;
-font-size: 20px;
-line-height: 24px;
-
-color: #FFFFFF;
-}
-
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  }
+  .wrapper > main{
+  flex-grow: 1;
+  }
 
 
 

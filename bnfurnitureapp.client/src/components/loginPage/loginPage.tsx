@@ -90,9 +90,11 @@ const FormComponent: React.FC = () => {
     
       </div>
       <div className='dontknow3'>У вас ще немає облікового запису? Створіть його:</div>
+      <Link to="/register">
       <button className="component-40">
         <div className='dontknow2'>створити аккаунт</div>
       </button>
+      </Link>
     </form>
   );
 };
