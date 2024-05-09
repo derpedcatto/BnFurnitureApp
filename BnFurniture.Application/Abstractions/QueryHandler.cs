@@ -1,24 +1,15 @@
-﻿using BnFurniture.Infrastructure.Persistence;
-using Mediator;
-using Microsoft.Extensions.Logging;
+﻿using BnFurniture.Domain.Responses;
 
-namespace BnFurniture.Application.Abstractions
+namespace BnFurniture.Application.Abstractions;
+
+public abstract class QueryHandler<TQuery, TResponse>
 {
-    /// <summary>
-    /// Абстрактный класс, который должны наследовать все Запросы (Query).
-    /// </summary>
-    public abstract class QueryHandler<TQuery, TResponse> : IRequestHandler<TQuery, TResponse>
-        where TQuery : IRequest<TResponse>
+    protected readonly IHandlerContext HandlerContext;
+
+    protected QueryHandler(IHandlerContext context)
     {
-        protected readonly ILogger Logger;
-        protected readonly ApplicationDbContext DbContext;
-
-        protected QueryHandler(IHandlerContext context)
-        {
-            Logger = context.Logger;
-            DbContext = context.DbContext;
-        }
-
-        public abstract ValueTask<TResponse> Handle(TQuery request, CancellationToken cancellationToken);
+        HandlerContext = context;
     }
+
+    public abstract Task<ApiQueryResponse<TResponse>> Handle(TQuery request, CancellationToken cancellationToken = default);
 }

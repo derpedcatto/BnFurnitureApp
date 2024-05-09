@@ -11,6 +11,5 @@
 
         // Navigation property for the related UserRole
         public ICollection<User_UserRole> User_UserRoles { get; set; } = null!;
-
     }
 }

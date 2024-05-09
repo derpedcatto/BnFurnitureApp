@@ -1,24 +1,15 @@
-﻿using BnFurniture.Infrastructure.Persistence;
-using Mediator;
-using Microsoft.Extensions.Logging;
+﻿using BnFurniture.Domain.Responses;
 
-namespace BnFurniture.Application.Abstractions
+namespace BnFurniture.Application.Abstractions;
+
+public abstract class CommandHandler<TCommand>
 {
-    /// <summary>
-    /// Абстрактный класс, который должны наследовать все Команды (Commands).
-    /// </summary>
-    public abstract class CommandHandler<TCommand, TResult> : IRequestHandler<TCommand, TResult>
-        where TCommand : IRequest<TResult>
+    protected readonly IHandlerContext HandlerContext;
+
+    protected CommandHandler(IHandlerContext context)
     {
-        protected readonly ILogger Logger;
-        protected readonly ApplicationDbContext DbContext;
-
-        protected CommandHandler(IHandlerContext context)
-        {
-            Logger = context.Logger;
-            DbContext = context.DbContext;
-        }
-
-        public abstract ValueTask<TResult> Handle(TCommand request, CancellationToken cancellationToken);
+        HandlerContext = context;
     }
+
+    public abstract Task<ApiCommandResponse> Handle(TCommand request, CancellationToken cancellationToken = default);
 }

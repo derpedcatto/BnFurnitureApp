@@ -1,93 +1,71 @@
 ﻿using BnFurniture.Application.Abstractions;
 using BnFurniture.Application.Controllers.ExampleController.DTO;
-using Mediator;
-using Microsoft.Extensions.Logging;
+using BnFurniture.Domain.Entities;
+using BnFurniture.Domain.Responses;
+using System.Net;
 
-namespace BnFurniture.Application.Controllers.ExampleController.Queries
+namespace BnFurniture.Application.Controllers.ExampleController.Queries;
+
+public sealed record GetEntityListQuery();
+
+public sealed class GetEntityListResponse
 {
-    /// <summary>
-    /// Пример запроса по чтению коллекции Entity из БД и отправки данных в контроллер.
-    /// </summary>
-    public static class GetEntityList
+    public IList<ExampleEntityResponseDTO> ExampleEntityList { get; private set; }
+
+    public GetEntityListResponse(IList<ExampleEntityResponseDTO> entityList)
     {
-        /// <summary>
-        /// Описание запроса и его параметров.
-        /// </summary>
-        public sealed record Query() : IRequest<Response>;
+        ExampleEntityList = entityList;
+    }
+}
 
-        /// <summary>
-        /// Возвращаемый ответ.
-        /// </summary>
-        public sealed class Response
+public sealed class GetEntityListHandler : QueryHandler<GetEntityListQuery, GetEntityListResponse>
+{
+    public GetEntityListHandler(IHandlerContext context)
+        : base(context)
+    {
+
+    }
+
+    public override async Task<ApiQueryResponse<GetEntityListResponse>> Handle(GetEntityListQuery request, CancellationToken cancellationToken)
+    {
+        // Тут происходит взаимодействие с базой данных DbContext. ...
+        // Но в примере используются филлерные данные
+        // Сделайте вид, что все эти данные берутся из БД :)
+        string[] summaries = ["Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"];
+        IList<ExampleEntity> entityList = [];
+        for (int i = 0; i < 3; i++)
         {
-            public IList<ExampleEntityDTO> ExampleEntityList { get; private set; }
-
-            public Response(IList<ExampleEntityDTO> entityList)
+            var entity = new ExampleEntity()
             {
-                ExampleEntityList = entityList;
-            }
+                Date = DateOnly.FromDateTime(DateTime.Now.AddDays(Random.Shared.Next(5))),
+                TemperatureC = Random.Shared.Next(-20, 55),
+                Summary = summaries[Random.Shared.Next(summaries.Length)]
+            };
+            entityList.Add(entity);
         }
 
-        /// <summary>
-        /// Класс-обработчик запроса.
-        /// </summary>
-        public sealed class Handler : QueryHandler<Query, Response>
+        // Инициализация DTO-модели для класса GetEntityListResponse и отправки на фронт
+        IList<ExampleEntityResponseDTO> responseDataList = [];
+        foreach (var entity in entityList)
         {
-            /// <summary>
-            /// Конструктор.
-            /// </summary>
-            /// <param name="context"></param>
-            public Handler(IHandlerContext context)
-                : base(context)
+            var dto = new ExampleEntityResponseDTO()
             {
-
-            }
-
-            /// <summary>
-            /// Функция-обработчик запроса.
-            /// </summary>
-            /// <param name="request">Переданные параметры запроса (<see cref="Response"/>)</param>
-            /// <param name="cancellationToken"></param>
-            /// <returns></returns>
-            public override ValueTask<Response> Handle(Query request, CancellationToken cancellationToken)
-            {
-                // Тут происходит взаимодействие с базой данных DbContext. ...
-                // Но в примере используются филлерные данные
-
-                string[] summaries = ["Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"];
-
-                IList<Domain.Entities.ExampleEntity> entityList =
-                [
-                    new()
-                    {
-                        Date = DateOnly.FromDateTime(DateTime.Now.AddDays(Random.Shared.Next(5))),
-                        TemperatureC = Random.Shared.Next(-20, 55),
-                        Summary = summaries[Random.Shared.Next(summaries.Length)]
-                    },
-                    new()
-                    {
-                        Date = DateOnly.FromDateTime(DateTime.Now.AddDays(Random.Shared.Next(5))),
-                        TemperatureC = Random.Shared.Next(-20, 55),
-                        Summary = summaries[Random.Shared.Next(summaries.Length)]
-                    },
-                    new()
-                    {
-                        Date = DateOnly.FromDateTime(DateTime.Now.AddDays(Random.Shared.Next(5))),
-                        TemperatureC = Random.Shared.Next(-20, 55),
-                        Summary = summaries[Random.Shared.Next(summaries.Length)]
-                    },
-                ];
-
-                IList<ExampleEntityDTO> responseList = [];
-                foreach (var entity in entityList)
-                {
-                    responseList.Add(entity.EntityToDto());
-                }
-
-                Logger.LogInformation($"Entity list got successfully fetched.");
-
-                return ValueTask.FromResult(new Response(responseList));
-            }
+                Date = entity.Date,
+                TemperatureC = entity.TemperatureC,
+                TemperatureF = entity.TemperatureF,
+                Summary = entity.Summary
+            };
+            responseDataList.Add(dto);
         }
+
+        // Формирование полноценной модели для отправки на сервер
+        var responseData = new GetEntityListResponse(responseDataList);
+        var response = new ApiQueryResponse<GetEntityListResponse>(true, (int)HttpStatusCode.OK)
+        {
+            Message = "Entity List returned successfully.",
+            Data = responseData
+        };
+
+        return response;
     }
 }

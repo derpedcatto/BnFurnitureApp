@@ -1,69 +1,63 @@
 ﻿using BnFurniture.Application.Abstractions;
-using Mediator;
-using Microsoft.Extensions.Logging;
-using Microsoft.EntityFrameworkCore;
 using BnFurniture.Application.Controllers.ExampleController.DTO;
+using BnFurniture.Application.Extensions;
+using BnFurniture.Domain.Entities;
+using BnFurniture.Domain.Responses;
+using Microsoft.Extensions.Logging;
+using System.Net;
 
-namespace BnFurniture.Application.Controllers.ExampleController.Commands
+namespace BnFurniture.Application.Controllers.ExampleController.Commands;
+
+public sealed record CreateEntityCommand(ExampleEntityFormDTO entityForm);
+
+public sealed class CreateEntityHandler : CommandHandler<CreateEntityCommand>
 {
-    /// <summary>
-    /// Пример комманды по созданию нового Entity в БД.
-    /// </summary>
-    public static class CreateEntity
+    private readonly ExampleEntityFormDTOValidator _validator;
+
+    public CreateEntityHandler(ExampleEntityFormDTOValidator validator,
+        IHandlerContext context) : base(context)
     {
-        /// <summary>
-        /// Описание комманды и её параметров.
-        /// </summary>
-        /// <param name="entityForm">Данные, которые надо обработать и сохранить в БД.</param>
-        public sealed record Command(ExampleEntityFormDTO entityForm) : IRequest<Response>;
+        _validator = validator;
+    } 
 
-        /// <summary>
-        /// Возвращаемый ответ.
-        /// </summary>
-        public sealed class Response
+    public override async Task<ApiCommandResponse> Handle(CreateEntityCommand request, CancellationToken cancellationToken)
+    {
+        // Тут происходит взаимодействие с базой данных DbContext. ...
+        // Сделайте вид, что все эти данные сохраняются в БД :)
+
+        var dto = request.entityForm;
+        var validationResult = await _validator.ValidateAsync(dto, cancellationToken);
+        if (!validationResult.IsValid)
         {
-
+            return new ApiCommandResponse(false, (int)HttpStatusCode.UnprocessableEntity)
+            {
+                Message = "Валідація не пройшла перевірку.",
+                Errors = validationResult.ToApiResponseErrors()
+            };
         }
 
-        /// <summary>
-        /// Класс-обработчик комманды.
-        /// </summary>
-        public sealed class Handler : CommandHandler<Command, Response>
+        var newEntity = new ExampleEntity()
         {
-            /// <summary>
-            /// Конструктор.
-            /// </summary>
-            /// <param name="context"></param>
-            public Handler(IHandlerContext context)
-                : base(context)
-            {
+            Date = dto.Date,
+            TemperatureC = dto.TemperatureC,
+            Summary = dto.Summary
+        };
 
-            }
+        // Пример использования DbContext:
+        // await HandlerContext.DbContext.ExampleEntities.AddAsync(newEntity, cancellationToken);
 
-            /// <summary>
-            /// Функция-обработчик комманды.
-            /// </summary>
-            /// <param name="request">Переданные параметры запроса (<see cref="Command"/>)</param>
-            /// <param name="cancellationToken"></param>
-            /// <returns></returns>
-            public override async ValueTask<Response> Handle(Command request, CancellationToken cancellationToken)
-            {
-                // Тут происходит взаимодействие с базой данных DbContext. ...
-                // Но в примере используются филлерные данные
+        HandlerContext.Logger.LogInformation($"Entity created successfully: {Environment.NewLine}"
+            + $"Date - {newEntity.Date} {Environment.NewLine}"
+            + $"C - {newEntity.TemperatureC} {Environment.NewLine}"
+            + $"F - {newEntity.TemperatureF} {Environment.NewLine}"
+            + $"Summary - {newEntity.Summary}");
 
-                // Пример использования DbContext:
-                // await DbContext.ExampleEntities.AddAsync(entity, cancellationToken);
-                Domain.Entities.ExampleEntity newEntity = request.entityForm.FormDtoToEntity();
+        // Пример использования DbContext:
+        // await HandlerContext.DbContext.SaveChangesAsync(cancellationToken);
 
-                Logger.LogInformation($"Entity created successfully:"
-                    + $"\nDate - {newEntity.Date}\n"
-                    + $"C - {newEntity.TemperatureC}\n"
-                    + $"F - {newEntity.TemperatureF}\n"
-                    + $"Summary - {newEntity.Summary}");
-
-                // await DbContext.SaveChangesAsync(cancellationToken);
-                return new Response();
-            }
-        }
+        return new ApiCommandResponse(true, (int)HttpStatusCode.OK)
+        {
+            Message = $"Модель створена успішно з датою - {newEntity.Date}"
+        };
     }
 }
