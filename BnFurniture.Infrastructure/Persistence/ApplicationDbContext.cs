@@ -6,7 +6,6 @@ namespace BnFurniture.Infrastructure.Persistence
 {
     public class ApplicationDbContext(DbContextOptions options) : DbContext(options)
     {
-        // public DbSet<ExampleEntity> ExampleEntity { get; set; }
         public DbSet<AuditLog> AuditLog { get; set; }
         public DbSet<Characteristics> Characteristics { get; set; }
         public DbSet<CharacteristicsValue> CharacteristicsValue { get; set; }

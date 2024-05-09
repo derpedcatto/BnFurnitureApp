@@ -1,8 +1,4 @@
-﻿
-using BnFurniture.Domain.Entities;
-using System.ComponentModel.DataAnnotations;
-
-namespace BnFurniture.Domain.Entities
+﻿namespace BnFurniture.Domain.Entities
 {
     public class User
     {
@@ -41,6 +37,5 @@ namespace BnFurniture.Domain.Entities
 
         // Navigation property for the related  User_UserRole
         public ICollection<PasswordResetToken> PasswordResetTokens { get; set; } = null!;
-
     }
 }

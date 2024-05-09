@@ -1,73 +1,62 @@
-﻿using Mediator;
-using BnFurniture.Application.Abstractions;
-using Microsoft.Extensions.Logging;
+﻿using BnFurniture.Application.Abstractions;
 using BnFurniture.Application.Controllers.ExampleController.DTO;
+using BnFurniture.Domain.Responses;
+using BnFurniture.Domain.Entities;
+using System.Net;
 
-namespace BnFurniture.Application.Controllers.ExampleController.Queries
+namespace BnFurniture.Application.Controllers.ExampleController.Queries;
+
+public sealed record GetEntityQuery(int days);
+
+public sealed class GetEntityResponse
 {
-    /// <summary>
-    /// Пример запроса по чтению Entity из БД и отправки данных в контроллер.
-    /// </summary>
-    public static class GetEntity
+    public ExampleEntityResponseDTO ExampleEntity { get; private set; }
+
+    public GetEntityResponse(ExampleEntityResponseDTO entity)
     {
-        /// <summary>
-        /// Описание запроса и его параметров.
-        /// </summary>
-        /// <param name="days">Кол-во дней, через сколько надо просчитать прогноз погоды.</param>
-        public sealed record Query(int days) : IRequest<Response>;
+        ExampleEntity = entity;
+    }
+}
 
-        /// <summary>
-        /// Возвращаемый ответ.
-        /// </summary>
-        public sealed class Response
+public sealed class GetEntityHandler : QueryHandler<GetEntityQuery, GetEntityResponse>
+{
+    public GetEntityHandler(IHandlerContext context)
+        : base(context)
+    {
+
+    }
+
+    public override async Task<ApiQueryResponse<GetEntityResponse>> Handle(GetEntityQuery request, CancellationToken cancellationToken)
+    {
+        // Тут происходит взаимодействие с базой данных DbContext. ...
+        // Но в примере используются филлерные данные
+        // Сделайте вид, что все эти данные берутся из БД :)
+
+        string[] summaries = ["Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"];
+        ExampleEntity entity = new()
         {
-            public ExampleEntityDTO ExampleEntity { get; private set; }
+            Date = DateOnly.FromDateTime(DateTime.Now.AddDays(request.days)),
+            TemperatureC = Random.Shared.Next(-20, 55),
+            Summary = summaries[Random.Shared.Next(summaries.Length)]
+        };
 
-            public Response(ExampleEntityDTO entity)
-            {
-                ExampleEntity = entity;
-            }
-        }
-
-        /// <summary>
-        /// Класс-обработчик запроса.
-        /// </summary>
-        public sealed class Handler : QueryHandler<Query, Response>
+        // Инициализация DTO-модели для класса GetEntityResponse и отправки на фронт
+        var dto = new ExampleEntityResponseDTO()
         {
-            /// <summary>
-            /// Конструктор.
-            /// </summary>
-            /// <param name="context"></param>
-            public Handler(IHandlerContext context)
-                : base(context)
-            {
+            Date = entity.Date,
+            TemperatureC = entity.TemperatureC,
+            TemperatureF = entity.TemperatureF,
+            Summary = entity.Summary
+        };
 
-            }
+        // Формирование полноценной модели для отправки на сервер
+        var responseData = new GetEntityResponse(dto);
+        var response = new ApiQueryResponse<GetEntityResponse>(true, (int)HttpStatusCode.OK)
+        {
+            Message = $"Entity got successfully returned with date {entity.Date}.",
+            Data = responseData
+        };
 
-            /// <summary>
-            /// Функция-обработчик запроса.
-            /// </summary>
-            /// <param name="request">Переданные параметры запроса (<see cref="Response"/>)</param>
-            /// <param name="cancellationToken"></param>
-            /// <returns></returns>
-            public override ValueTask<Response> Handle(Query request, CancellationToken cancellationToken)
-            {
-                // Тут происходит взаимодействие с базой данных DbContext. ...
-                // Но в примере используются филлерные данные
-
-                string[] summaries = ["Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"];
-
-                Domain.Entities.ExampleEntity entity = new()
-                {
-                    Date = DateOnly.FromDateTime(DateTime.Now.AddDays(request.days)),
-                    TemperatureC = Random.Shared.Next(-20, 55),
-                    Summary = summaries[Random.Shared.Next(summaries.Length)]
-                };
-
-                Logger.LogInformation($"Entity got successfully with date {entity.Date}.");
-
-                return ValueTask.FromResult( new Response( ExampleEntityMapper.EntityToDto(entity) ) );
-            }
-        }
+        return response;
     }
 }

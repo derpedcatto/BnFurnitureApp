@@ -1,48 +1,107 @@
 ﻿using BnFurniture.Application.Abstractions;
-using BnFurniture.Application.Behaviors;
 using BnFurniture.Infrastructure.Persistence;
-using Mediator;
+using BnFurniture.Shared.Utilities.Hash;
+using BnFurnitureApp.Middleware;
+using BnFurnitureApp.Server.Middleware;
+using FluentValidation;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddJsonOptions(o =>
+{ 
+    o.JsonSerializerOptions.PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase;
+    o.JsonSerializerOptions.WriteIndented = true;
+    o.JsonSerializerOptions.Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping;
+});
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options => { options.CustomSchemaIds(s => s.FullName?.Replace("+", ".")); });
-builder.Services.AddLogging();
+builder.Services.AddHttpContextAccessor();
 
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-{
-    options.UseMySql(connectionString, new MySqlServerVersion(new Version(8, 0, 30)));
+
+// Suppress default error response model
+builder.Services.Configure<ApiBehaviorOptions>(apiBehaviorOptions => {
+    apiBehaviorOptions.SuppressModelStateInvalidFilter = true;
 });
 
-// TODO: перенести это в отдельный метод и использовать ILogger
-using (var serviceScope = builder.Services.BuildServiceProvider().CreateScope())
-{
-    var dbContext = serviceScope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
-    try 
-    {
-        dbContext.Database.CanConnect();
-        Console.WriteLine("Connected to the database.");
-    }
-    catch
-    {
-        Console.WriteLine("Failed to connect to the database.");
-    }
+// Session settings
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
+
+
+// Logging Service registration
+Console.OutputEncoding = System.Text.Encoding.UTF8;
+builder.Services.AddLogging();
+builder.Services.AddHttpLogging(logging => 
+{
+    logging.LoggingFields =
+        // Microsoft.AspNetCore.HttpLogging.HttpLoggingFields.RequestPath |
+        // Microsoft.AspNetCore.HttpLogging.HttpLoggingFields.RequestMethod |
+        // Microsoft.AspNetCore.HttpLogging.HttpLoggingFields.RequestQuery |
+        Microsoft.AspNetCore.HttpLogging.HttpLoggingFields.RequestBody |
+        Microsoft.AspNetCore.HttpLogging.HttpLoggingFields.ResponseStatusCode |
+        Microsoft.AspNetCore.HttpLogging.HttpLoggingFields.ResponseBody;
+
+    logging.MediaTypeOptions.AddText("multipart/form-data");
+    logging.MediaTypeOptions.AddText("application/x-www-form-urlencoded");
+});  
+
+
+// Db Service registration
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+var serverVersion = new MySqlServerVersion(new Version(8, 0, 30));
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+{
+    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
+});
+
+
+// FluentValidation Services registration
+builder.Services.AddValidatorsFromAssemblyContaining<BnFurniture.Application.AssemblyClass>();
+foreach (var type in typeof(BnFurniture.Application.AssemblyClass).Assembly.GetTypes()
+    .Where(x => x.Name.EndsWith("DTOValidator") && !x.IsAbstract && !x.IsInterface))
+{
+    builder.Services.AddScoped(type);
+    Console.WriteLine($"Added validator - {type.Name}");
+}
+
+
+// Handlers registration
+foreach (var type in typeof(BnFurniture.Application.AssemblyClass).Assembly.GetTypes()
+    .Where(x => x.Name.EndsWith("Handler") && !x.IsAbstract && !x.IsInterface))
+{
+    builder.Services.AddTransient(type);
+    Console.WriteLine($"Added handler - {type.Name}");
 }
 
 builder.Services.AddScoped<IHandlerContext, HandlerContext>();
 
-builder.Services.AddMediator(options =>
-{
-    options.ServiceLifetime = ServiceLifetime.Scoped;
-});
 
-builder.Services.AddSingleton(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
+// Other Services registration
+builder.Services.AddSingleton<IHashService, Sha1HashService>();
+
+
 
 var app = builder.Build();
+
+
+
+// Middleware registration
+app.UseHttpLogging();
+app.UseMiddleware<LogAndExceptionHandlerMiddleware>();
+
+
+// Checking DB connection
+var logger = app.Services.GetRequiredService<ILogger<Program>>();
+await CheckDatabaseConnectionAsync(app, logger);
+
 
 app.UseDefaultFiles();
 app.UseStaticFiles();
@@ -57,6 +116,10 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+// app.UseAuthentication();
+
+app.UseSession();
+app.UseMiddleware<SessionAuthMiddleware>();
 
 app.MapControllers();
 
@@ -65,17 +128,18 @@ app.MapFallbackToFile("/index.html");
 app.Run();
 
 
+static async Task CheckDatabaseConnectionAsync(WebApplication app, ILogger logger)
+{
+    using var scope = app.Services.CreateScope();
 
-/* MediatR
-builder.Services.AddMediatR(cfg => {
-    var executingAssembly = Assembly.GetExecutingAssembly();
-    var referencedAssemblies = executingAssembly.GetReferencedAssemblies();
-    foreach (var assemblyName in referencedAssemblies)
+    try
     {
-        var assembly = Assembly.Load(assemblyName);
-        cfg.RegisterServicesFromAssembly(assembly);
+        var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+        await dbContext.Database.CanConnectAsync();
+        logger.LogInformation("Database connection success");
     }
-    cfg.RegisterServicesFromAssembly(executingAssembly);
-});
-builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
-*/
+    catch (Exception ex)
+    {
+        logger.LogError($"Database connection failed - {ex.Message}");
+    }
+}
