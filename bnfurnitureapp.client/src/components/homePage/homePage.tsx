@@ -1,9 +1,10 @@
 import React from 'react';
 
 import ComponentHome1 from './componentHome1';
+import Carusel from '../componentCarusel/componentCarusel';
 
-
-
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 import './homePage.css';
 
 
@@ -12,7 +13,7 @@ const HomePage: React.FC = () => {
 
     <div>
 <ComponentHome1 />
-
+<Carusel/>
 <div className="homeSection2__container"> 
   <div className='homeheaders'>знайди те, що шукаеш!</div>
   <div className='homeCardrow'>
@@ -389,6 +390,15 @@ const HomePage: React.FC = () => {
 <div className="homeSection9__container"> 
   <div className='homeheaders'>важлива інформація </div>
 </div>
+    <div className='__container'>
+      <div className='colmlast'>
+        <div className='rectangle51'></div>
+        <div className='frame122'><div className='homeheaders'>важлива інформація </div> Lorem ipsum dolor sit amet consectetur. 
+        Bibendum neque at em integer integer. Tempus a mi in enim dui rhoncus vulputate nulla et. 
+        Ornare sed cursus sed viverra.</div>
+      </div>
+    </div>
+    
     </div>
   );
 };

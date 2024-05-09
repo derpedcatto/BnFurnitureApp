@@ -9,7 +9,7 @@
     background-repeat: no-repeat;
     background-position: center;
     margin-bottom: 50px;
-
+    width: 100vw;
 }    
 .Frame9__container {
     display: flex;
@@ -20,26 +20,26 @@
     gap: 10px;
     position: relative;    
     height: 137px;
-    }
-    .Frame9Text{   
+}
+.Frame9Text{   
     font-family: Montserrat;
     font-size: 96px;
     font-weight: 600;
     line-height: 117px;
     letter-spacing: 0em;
     text-align: center;
-    height: 117px;
-    }
+    height: 117px;    
+}
 
 .bb{
-        display: flex;
-        position: relative;              
-        flex-direction: row;
-        justify-content: flex-start;
-        align-items: start;               
-        padding: 20px 50px; 
-        padding-left: 10%; 
-              
+    display: flex;
+    position: relative;              
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: start;               
+    padding: 20px 50px; 
+    padding-left: 10%; 
+    margin-top: 50px;
     }
 .component12{
     display: flex;
@@ -51,6 +51,7 @@
     height: 60px; /* 60px/1920 */
     background: #000000;
     border-radius: 30px;
+    margin-right: 50px;
 }
 /* створити акаунт та почати! */
 .component12Text{
@@ -90,5 +91,107 @@
     text-align: center;
     text-transform: uppercase;
     color: #000000;
+}
+
+/* 3 карточки на головній */
+.colmhomcard{
+    display: flex;
+    flex-direction: row;
+    margin-left: 10%;
+}
+.component15 {
+    position: relative;
+    width: 200px;
+    height: 250px;
+    margin-right: 20px;    
+}
+.Group58 {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.frame16 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    background: #839D9A;
+    border-radius: 30px;
+    transform: translate(175%, 50%);
+    z-index: 2;
+}
+.top {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500;
+    font-size: 11px;
+    text-transform: uppercase;
+    color: #FFFFFF;
+}
+
+.group2 {
+    width: 160px;
+    height: 212px;
+    position: relative;
+}
+
+.Rectangle26 {
+    width: 100%;
+    height: 115px;
+    background-image: url(/img/homep1.png);
+    border-radius: 15px 15px 0 0;
+    justify-content: center;
+    align-items: flex-start;
+    background-size: cover; 
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.frame13 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+    background: #FFFFFF;
+    border-radius: 15px;
+}
+
+.bnText {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    text-transform: uppercase;
+    color: #000000;
+}
+/* текст на головній */
+.frame19 {
+
+display: flex;
+flex-direction: row;
+align-items: flex-start;
+padding: 10px 0px;
+gap: 10px;
+
+position: absolute;
+width: 462px;
+height: 36px;
+left: 220px;
+top: 780px;
+
+}
+/* ЛОВИ МОМЕНТ | Знижки до 60% на вибрані категорії товарів! */
+.frame19Text {
+width: 462px;
+height: 20px;
+font-family: 'Montserrat';
+font-style: normal;
+font-weight: 400;
+font-size: 14px;
+line-height: 17px;
+color: #000000;
 }
 
