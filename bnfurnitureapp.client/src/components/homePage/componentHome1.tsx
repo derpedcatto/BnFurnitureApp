@@ -1,20 +1,27 @@
 import React from 'react';
-import Header from '../header/header'; 
+import { Link } from 'react-router-dom';
 import './componentHome1.css'
+import Header from '../header/header';
+import SearchPage from '../searchPage/searchPage';
+import ComponentZero from '../componentZero/componentZero';
 
 const ComponentHome1: React.FC = () => {
   return (
-
+   
       <div className="homeSection1">
-
-        <Header />         
+        <ComponentZero /> 
+        <Header/>
+        <SearchPage />
+                
         <div className="Frame9__container">
           <div className="Frame9Text">ВСЕ ДЛЯ ДОМУ</div>
         </div>
-        <div className='bb__container'>
-          <div className="component12">
+        <div className='bb'>
+        <Link to="/register">
+          <button className="component12">
              <div className="component12Text">створити акаунт та почати!</div>
-          </div>
+          </button>
+          </Link>
           <div className="component38">
             <div className="component38Text">каталог</div>
             <svg width="20" height="12" viewBox="0 0 20 12" fill="none" xmlns="http://www.w3.org/2000/svg">
