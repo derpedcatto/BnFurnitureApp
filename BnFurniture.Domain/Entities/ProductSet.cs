@@ -1,24 +1,29 @@
-﻿    namespace BnFurniture.Domain.Entities
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace BnFurniture.Domain.Entities;
+
+public class ProductSet
 {
-    public class ProductSet
-    {
-        public Guid Id { get; set; }
-        public Guid Setcategory_Id { get; set; }
-        public Guid Author_Id { get; set; }
-        public String Name { get; set; } = null!;
-        public String? Summary { get; set; } 
-        public String? Description { get; set; } 
-        public DateTime Created { get; set; }
-        public DateTime? Updated { get; set; }
-        public int? Priority { get; set; } = null;
+    [Key]
+    public Guid Id { get; set; }
+    public Guid SetCategoryId { get; set; }
+    public Guid AuthorId { get; set; }
 
-        // Navigation property for the related ProductSetItem
-        public ICollection<ProductSetItem>?ProductSetItems { get; set; }= null!;
+    public string Name { get; set; } = string.Empty;
+    public string Slug { get; set; } = string.Empty;
+    public string? Summary { get; set; }
+    public string? Description { get; set; }
+    public DateTime CreatedAt { get; set; }
+    public DateTime? UpdatedAt { get; set; }
+    public int? Priority { get; set; }
 
-        // Navigation property for the related ProductSetCategory
-        public ProductSetCategory? ProductSetCategory { get; set; }=null!;
+    // Nav
+    [ForeignKey(nameof(SetCategoryId))]
+    public ProductSetCategory ProductSetCategory { get; set; } = null!;
 
-        // Navigation property for the related ProductSetCategory
-        public User? User_Ps { get; set; } = null!;
-    }
+    [ForeignKey(nameof(AuthorId))]
+    public User Author { get; set; } = null!;
+
+    public ICollection<ProductSetItem> ProductSetItems { get; set; } = null!;
 }

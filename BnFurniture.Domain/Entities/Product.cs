@@ -1,39 +1,36 @@
-﻿namespace BnFurniture.Domain.Entities
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace BnFurniture.Domain.Entities;
+
+public class Product
 {
-    public class Product
-    {
-        public Guid Id { get; set; }
-        //public Guid Article { get; set; }
-        public Guid Productype_Id { get; set; }
-        public Guid Author_Id { get; set; }
-        public String Name { get; set; } = null!;
-        public String? Summary { get; set; } 
-        public String? Description { get; set; }
-        public String? Productdetails { get; set; }
-        public int? Priority { get; set; }
-        public Boolean Active { get; set; }
-        public DateTime Created { get; set; }
-        public DateTime? Updated { get; set; } 
+    [Key]
+    public Guid Id { get; set; }
+    public Guid ProductTypeId { get; set; }
+    public Guid AuthorId { get; set; }
+    public Guid MetricId { get; set; }
+    public string Name { get; set; } = string.Empty;
+    public string Slug { get; set; } = string.Empty;
+    public string? Summary { get; set; } 
+    public string? Description { get; set; }
+    public string? ProductDetails { get; set; }
+    public int? Priority { get; set; }
+    public bool Active { get; set; }
+    public DateTime CreatedAt { get; set; }
+    public DateTime? UpdatedAt { get; set; }
 
-        // Navigation property for the related ProductType
-        public ProductType ProductType   { get; set; } = null!;
+    // Nav
+    [ForeignKey(nameof(ProductTypeId))]
+    public ProductType ProductType { get; set; } = null!;
 
-        // Navigation property for the related Products
-        public ICollection<Product> Products { get; set; } = null!;
+    [ForeignKey(nameof(AuthorId))]
+    public User Author { get; set; } = null!;
 
-        // Navigation property for the related ProductSetItem
-        public ICollection <ProductSetItem> ProductSetItem { get; set; } = null!;
+    [ForeignKey(nameof(MetricId))]
+    public ProductMetrics Metrics { get; set; } = null!;
 
-        // Navigation property for the related ProductReview
-        public ICollection <ProductReview> ProductReview { get; set; } = null!;
-
-        // Navigation property for the related ProductReview
-        public ICollection<ProductArticle> ProductArticles { get; set; } = null!;
-
-        // Navigation property for the related ProductMetrics
-        public ProductMetrics Metrics { get; set; } = null!;
-
-        // Navigation property for the related User
-        public User User_Pr { get; set; } = null!;
-    }
+    public ICollection<ProductSetItem> ProductSetItems { get; set; } = null!;
+    public ICollection<ProductReview> ProductReviews { get; set; } = null!;
+    public ICollection<ProductArticle> ProductArticles { get; set; } = null!;
 }

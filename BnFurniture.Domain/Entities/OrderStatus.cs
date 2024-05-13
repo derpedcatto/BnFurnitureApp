@@ -1,13 +1,13 @@
-﻿namespace BnFurniture.Domain.Entities
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace BnFurniture.Domain.Entities;
+
+public class OrderStatus
 {
-    public class OrderStatus
-    {
-        public int Id { get; set; }
-        public String Name { get; set; } = null!;
+    [Key]
+    public int Id { get; set; }
+    public string Name { get; set; } = string.Empty;
 
-        // Navigation property for the related Order
-        public ICollection<Order>? Orders { get; set; }  
-       
-
-    }
+    // Nav
+    public ICollection<Order> Orders { get; set; } = null!;
 }

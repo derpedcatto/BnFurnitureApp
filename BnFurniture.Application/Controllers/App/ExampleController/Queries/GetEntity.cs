@@ -1,10 +1,10 @@
 ﻿using BnFurniture.Application.Abstractions;
-using BnFurniture.Application.Controllers.ExampleController.DTO;
 using BnFurniture.Domain.Responses;
 using BnFurniture.Domain.Entities;
 using System.Net;
+using BnFurniture.Application.Controllers.App.ExampleController.DTO;
 
-namespace BnFurniture.Application.Controllers.ExampleController.Queries;
+namespace BnFurniture.Application.Controllers.App.ExampleController.Queries;
 
 public sealed record GetEntityQuery(int days);
 

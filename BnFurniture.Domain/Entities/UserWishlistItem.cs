@@ -1,16 +1,20 @@
-﻿namespace BnFurniture.Domain.Entities
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace BnFurniture.Domain.Entities;
+
+public class UserWishlistItem
 {
-    public class UserWishlistItem
-    {
-        public Guid Id { get; set; }
-        public Guid Article_Id { get; set; }
-        public Guid Wishlist_Id { get; set; }
-        public DateTime? Updated { get; set; }
+    [Key]
+    public Guid Id { get; set; }
+    public Guid ProductArticleId { get; set; }
+    public Guid UserWishlistId { get; set; }
+    public DateTime AddedAt { get; set; }
 
-        // Navigation property for the related UserWishlist
-        public UserWishlist? UserWishlist { get; set; } = null!;
+    // Nav
+    [ForeignKey(nameof(ProductArticleId))]
+    public ProductArticle ProductArticle { get; set; } = null!;
 
-        // Navigation property for the related ProductArticle
-        public ProductArticle? ProductArticle_Uwl { get; set; } = null!;
-    }
+    [ForeignKey(nameof(UserWishlistId))]
+    public UserWishlist UserWishlist { get; set; } = null!;
 }

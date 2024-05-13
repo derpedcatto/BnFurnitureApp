@@ -1,15 +1,23 @@
-﻿namespace BnFurniture.Domain.Entities
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace BnFurniture.Domain.Entities;
+
+public class ProductCharacteristicConfiguration
 {
-    public class ProductCharacteristicConfiguration
-    {
-        public Guid Id { get; set; }
-        public Guid Article_Id { get; set; }
-        public Guid Characteristic_id { get; set; }
-        public Guid Characteristicvalue_Id { get; set; }
+    [Key]
+    public Guid Id { get; set; }
+    public Guid ArticleId { get; set; }
+    public Guid CharacteristicId { get; set; }
+    public Guid CharacteristicValueId { get; set; }
 
-        // Navigation property for the related ProductArticles
-        public ProductArticle ProductArticles { get; set; } = null!;
-    
+    // Nav
+    [ForeignKey(nameof(ArticleId))]
+    public ProductArticle ProductArticle { get; set; } = null!;
 
-    }
+    [ForeignKey(nameof(CharacteristicId))]
+    public Characteristic Characteristic { get; set; } = null!;
+
+    [ForeignKey(nameof(CharacteristicValueId))]
+    public CharacteristicValue CharacteristicValue { get; set; } = null!;
 }

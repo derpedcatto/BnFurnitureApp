@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using System.Text.Json.Serialization;
 
-namespace BnFurniture.Application.Controllers.ExampleController.DTO;
+namespace BnFurniture.Application.Controllers.App.ExampleController.DTO;
 
 public class ExampleEntityFormDTO
 {
@@ -15,9 +15,9 @@ public class ExampleEntityFormDTO
     public string? Summary { get; set; }
 }
 
-public class ExampleEntityFormDTOValidator : AbstractValidator<ExampleEntityFormDTO> 
+public class ExampleEntityFormDTOValidator : AbstractValidator<ExampleEntityFormDTO>
 {
-    public ExampleEntityFormDTOValidator() 
+    public ExampleEntityFormDTOValidator()
     {
         RuleFor(x => x.Date)
             .NotEmpty().WithMessage("Дата не може бути порожньою.")

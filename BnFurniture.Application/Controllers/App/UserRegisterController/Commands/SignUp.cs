@@ -1,11 +1,11 @@
 ﻿using BnFurniture.Application.Abstractions;
-using BnFurniture.Application.Controllers.UserRegisterController.DTO;
+using BnFurniture.Application.Controllers.App.UserRegisterController.DTO;
 using BnFurniture.Application.Extensions;
 using BnFurniture.Domain.Responses;
 using BnFurniture.Shared.Utilities.Hash;
 using System.Net;
 
-namespace BnFurniture.Application.Controllers.UserRegisterController.Commands;
+namespace BnFurniture.Application.Controllers.App.UserRegisterController.Commands;
 
 public sealed record SignUpCommand(UserSignUpDTO entityForm);
 
@@ -15,7 +15,7 @@ public sealed class SignUpHandler : CommandHandler<SignUpCommand>
     private readonly IHashService _hashService;
 
     public SignUpHandler(UserSignUpDTOValidator validator, IHashService hashService,
-        IHandlerContext context): base(context)
+        IHandlerContext context) : base(context)
     {
         _validator = validator;
         _hashService = hashService;
@@ -50,12 +50,12 @@ public sealed class SignUpHandler : CommandHandler<SignUpCommand>
         {
             Id = Guid.NewGuid(),
             Email = dto.Email,
-            Phonenumber = dto.MobileNumber,
+            PhoneNumber = dto.MobileNumber,
             Password = _hashService.HashString(dto.Password),
             FirstName = dto.FirstName,
             LastName = dto.LastName,
             Address = dto.Address,
-            Created = DateTime.Now
+            RegisteredAt = DateTime.Now
         }, cancellationToken);
 
         await HandlerContext.DbContext.SaveChangesAsync(cancellationToken);

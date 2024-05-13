@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using BnFurniture.Application.Controllers.UserRegisterController.DTO;
-using BnFurniture.Application.Controllers.UserRegisterController.Commands;
+using BnFurniture.Application.Controllers.App.UserRegisterController.Commands;
+using BnFurniture.Application.Controllers.App.UserRegisterController.DTO;
 
 namespace BnFurnitureApp.Server.Controllers;
 

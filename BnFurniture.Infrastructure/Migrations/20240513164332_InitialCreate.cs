@@ -16,17 +16,19 @@ namespace BnFurniture.Infrastructure.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Characteristics",
+                name: "Characteristic",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     Name = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
+                    Slug = table.Column<string>(type: "varchar(255)", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
                     Priority = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Characteristics", x => x.Id);
+                    table.PrimaryKey("PK_Characteristic", x => x.Id);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -66,15 +68,22 @@ namespace BnFurniture.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    Parent_id = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci"),
+                    ParentId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci"),
                     Name = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Priority = table.Column<int>(type: "int", nullable: true),
-                    Category_Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci")
+                    Slug = table.Column<string>(type: "varchar(255)", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Priority = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ProductCategory", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ProductCategory_ProductCategory_ParentId",
+                        column: x => x.ParentId,
+                        principalTable: "ProductCategory",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -83,14 +92,22 @@ namespace BnFurniture.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    Parent_id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    ParentId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci"),
                     Name = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Slug = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Priority = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ProductSetCategory", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ProductSetCategory_ProductSetCategory_ParentId",
+                        column: x => x.ParentId,
+                        principalTable: "ProductSetCategory",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -99,9 +116,9 @@ namespace BnFurniture.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    Email = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false)
+                    Email = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Phonenumber = table.Column<string>(type: "longtext", nullable: true)
+                    PhoneNumber = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Password = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
@@ -111,8 +128,8 @@ namespace BnFurniture.Infrastructure.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Address = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Created = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    LastLogin_At = table.Column<DateTime>(type: "datetime(6)", nullable: true)
+                    RegisteredAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    LastLoginAt = table.Column<DateTime>(type: "datetime(6)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -153,22 +170,24 @@ namespace BnFurniture.Infrastructure.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "CharacteristicsValue",
+                name: "CharacteristicValue",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    Сharacteristic_id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    CharacteristicId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     Value = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Slug = table.Column<string>(type: "varchar(255)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Priority = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CharacteristicsValue", x => x.Id);
+                    table.PrimaryKey("PK_CharacteristicValue", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_CharacteristicsValue_Characteristics_Сharacteristic_id",
-                        column: x => x.Сharacteristic_id,
-                        principalTable: "Characteristics",
+                        name: "FK_CharacteristicValue_Characteristic_CharacteristicId",
+                        column: x => x.CharacteristicId,
+                        principalTable: "Characteristic",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 })
@@ -179,18 +198,19 @@ namespace BnFurniture.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    Category_id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    CategoryId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     Name = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Priority = table.Column<int>(type: "int", nullable: true),
-                    ProducType_Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci")
+                    Slug = table.Column<string>(type: "varchar(255)", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Priority = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ProductType", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ProductType_ProductCategory_Category_id",
-                        column: x => x.Category_id,
+                        name: "FK_ProductType_ProductCategory_CategoryId",
+                        column: x => x.CategoryId,
                         principalTable: "ProductCategory",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -202,26 +222,26 @@ namespace BnFurniture.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    User_Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    Status_Id = table.Column<int>(type: "int", nullable: false),
-                    Created = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    Updated = table.Column<DateTime>(type: "datetime(6)", nullable: true)
+                    UserId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    StatusId = table.Column<int>(type: "int", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    ModifiedAt = table.Column<DateTime>(type: "datetime(6)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Order", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Order_OrderStatus_Status_Id",
-                        column: x => x.Status_Id,
+                        name: "FK_Order_OrderStatus_StatusId",
+                        column: x => x.StatusId,
                         principalTable: "OrderStatus",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Order_User_User_Id",
-                        column: x => x.User_Id,
+                        name: "FK_Order_User_UserId",
+                        column: x => x.UserId,
                         principalTable: "User",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -230,7 +250,7 @@ namespace BnFurniture.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    User_Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    UserId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     TokenValue = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     ExpiryDate = table.Column<DateTime>(type: "datetime(6)", nullable: false)
@@ -239,11 +259,11 @@ namespace BnFurniture.Infrastructure.Migrations
                 {
                     table.PrimaryKey("PK_PasswordResetToken", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_PasswordResetToken_User_User_Id",
-                        column: x => x.User_Id,
+                        name: "FK_PasswordResetToken_User_UserId",
+                        column: x => x.UserId,
                         principalTable: "User",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -252,30 +272,32 @@ namespace BnFurniture.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    Setcategory_Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    Author_Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    SetCategoryId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    AuthorId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     Name = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Slug = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Summary = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Description = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Created = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    Updated = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: true),
                     Priority = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ProductSet", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ProductSet_ProductSetCategory_Setcategory_Id",
-                        column: x => x.Setcategory_Id,
+                        name: "FK_ProductSet_ProductSetCategory_SetCategoryId",
+                        column: x => x.SetCategoryId,
                         principalTable: "ProductSetCategory",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_ProductSet_User_Author_Id",
-                        column: x => x.Author_Id,
+                        name: "FK_ProductSet_User_AuthorId",
+                        column: x => x.AuthorId,
                         principalTable: "User",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -287,17 +309,17 @@ namespace BnFurniture.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    User_Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci")
+                    UserId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci")
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_UserWishlist", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_UserWishlist_User_User_Id",
-                        column: x => x.User_Id,
+                        name: "FK_UserWishlist_User_UserId",
+                        column: x => x.UserId,
                         principalTable: "User",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -306,8 +328,8 @@ namespace BnFurniture.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    User_Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    Useractivitytype_Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    UserId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    UserActivityTypeId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     Timestamp = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     Description = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4")
@@ -316,17 +338,17 @@ namespace BnFurniture.Infrastructure.Migrations
                 {
                     table.PrimaryKey("PK_AuditLog", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_AuditLog_UserActivityType_Useractivitytype_Id",
-                        column: x => x.Useractivitytype_Id,
+                        name: "FK_AuditLog_UserActivityType_UserActivityTypeId",
+                        column: x => x.UserActivityTypeId,
                         principalTable: "UserActivityType",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_AuditLog_User_User_Id",
-                        column: x => x.User_Id,
+                        name: "FK_AuditLog_User_UserId",
+                        column: x => x.UserId,
                         principalTable: "User",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -335,21 +357,21 @@ namespace BnFurniture.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    Role_Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    Permission_Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci")
+                    UserRoleId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    PermissionId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci")
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_UserRole_Permission", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_UserRole_Permission_Permission_Permission_Id",
-                        column: x => x.Permission_Id,
+                        name: "FK_UserRole_Permission_Permission_PermissionId",
+                        column: x => x.PermissionId,
                         principalTable: "Permission",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_UserRole_Permission_UserRole_Role_Id",
-                        column: x => x.Role_Id,
+                        name: "FK_UserRole_Permission_UserRole_UserRoleId",
+                        column: x => x.UserRoleId,
                         principalTable: "UserRole",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -361,24 +383,24 @@ namespace BnFurniture.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    User_Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    UserRole_Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci")
+                    UserId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    UserRoleId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci")
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_User_UserRole", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_User_UserRole_UserRole_UserRole_Id",
-                        column: x => x.UserRole_Id,
+                        name: "FK_User_UserRole_UserRole_UserRoleId",
+                        column: x => x.UserRoleId,
                         principalTable: "UserRole",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_User_UserRole_User_User_Id",
-                        column: x => x.User_Id,
+                        name: "FK_User_UserRole_User_UserId",
+                        column: x => x.UserId,
                         principalTable: "User",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -387,39 +409,36 @@ namespace BnFurniture.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    Productype_Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    Author_Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    ProductTypeId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    AuthorId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    MetricId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     Name = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Slug = table.Column<string>(type: "varchar(255)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Summary = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Description = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Productdetails = table.Column<string>(type: "longtext", nullable: true)
+                    ProductDetails = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Priority = table.Column<int>(type: "int", nullable: true),
                     Active = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    Created = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    Updated = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    ProductId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci")
+                    CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Product", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Product_ProductType_Productype_Id",
-                        column: x => x.Productype_Id,
+                        name: "FK_Product_ProductType_ProductTypeId",
+                        column: x => x.ProductTypeId,
                         principalTable: "ProductType",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Product_Product_ProductId",
-                        column: x => x.ProductId,
-                        principalTable: "Product",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Product_User_Productype_Id",
-                        column: x => x.Productype_Id,
+                        name: "FK_Product_User_AuthorId",
+                        column: x => x.AuthorId,
                         principalTable: "User",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -431,21 +450,21 @@ namespace BnFurniture.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    Order_Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    Article_Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    OrderId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    ArticleId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     Quantity = table.Column<int>(type: "int", nullable: false),
-                    Price = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
-                    Discount = table.Column<int>(type: "int", nullable: false)
+                    Price = table.Column<decimal>(type: "decimal(19,2)", precision: 19, scale: 2, nullable: false),
+                    Discount = table.Column<int>(type: "int", maxLength: 100, nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_OrderItem", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_OrderItem_Order_Order_Id",
-                        column: x => x.Order_Id,
+                        name: "FK_OrderItem_Order_OrderId",
+                        column: x => x.OrderId,
                         principalTable: "Order",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -454,28 +473,30 @@ namespace BnFurniture.Infrastructure.Migrations
                 columns: table => new
                 {
                     Article = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    Product_Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    Author_id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    ProductId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    AuthorId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     Name = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Created = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    Updated = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    Price = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
-                    Discount = table.Column<int>(type: "int", nullable: false),
+                    Slug = table.Column<string>(type: "varchar(255)", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    Price = table.Column<decimal>(type: "decimal(19,2)", precision: 19, scale: 2, nullable: false),
+                    Discount = table.Column<int>(type: "int", maxLength: 100, nullable: false),
                     Active = table.Column<bool>(type: "tinyint(1)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ProductArticle", x => x.Article);
                     table.ForeignKey(
-                        name: "FK_ProductArticle_Product_Product_Id",
-                        column: x => x.Product_Id,
+                        name: "FK_ProductArticle_Product_ProductId",
+                        column: x => x.ProductId,
                         principalTable: "Product",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ProductArticle_User_Author_id",
-                        column: x => x.Author_id,
+                        name: "FK_ProductArticle_User_AuthorId",
+                        column: x => x.AuthorId,
                         principalTable: "User",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -487,16 +508,16 @@ namespace BnFurniture.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    Product_Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    Views = table.Column<long>(type: "bigint", nullable: true),
-                    Sales = table.Column<long>(type: "bigint", nullable: true)
+                    ProductId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    Views = table.Column<long>(type: "bigint", nullable: false),
+                    Sales = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ProductMetrics", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ProductMetrics_Product_Product_Id",
-                        column: x => x.Product_Id,
+                        name: "FK_ProductMetrics_Product_ProductId",
+                        column: x => x.ProductId,
                         principalTable: "Product",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -508,29 +529,29 @@ namespace BnFurniture.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    Product_id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    User_Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    Rating = table.Column<int>(type: "int", nullable: false),
+                    ProductId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    AuthorId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    Rating = table.Column<int>(type: "int", maxLength: 5, nullable: false),
                     Text = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Created = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    Updated = table.Column<DateTime>(type: "datetime(6)", nullable: true)
+                    CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ProductReview", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ProductReview_Product_Product_id",
-                        column: x => x.Product_id,
+                        name: "FK_ProductReview_Product_ProductId",
+                        column: x => x.ProductId,
                         principalTable: "Product",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ProductReview_User_User_Id",
-                        column: x => x.User_Id,
+                        name: "FK_ProductReview_User_AuthorId",
+                        column: x => x.AuthorId,
                         principalTable: "User",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -539,45 +560,45 @@ namespace BnFurniture.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    ProductSet_Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    Product_Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci")
+                    ProductId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    ProductSetId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci")
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ProductSetItem", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ProductSetItem_ProductSet_ProductSet_Id",
-                        column: x => x.ProductSet_Id,
+                        name: "FK_ProductSetItem_ProductSet_ProductSetId",
+                        column: x => x.ProductSetId,
                         principalTable: "ProductSet",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ProductSetItem_Product_Product_Id",
-                        column: x => x.Product_Id,
+                        name: "FK_ProductSetItem_Product_ProductId",
+                        column: x => x.ProductId,
                         principalTable: "Product",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "ProductArticleOrderItem",
+                name: "ProductArticle_OrderItem",
                 columns: table => new
                 {
                     ProductArticleId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    OrderItemId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci")
+                    OrderItemId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    ArticleId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ProductArticleOrderItem", x => new { x.ProductArticleId, x.OrderItemId });
+                    table.PrimaryKey("PK_ProductArticle_OrderItem", x => new { x.OrderItemId, x.ProductArticleId });
                     table.ForeignKey(
-                        name: "FK_ProductArticleOrderItem_OrderItem_OrderItemId",
+                        name: "FK_ProductArticle_OrderItem_OrderItem_OrderItemId",
                         column: x => x.OrderItemId,
                         principalTable: "OrderItem",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_ProductArticleOrderItem_ProductArticle_ProductArticleId",
+                        name: "FK_ProductArticle_OrderItem_ProductArticle_ProductArticleId",
                         column: x => x.ProductArticleId,
                         principalTable: "ProductArticle",
                         principalColumn: "Article",
@@ -590,19 +611,31 @@ namespace BnFurniture.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    Article_Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    Characteristic_id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    Characteristicvalue_Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci")
+                    ArticleId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    CharacteristicId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    CharacteristicValueId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci")
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ProductCharacteristicConfiguration", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ProductCharacteristicConfiguration_ProductArticle_Article_Id",
-                        column: x => x.Article_Id,
+                        name: "FK_ProductCharacteristicConfiguration_CharacteristicValue_Chara~",
+                        column: x => x.CharacteristicValueId,
+                        principalTable: "CharacteristicValue",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_ProductCharacteristicConfiguration_Characteristic_Characteri~",
+                        column: x => x.CharacteristicId,
+                        principalTable: "Characteristic",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_ProductCharacteristicConfiguration_ProductArticle_ArticleId",
+                        column: x => x.ArticleId,
                         principalTable: "ProductArticle",
                         principalColumn: "Article",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -611,174 +644,225 @@ namespace BnFurniture.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    Article_Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    Wishlist_Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    Updated = table.Column<DateTime>(type: "datetime(6)", nullable: true)
+                    ProductArticleId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    UserWishlistId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    AddedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_UserWishlistItem", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_UserWishlistItem_ProductArticle_Article_Id",
-                        column: x => x.Article_Id,
+                        name: "FK_UserWishlistItem_ProductArticle_ProductArticleId",
+                        column: x => x.ProductArticleId,
                         principalTable: "ProductArticle",
                         principalColumn: "Article",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_UserWishlistItem_UserWishlist_Wishlist_Id",
-                        column: x => x.Wishlist_Id,
+                        name: "FK_UserWishlistItem_UserWishlist_UserWishlistId",
+                        column: x => x.UserWishlistId,
                         principalTable: "UserWishlist",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AuditLog_User_Id",
+                name: "IX_AuditLog_UserActivityTypeId",
                 table: "AuditLog",
-                column: "User_Id");
+                column: "UserActivityTypeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AuditLog_Useractivitytype_Id",
+                name: "IX_AuditLog_UserId",
                 table: "AuditLog",
-                column: "Useractivitytype_Id");
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CharacteristicsValue_Сharacteristic_id",
-                table: "CharacteristicsValue",
-                column: "Сharacteristic_id");
+                name: "IX_Characteristic_Slug",
+                table: "Characteristic",
+                column: "Slug",
+                unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Order_Status_Id",
+                name: "IX_CharacteristicValue_CharacteristicId",
+                table: "CharacteristicValue",
+                column: "CharacteristicId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CharacteristicValue_Slug",
+                table: "CharacteristicValue",
+                column: "Slug",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Order_StatusId",
                 table: "Order",
-                column: "Status_Id");
+                column: "StatusId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Order_User_Id",
+                name: "IX_Order_UserId",
                 table: "Order",
-                column: "User_Id");
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_OrderItem_Order_Id",
+                name: "IX_OrderItem_OrderId",
                 table: "OrderItem",
-                column: "Order_Id");
+                column: "OrderId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PasswordResetToken_User_Id",
+                name: "IX_PasswordResetToken_UserId",
                 table: "PasswordResetToken",
-                column: "User_Id");
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Product_ProductId",
+                name: "IX_Product_AuthorId",
                 table: "Product",
+                column: "AuthorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Product_ProductTypeId",
+                table: "Product",
+                column: "ProductTypeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Product_Slug",
+                table: "Product",
+                column: "Slug",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProductArticle_AuthorId",
+                table: "ProductArticle",
+                column: "AuthorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProductArticle_ProductId",
+                table: "ProductArticle",
                 column: "ProductId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Product_Productype_Id",
-                table: "Product",
-                column: "Productype_Id");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ProductArticle_Author_id",
+                name: "IX_ProductArticle_Slug",
                 table: "ProductArticle",
-                column: "Author_id");
+                column: "Slug",
+                unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProductArticle_Product_Id",
-                table: "ProductArticle",
-                column: "Product_Id");
+                name: "IX_ProductArticle_OrderItem_ProductArticleId",
+                table: "ProductArticle_OrderItem",
+                column: "ProductArticleId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProductArticleOrderItem_OrderItemId",
-                table: "ProductArticleOrderItem",
-                column: "OrderItemId");
+                name: "IX_ProductCategory_ParentId",
+                table: "ProductCategory",
+                column: "ParentId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProductCharacteristicConfiguration_Article_Id",
+                name: "IX_ProductCategory_Slug",
+                table: "ProductCategory",
+                column: "Slug",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProductCharacteristicConfiguration_ArticleId",
                 table: "ProductCharacteristicConfiguration",
-                column: "Article_Id");
+                column: "ArticleId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProductMetrics_Product_Id",
+                name: "IX_ProductCharacteristicConfiguration_CharacteristicId",
+                table: "ProductCharacteristicConfiguration",
+                column: "CharacteristicId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProductCharacteristicConfiguration_CharacteristicValueId",
+                table: "ProductCharacteristicConfiguration",
+                column: "CharacteristicValueId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProductMetrics_ProductId",
                 table: "ProductMetrics",
-                column: "Product_Id",
+                column: "ProductId",
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProductReview_Product_id",
+                name: "IX_ProductReview_AuthorId",
                 table: "ProductReview",
-                column: "Product_id");
+                column: "AuthorId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProductReview_User_Id",
+                name: "IX_ProductReview_ProductId",
                 table: "ProductReview",
-                column: "User_Id");
+                column: "ProductId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProductSet_Author_Id",
+                name: "IX_ProductSet_AuthorId",
                 table: "ProductSet",
-                column: "Author_Id");
+                column: "AuthorId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProductSet_Setcategory_Id",
+                name: "IX_ProductSet_SetCategoryId",
                 table: "ProductSet",
-                column: "Setcategory_Id");
+                column: "SetCategoryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProductSetItem_ProductSet_Id",
+                name: "IX_ProductSetCategory_ParentId",
+                table: "ProductSetCategory",
+                column: "ParentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProductSetItem_ProductId",
                 table: "ProductSetItem",
-                column: "ProductSet_Id");
+                column: "ProductId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProductSetItem_Product_Id",
+                name: "IX_ProductSetItem_ProductSetId",
                 table: "ProductSetItem",
-                column: "Product_Id");
+                column: "ProductSetId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProductType_Category_id",
+                name: "IX_ProductType_CategoryId",
                 table: "ProductType",
-                column: "Category_id");
+                column: "CategoryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_User_Email",
-                table: "User",
-                column: "Email",
+                name: "IX_ProductType_Slug",
+                table: "ProductType",
+                column: "Slug",
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserRole_Permission_Permission_Id",
+                name: "IX_UserRole_Permission_PermissionId",
                 table: "UserRole_Permission",
-                column: "Permission_Id");
+                column: "PermissionId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserRole_Permission_Role_Id",
+                name: "IX_UserRole_Permission_UserRoleId",
                 table: "UserRole_Permission",
-                column: "Role_Id");
+                column: "UserRoleId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserWishlist_User_Id",
+                name: "IX_UserWishlist_UserId",
                 table: "UserWishlist",
-                column: "User_Id");
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserWishlistItem_Article_Id",
+                name: "IX_UserWishlistItem_ProductArticleId",
                 table: "UserWishlistItem",
-                column: "Article_Id");
+                column: "ProductArticleId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserWishlistItem_Wishlist_Id",
+                name: "IX_UserWishlistItem_UserWishlistId",
                 table: "UserWishlistItem",
-                column: "Wishlist_Id");
+                column: "UserWishlistId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_User_UserRole_UserRole_Id",
+                name: "IX_User_UserRole_UserId",
                 table: "User_UserRole",
-                column: "UserRole_Id");
+                column: "UserId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_User_UserRole_User_Id",
+                name: "IX_User_UserRole_UserRoleId",
                 table: "User_UserRole",
-                column: "User_Id");
+                column: "UserRoleId");
         }
 
         /// <inheritdoc />
@@ -788,13 +872,10 @@ namespace BnFurniture.Infrastructure.Migrations
                 name: "AuditLog");
 
             migrationBuilder.DropTable(
-                name: "CharacteristicsValue");
-
-            migrationBuilder.DropTable(
                 name: "PasswordResetToken");
 
             migrationBuilder.DropTable(
-                name: "ProductArticleOrderItem");
+                name: "ProductArticle_OrderItem");
 
             migrationBuilder.DropTable(
                 name: "ProductCharacteristicConfiguration");
@@ -821,10 +902,10 @@ namespace BnFurniture.Infrastructure.Migrations
                 name: "UserActivityType");
 
             migrationBuilder.DropTable(
-                name: "Characteristics");
+                name: "OrderItem");
 
             migrationBuilder.DropTable(
-                name: "OrderItem");
+                name: "CharacteristicValue");
 
             migrationBuilder.DropTable(
                 name: "ProductSet");
@@ -843,6 +924,9 @@ namespace BnFurniture.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "Order");
+
+            migrationBuilder.DropTable(
+                name: "Characteristic");
 
             migrationBuilder.DropTable(
                 name: "ProductSetCategory");
