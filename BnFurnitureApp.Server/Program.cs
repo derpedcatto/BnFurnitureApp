@@ -1,4 +1,5 @@
-﻿using BnFurniture.Application.Abstractions;
+﻿using ASP_Work.Services.MailSend;
+using BnFurniture.Application.Abstractions;
 using BnFurniture.Infrastructure.Persistence;
 using BnFurniture.Shared.Utilities.Hash;
 using BnFurnitureApp.Middleware;
@@ -18,6 +19,7 @@ builder.Services.AddControllers().AddJsonOptions(o =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options => { options.CustomSchemaIds(s => s.FullName?.Replace("+", ".")); });
 builder.Services.AddHttpContextAccessor();
+builder.Services.AddSingleton<IMailServices, SendMessage>();
 
 
 // Suppress default error response model
@@ -52,7 +54,7 @@ builder.Services.AddHttpLogging(logging =>
     logging.MediaTypeOptions.AddText("multipart/form-data");
     logging.MediaTypeOptions.AddText("application/x-www-form-urlencoded");
 });  
-
+    
 
 // Db Service registration
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
