@@ -4,33 +4,33 @@ using BnFurniture.Application.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace BnFurniture.Application.Controllers.UserRegisterController.DTO;
+namespace BnFurniture.Application.Controllers.App.UserRegisterController.DTO;
 
 public class UserSignUpDTO
 {
     [FromForm(Name = "email")]
-    public String Email { get; set; } = null!;
+    public string Email { get; set; } = null!;
 
     [FromForm(Name = "password")]
-    public String Password { get; set; } = null!;
+    public string Password { get; set; } = null!;
 
     [FromForm(Name = "repeatPassword")]
-    public String RepeatPassword { get; set; } = null!; // TODO
+    public string RepeatPassword { get; set; } = null!; // TODO
 
     [FromForm(Name = "firstName")]
-    public String FirstName { get; set; } = null!;
+    public string FirstName { get; set; } = null!;
 
     [FromForm(Name = "lastName")]
-    public String LastName { get; set; } = null!;
+    public string LastName { get; set; } = null!;
 
     [FromForm(Name = "mobileNumber")]
-    public String? MobileNumber { get; set; }
+    public string? MobileNumber { get; set; }
 
     [FromForm(Name = "address")]
-    public String? Address { get; set; }    // TODO
+    public string? Address { get; set; }    // TODO
 
     [FromForm(Name = "agreeCheckbox")]
-    public Boolean Agree { get; set; }  // TODO
+    public bool Agree { get; set; }  // TODO
 }
 
 public class UserSignUpDTOValidator : AbstractValidator<UserSignUpDTO>

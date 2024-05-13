@@ -1,15 +1,19 @@
-﻿namespace BnFurniture.Domain.Entities
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace BnFurniture.Domain.Entities;
+
+public class UserRole_Permission
 {
-    public class UserRole_Permission
-    {
-        public Guid Id { get; set; }
-        public Guid Role_Id { get; set; }
-        public Guid Permission_Id { get; set; }
+    [Key]
+    public Guid Id { get; set; }
+    public Guid UserRoleId { get; set; }
+    public Guid PermissionId { get; set; }
 
-        // Navigation property for the related Permission
-        public Permission Permission { get; set; } = null!;
+    // Nav
+    [ForeignKey(nameof(UserRoleId))]
+    public UserRole UserRole { get; set; } = null!;
 
-        // Navigation property for the related UserRole
-        public UserRole UserRole { get; set; } =null!;
-    }
+    [ForeignKey(nameof(PermissionId))]
+    public Permission Permission { get; set; } = null!;
 }

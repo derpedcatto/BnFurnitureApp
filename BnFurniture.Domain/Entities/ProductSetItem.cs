@@ -1,16 +1,19 @@
-﻿namespace BnFurniture.Domain.Entities
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace BnFurniture.Domain.Entities;
+
+public class ProductSetItem
 {
-    public class ProductSetItem
-    {
-        public Guid Id { get; set; }
-        public Guid ProductSet_Id { get; set; }
-        public Guid Product_Id { get; set; }
+    [Key]
+    public Guid Id { get; set; }
+    public Guid ProductId { get; set; }
+    public Guid ProductSetId { get; set; }
 
-        // Navigation property for the related Products
-        public Product Products { get; set; } = null!;
+    // Nav
+    [ForeignKey(nameof(ProductId))]
+    public Product Product { get; set; } = null!;
 
-        // Navigation property for the related ProductSet
-        public ProductSet ProductSet { get; set; } = null!;
-
-    }
+    [ForeignKey(nameof(ProductSetId))]
+    public ProductSet ProductSet { get; set; } = null!;
 }

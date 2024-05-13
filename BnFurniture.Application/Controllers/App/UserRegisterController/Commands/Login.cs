@@ -1,12 +1,12 @@
 ﻿using BnFurniture.Application.Abstractions;
-using BnFurniture.Application.Controllers.UserRegisterController.DTO;
+using BnFurniture.Application.Controllers.App.UserRegisterController.DTO;
 using BnFurniture.Application.Extensions;
 using BnFurniture.Domain.Responses;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System.Net;
 
-namespace BnFurniture.Application.Controllers.UserRegisterController.Commands;
+namespace BnFurniture.Application.Controllers.App.UserRegisterController.Commands;
 
 public sealed record LoginCommand(UserLoginDTO entityForm);
 
@@ -34,8 +34,8 @@ public sealed class LoginHandler : CommandHandler<LoginCommand>
                 Errors = validationResult.ToApiResponseErrors()
             };
         }
-        
-        if ( ! string.IsNullOrEmpty(httpContext.Session.GetString("AuthUserId")) )
+
+        if (!string.IsNullOrEmpty(httpContext.Session.GetString("AuthUserId")))
         {
             return new ApiCommandResponse(true, (int)HttpStatusCode.Conflict)
             {
@@ -44,9 +44,9 @@ public sealed class LoginHandler : CommandHandler<LoginCommand>
         }
 
         var user = await HandlerContext.DbContext.User.FirstOrDefaultAsync(
-            u => u.Email == dto.EmailOrPhone || u.Phonenumber == dto.EmailOrPhone,
+            u => u.Email == dto.EmailOrPhone || u.PhoneNumber == dto.EmailOrPhone,
             cancellationToken);
-        
+
         httpContext.Session.SetString("AuthUserId", user.Id.ToString());
 
         return new ApiCommandResponse(true, (int)HttpStatusCode.OK)

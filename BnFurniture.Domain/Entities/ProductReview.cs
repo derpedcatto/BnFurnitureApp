@@ -1,19 +1,23 @@
-﻿namespace BnFurniture.Domain.Entities
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace BnFurniture.Domain.Entities;
+
+public class ProductReview
 {
-    public class ProductReview
-    {
-        public Guid Id { get; set; }
-        public Guid Product_id { get; set; }
-        public Guid User_Id { get; set; }
-        public int Rating { get; set; }
-        public String Text { get; set; } = null!;
-        public DateTime Created { get; set; }
-        public DateTime? Updated { get; set; }
+    [Key]
+    public Guid Id { get; set; }
+    public Guid ProductId { get; set; }
+    public Guid AuthorId { get; set; }
+    public int Rating { get; set; }
+    public string Text { get; set; } = null!;
+    public DateTime CreatedAt { get; set; }
+    public DateTime? UpdatedAt { get; set; }
 
-        // Navigation property for the related Products
-        public Product Products { get; set; } = null!;
+    // Nav
+    [ForeignKey(nameof(ProductId))]
+    public Product Product { get; set; } = null!;
 
-        // Navigation property for the related Products
-        public User User_Pr { get; set; } = null!;
-    }
+    [ForeignKey(nameof(AuthorId))]
+    public User Author { get; set; } = null!;
 }

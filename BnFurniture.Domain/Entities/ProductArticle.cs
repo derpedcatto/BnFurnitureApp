@@ -1,28 +1,30 @@
-﻿
-namespace BnFurniture.Domain.Entities
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace BnFurniture.Domain.Entities;
+
+public class ProductArticle
 {
-    public class ProductArticle
-    {
-        public Guid Article { get; set; }
-        public Guid Product_Id { get; set; }
-        public Guid Author_id { get; set; }
-        public String Name { get; set; } = null!;
-        public DateTime Created { get; set; }
-        public DateTime? Updated { get; set; }
-        public decimal Price { get; set; }
-        public int Discount { get; set; }
-        public Boolean Active { get; set; }
+    [Key]
+    public Guid Article { get; set; }
+    public Guid ProductId { get; set; }
+    public Guid AuthorId { get; set; }
+    public string Name { get; set; } = string.Empty;
+    public string Slug { get; set; } = string.Empty;
+    public DateTime CreatedAt { get; set; }
+    public DateTime? UpdatedAt { get; set; }
+    public decimal Price { get; set; } // Precision must be (19, 2)
+    public int Discount { get; set; }
+    public bool Active { get; set; }
 
-        // Navigation property for the related ProductCharacteristicConfiguration
-        public ICollection<ProductCharacteristicConfiguration> ProductCharacteristicConfiguration { get; set; } = null!;
+    // Nav
+    [ForeignKey(nameof(ProductId))]
+    public Product Product { get; set; } = null!;
 
-        // Navigation property for the related Product
-        public Product? Product { get; set; }= null!;
+    [ForeignKey(nameof(AuthorId))]
+    public User Author { get; set; } = null!;
 
-        // Navigation property for the related Product
-        public User? User_Pa { get; set; } = null!;
-
-        // Navigation property for the related UserWishlistItem
-        public ICollection<UserWishlistItem> UserWishlistItems_Pa { get; set; } = null!;
-    }
+    public virtual ICollection<ProductArticle_OrderItem> OrderItems { get; set; } = null!;
+    public ICollection<ProductCharacteristicConfiguration> ProductCharacteristicConfigurations { get; set; } = null!;
+    public ICollection<UserWishlistItem> UserWishlistItems { get; set; } = null!;
 }

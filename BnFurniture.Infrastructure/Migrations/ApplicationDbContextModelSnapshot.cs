@@ -34,22 +34,22 @@ namespace BnFurniture.Infrastructure.Migrations
                     b.Property<DateTime>("Timestamp")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<Guid>("User_Id")
+                    b.Property<Guid>("UserActivityTypeId")
                         .HasColumnType("char(36)");
 
-                    b.Property<Guid>("Useractivitytype_Id")
+                    b.Property<Guid>("UserId")
                         .HasColumnType("char(36)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("User_Id");
+                    b.HasIndex("UserActivityTypeId");
 
-                    b.HasIndex("Useractivitytype_Id");
+                    b.HasIndex("UserId");
 
                     b.ToTable("AuditLog");
                 });
 
-            modelBuilder.Entity("BnFurniture.Domain.Entities.Characteristics", b =>
+            modelBuilder.Entity("BnFurniture.Domain.Entities.Characteristic", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -62,32 +62,46 @@ namespace BnFurniture.Infrastructure.Migrations
                     b.Property<int?>("Priority")
                         .HasColumnType("int");
 
+                    b.Property<string>("Slug")
+                        .IsRequired()
+                        .HasColumnType("varchar(255)");
+
                     b.HasKey("Id");
 
-                    b.ToTable("Characteristics");
+                    b.HasIndex("Slug")
+                        .IsUnique();
+
+                    b.ToTable("Characteristic");
                 });
 
-            modelBuilder.Entity("BnFurniture.Domain.Entities.CharacteristicsValue", b =>
+            modelBuilder.Entity("BnFurniture.Domain.Entities.CharacteristicValue", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
+                    b.Property<Guid>("CharacteristicId")
+                        .HasColumnType("char(36)");
+
                     b.Property<int?>("Priority")
                         .HasColumnType("int");
+
+                    b.Property<string>("Slug")
+                        .IsRequired()
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("Value")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<Guid>("Сharacteristic_id")
-                        .HasColumnType("char(36)");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("Сharacteristic_id");
+                    b.HasIndex("CharacteristicId");
 
-                    b.ToTable("CharacteristicsValue");
+                    b.HasIndex("Slug")
+                        .IsUnique();
+
+                    b.ToTable("CharacteristicValue");
                 });
 
             modelBuilder.Entity("BnFurniture.Domain.Entities.Order", b =>
@@ -96,23 +110,23 @@ namespace BnFurniture.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
-                    b.Property<DateTime>("Created")
+                    b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<int>("Status_Id")
+                    b.Property<DateTime?>("ModifiedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int>("StatusId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("Updated")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<Guid>("User_Id")
+                    b.Property<Guid>("UserId")
                         .HasColumnType("char(36)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Status_Id");
+                    b.HasIndex("StatusId");
 
-                    b.HasIndex("User_Id");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Order");
                 });
@@ -123,24 +137,26 @@ namespace BnFurniture.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
-                    b.Property<Guid>("Article_Id")
+                    b.Property<Guid>("ArticleId")
                         .HasColumnType("char(36)");
 
                     b.Property<int>("Discount")
+                        .HasMaxLength(100)
                         .HasColumnType("int");
 
-                    b.Property<Guid>("Order_Id")
+                    b.Property<Guid>("OrderId")
                         .HasColumnType("char(36)");
 
                     b.Property<decimal>("Price")
-                        .HasColumnType("decimal(65,30)");
+                        .HasPrecision(19, 2)
+                        .HasColumnType("decimal(19,2)");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Order_Id");
+                    b.HasIndex("OrderId");
 
                     b.ToTable("OrderItem");
                 });
@@ -175,12 +191,12 @@ namespace BnFurniture.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<Guid>("User_Id")
+                    b.Property<Guid>("UserId")
                         .HasColumnType("char(36)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("User_Id");
+                    b.HasIndex("UserId");
 
                     b.ToTable("PasswordResetToken");
                 });
@@ -212,14 +228,17 @@ namespace BnFurniture.Infrastructure.Migrations
                     b.Property<bool>("Active")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<Guid>("Author_Id")
+                    b.Property<Guid>("AuthorId")
                         .HasColumnType("char(36)");
 
-                    b.Property<DateTime>("Created")
+                    b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("Description")
                         .HasColumnType("longtext");
+
+                    b.Property<Guid>("MetricId")
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -228,26 +247,30 @@ namespace BnFurniture.Infrastructure.Migrations
                     b.Property<int?>("Priority")
                         .HasColumnType("int");
 
-                    b.Property<Guid?>("ProductId")
-                        .HasColumnType("char(36)");
-
-                    b.Property<string>("Productdetails")
+                    b.Property<string>("ProductDetails")
                         .HasColumnType("longtext");
 
-                    b.Property<Guid>("Productype_Id")
+                    b.Property<Guid>("ProductTypeId")
                         .HasColumnType("char(36)");
+
+                    b.Property<string>("Slug")
+                        .IsRequired()
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("Summary")
                         .HasColumnType("longtext");
 
-                    b.Property<DateTime?>("Updated")
+                    b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime(6)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProductId");
+                    b.HasIndex("AuthorId");
 
-                    b.HasIndex("Productype_Id");
+                    b.HasIndex("ProductTypeId");
+
+                    b.HasIndex("Slug")
+                        .IsUnique();
 
                     b.ToTable("Product");
                 });
@@ -261,13 +284,14 @@ namespace BnFurniture.Infrastructure.Migrations
                     b.Property<bool>("Active")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<Guid>("Author_id")
+                    b.Property<Guid>("AuthorId")
                         .HasColumnType("char(36)");
 
-                    b.Property<DateTime>("Created")
+                    b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
 
                     b.Property<int>("Discount")
+                        .HasMaxLength(100)
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
@@ -275,36 +299,47 @@ namespace BnFurniture.Infrastructure.Migrations
                         .HasColumnType("longtext");
 
                     b.Property<decimal>("Price")
-                        .HasColumnType("decimal(65,30)");
+                        .HasPrecision(19, 2)
+                        .HasColumnType("decimal(19,2)");
 
-                    b.Property<Guid>("Product_Id")
+                    b.Property<Guid>("ProductId")
                         .HasColumnType("char(36)");
 
-                    b.Property<DateTime?>("Updated")
+                    b.Property<string>("Slug")
+                        .IsRequired()
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime(6)");
 
                     b.HasKey("Article");
 
-                    b.HasIndex("Author_id");
+                    b.HasIndex("AuthorId");
 
-                    b.HasIndex("Product_Id");
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("Slug")
+                        .IsUnique();
 
                     b.ToTable("ProductArticle");
                 });
 
-            modelBuilder.Entity("BnFurniture.Domain.Entities.ProductArticleOrderItem", b =>
+            modelBuilder.Entity("BnFurniture.Domain.Entities.ProductArticle_OrderItem", b =>
                 {
+                    b.Property<Guid?>("OrderItemId")
+                        .HasColumnType("char(36)");
+
                     b.Property<Guid>("ProductArticleId")
                         .HasColumnType("char(36)");
 
-                    b.Property<Guid>("OrderItemId")
+                    b.Property<Guid?>("ArticleId")
                         .HasColumnType("char(36)");
 
-                    b.HasKey("ProductArticleId", "OrderItemId");
+                    b.HasKey("OrderItemId", "ProductArticleId");
 
-                    b.HasIndex("OrderItemId");
+                    b.HasIndex("ProductArticleId");
 
-                    b.ToTable("ProductArticleOrderItem");
+                    b.ToTable("ProductArticle_OrderItem");
                 });
 
             modelBuilder.Entity("BnFurniture.Domain.Entities.ProductCategory", b =>
@@ -313,20 +348,26 @@ namespace BnFurniture.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
-                    b.Property<Guid>("Category_Id")
-                        .HasColumnType("char(36)");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<Guid?>("Parent_id")
+                    b.Property<Guid?>("ParentId")
                         .HasColumnType("char(36)");
 
                     b.Property<int?>("Priority")
                         .HasColumnType("int");
 
+                    b.Property<string>("Slug")
+                        .IsRequired()
+                        .HasColumnType("varchar(255)");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("ParentId");
+
+                    b.HasIndex("Slug")
+                        .IsUnique();
 
                     b.ToTable("ProductCategory");
                 });
@@ -337,18 +378,22 @@ namespace BnFurniture.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
-                    b.Property<Guid>("Article_Id")
+                    b.Property<Guid>("ArticleId")
                         .HasColumnType("char(36)");
 
-                    b.Property<Guid>("Characteristic_id")
+                    b.Property<Guid>("CharacteristicId")
                         .HasColumnType("char(36)");
 
-                    b.Property<Guid>("Characteristicvalue_Id")
+                    b.Property<Guid>("CharacteristicValueId")
                         .HasColumnType("char(36)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Article_Id");
+                    b.HasIndex("ArticleId");
+
+                    b.HasIndex("CharacteristicId");
+
+                    b.HasIndex("CharacteristicValueId");
 
                     b.ToTable("ProductCharacteristicConfiguration");
                 });
@@ -359,18 +404,18 @@ namespace BnFurniture.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
-                    b.Property<Guid>("Product_Id")
+                    b.Property<Guid>("ProductId")
                         .HasColumnType("char(36)");
 
-                    b.Property<long?>("Sales")
+                    b.Property<long>("Sales")
                         .HasColumnType("bigint");
 
-                    b.Property<long?>("Views")
+                    b.Property<long>("Views")
                         .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Product_Id")
+                    b.HasIndex("ProductId")
                         .IsUnique();
 
                     b.ToTable("ProductMetrics");
@@ -382,30 +427,31 @@ namespace BnFurniture.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
-                    b.Property<DateTime>("Created")
+                    b.Property<Guid>("AuthorId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<Guid>("Product_id")
+                    b.Property<Guid>("ProductId")
                         .HasColumnType("char(36)");
 
                     b.Property<int>("Rating")
+                        .HasMaxLength(5)
                         .HasColumnType("int");
 
                     b.Property<string>("Text")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<DateTime?>("Updated")
+                    b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime(6)");
-
-                    b.Property<Guid>("User_Id")
-                        .HasColumnType("char(36)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Product_id");
+                    b.HasIndex("AuthorId");
 
-                    b.HasIndex("User_Id");
+                    b.HasIndex("ProductId");
 
                     b.ToTable("ProductReview");
                 });
@@ -416,10 +462,10 @@ namespace BnFurniture.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
-                    b.Property<Guid>("Author_Id")
+                    b.Property<Guid>("AuthorId")
                         .HasColumnType("char(36)");
 
-                    b.Property<DateTime>("Created")
+                    b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("Description")
@@ -432,20 +478,27 @@ namespace BnFurniture.Infrastructure.Migrations
                     b.Property<int?>("Priority")
                         .HasColumnType("int");
 
-                    b.Property<Guid>("Setcategory_Id")
+                    b.Property<Guid>("SetCategoryId")
                         .HasColumnType("char(36)");
+
+                    b.Property<string>("Slug")
+                        .IsRequired()
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("Summary")
                         .HasColumnType("longtext");
 
-                    b.Property<DateTime?>("Updated")
+                    b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime(6)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Author_Id");
+                    b.HasIndex("AuthorId");
 
-                    b.HasIndex("Setcategory_Id");
+                    b.HasIndex("SetCategoryId");
+
+                    b.HasIndex("Slug")
+                        .IsUnique();
 
                     b.ToTable("ProductSet");
                 });
@@ -460,13 +513,22 @@ namespace BnFurniture.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<Guid>("Parent_id")
+                    b.Property<Guid?>("ParentId")
                         .HasColumnType("char(36)");
 
                     b.Property<int?>("Priority")
                         .HasColumnType("int");
 
+                    b.Property<string>("Slug")
+                        .IsRequired()
+                        .HasColumnType("varchar(255)");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("ParentId");
+
+                    b.HasIndex("Slug")
+                        .IsUnique();
 
                     b.ToTable("ProductSetCategory");
                 });
@@ -477,17 +539,17 @@ namespace BnFurniture.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
-                    b.Property<Guid>("ProductSet_Id")
+                    b.Property<Guid>("ProductId")
                         .HasColumnType("char(36)");
 
-                    b.Property<Guid>("Product_Id")
+                    b.Property<Guid>("ProductSetId")
                         .HasColumnType("char(36)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProductSet_Id");
+                    b.HasIndex("ProductId");
 
-                    b.HasIndex("Product_Id");
+                    b.HasIndex("ProductSetId");
 
                     b.ToTable("ProductSetItem");
                 });
@@ -498,7 +560,7 @@ namespace BnFurniture.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
-                    b.Property<Guid>("Category_id")
+                    b.Property<Guid>("CategoryId")
                         .HasColumnType("char(36)");
 
                     b.Property<string>("Name")
@@ -508,12 +570,16 @@ namespace BnFurniture.Infrastructure.Migrations
                     b.Property<int?>("Priority")
                         .HasColumnType("int");
 
-                    b.Property<Guid>("ProducType_Id")
-                        .HasColumnType("char(36)");
+                    b.Property<string>("Slug")
+                        .IsRequired()
+                        .HasColumnType("varchar(255)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Category_id");
+                    b.HasIndex("CategoryId");
+
+                    b.HasIndex("Slug")
+                        .IsUnique();
 
                     b.ToTable("ProductType");
                 });
@@ -527,20 +593,15 @@ namespace BnFurniture.Infrastructure.Migrations
                     b.Property<string>("Address")
                         .HasColumnType("longtext");
 
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("datetime(6)");
-
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)")
-                        .HasAnnotation("RegularExpression", "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<DateTime?>("LastLogin_At")
+                    b.Property<DateTime?>("LastLoginAt")
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("LastName")
@@ -551,13 +612,13 @@ namespace BnFurniture.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<string>("Phonenumber")
+                    b.Property<string>("PhoneNumber")
                         .HasColumnType("longtext");
 
-                    b.HasKey("Id");
+                    b.Property<DateTime>("RegisteredAt")
+                        .HasColumnType("datetime(6)");
 
-                    b.HasIndex("Email")
-                        .IsUnique();
+                    b.HasKey("Id");
 
                     b.ToTable("User");
                 });
@@ -604,17 +665,17 @@ namespace BnFurniture.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
-                    b.Property<Guid>("Permission_Id")
+                    b.Property<Guid>("PermissionId")
                         .HasColumnType("char(36)");
 
-                    b.Property<Guid>("Role_Id")
+                    b.Property<Guid>("UserRoleId")
                         .HasColumnType("char(36)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Permission_Id");
+                    b.HasIndex("PermissionId");
 
-                    b.HasIndex("Role_Id");
+                    b.HasIndex("UserRoleId");
 
                     b.ToTable("UserRole_Permission");
                 });
@@ -625,12 +686,12 @@ namespace BnFurniture.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
-                    b.Property<Guid>("User_Id")
+                    b.Property<Guid>("UserId")
                         .HasColumnType("char(36)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("User_Id");
+                    b.HasIndex("UserId");
 
                     b.ToTable("UserWishlist");
                 });
@@ -641,20 +702,20 @@ namespace BnFurniture.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
-                    b.Property<Guid>("Article_Id")
-                        .HasColumnType("char(36)");
-
-                    b.Property<DateTime?>("Updated")
+                    b.Property<DateTime>("AddedAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<Guid>("Wishlist_Id")
+                    b.Property<Guid>("ProductArticleId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid>("UserWishlistId")
                         .HasColumnType("char(36)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Article_Id");
+                    b.HasIndex("ProductArticleId");
 
-                    b.HasIndex("Wishlist_Id");
+                    b.HasIndex("UserWishlistId");
 
                     b.ToTable("UserWishlistItem");
                 });
@@ -665,63 +726,64 @@ namespace BnFurniture.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
-                    b.Property<Guid>("UserRole_Id")
+                    b.Property<Guid>("UserId")
                         .HasColumnType("char(36)");
 
-                    b.Property<Guid>("User_Id")
+                    b.Property<Guid>("UserRoleId")
                         .HasColumnType("char(36)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserRole_Id");
+                    b.HasIndex("UserId")
+                        .IsUnique();
 
-                    b.HasIndex("User_Id");
+                    b.HasIndex("UserRoleId");
 
                     b.ToTable("User_UserRole");
                 });
 
             modelBuilder.Entity("BnFurniture.Domain.Entities.AuditLog", b =>
                 {
-                    b.HasOne("BnFurniture.Domain.Entities.User", "User_AuLog")
+                    b.HasOne("BnFurniture.Domain.Entities.UserActivityType", "UserActivityType")
                         .WithMany("AuditLogs")
-                        .HasForeignKey("User_Id")
+                        .HasForeignKey("UserActivityTypeId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("BnFurniture.Domain.Entities.UserActivityType", "UserActivityType_AuLog")
-                        .WithMany("AuditLogs_UsAcT")
-                        .HasForeignKey("Useractivitytype_Id")
-                        .OnDelete(DeleteBehavior.Restrict)
+                    b.HasOne("BnFurniture.Domain.Entities.User", "User")
+                        .WithMany("AuditLogs")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("UserActivityType_AuLog");
+                    b.Navigation("User");
 
-                    b.Navigation("User_AuLog");
+                    b.Navigation("UserActivityType");
                 });
 
-            modelBuilder.Entity("BnFurniture.Domain.Entities.CharacteristicsValue", b =>
+            modelBuilder.Entity("BnFurniture.Domain.Entities.CharacteristicValue", b =>
                 {
-                    b.HasOne("BnFurniture.Domain.Entities.Characteristics", "Characteristics")
-                        .WithMany("CharacteristicsValues")
-                        .HasForeignKey("Сharacteristic_id")
+                    b.HasOne("BnFurniture.Domain.Entities.Characteristic", "Characteristic")
+                        .WithMany("CharacteristicValues")
+                        .HasForeignKey("CharacteristicId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("Characteristics");
+                    b.Navigation("Characteristic");
                 });
 
             modelBuilder.Entity("BnFurniture.Domain.Entities.Order", b =>
                 {
                     b.HasOne("BnFurniture.Domain.Entities.OrderStatus", "Status")
                         .WithMany("Orders")
-                        .HasForeignKey("Status_Id")
+                        .HasForeignKey("StatusId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("BnFurniture.Domain.Entities.User", "User")
                         .WithMany("Orders")
-                        .HasForeignKey("User_Id")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Status");
@@ -733,8 +795,8 @@ namespace BnFurniture.Infrastructure.Migrations
                 {
                     b.HasOne("BnFurniture.Domain.Entities.Order", "Order")
                         .WithMany("OrderItems")
-                        .HasForeignKey("Order_Id")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Order");
@@ -742,67 +804,62 @@ namespace BnFurniture.Infrastructure.Migrations
 
             modelBuilder.Entity("BnFurniture.Domain.Entities.PasswordResetToken", b =>
                 {
-                    b.HasOne("BnFurniture.Domain.Entities.User", "User_PasswordResetToken")
+                    b.HasOne("BnFurniture.Domain.Entities.User", "User")
                         .WithMany("PasswordResetTokens")
-                        .HasForeignKey("User_Id")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("User_PasswordResetToken");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("BnFurniture.Domain.Entities.Product", b =>
                 {
-                    b.HasOne("BnFurniture.Domain.Entities.Product", null)
+                    b.HasOne("BnFurniture.Domain.Entities.User", "Author")
                         .WithMany("Products")
-                        .HasForeignKey("ProductId");
+                        .HasForeignKey("AuthorId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("BnFurniture.Domain.Entities.ProductType", "ProductType")
                         .WithMany("Products")
-                        .HasForeignKey("Productype_Id")
+                        .HasForeignKey("ProductTypeId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("BnFurniture.Domain.Entities.User", "User_Pr")
-                        .WithMany("Products_Us")
-                        .HasForeignKey("Productype_Id")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                    b.Navigation("Author");
 
                     b.Navigation("ProductType");
-
-                    b.Navigation("User_Pr");
                 });
 
             modelBuilder.Entity("BnFurniture.Domain.Entities.ProductArticle", b =>
                 {
-                    b.HasOne("BnFurniture.Domain.Entities.User", "User_Pa")
-                        .WithMany("ProductArticles_Us")
-                        .HasForeignKey("Author_id")
+                    b.HasOne("BnFurniture.Domain.Entities.User", "Author")
+                        .WithMany("ProductArticles")
+                        .HasForeignKey("AuthorId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("BnFurniture.Domain.Entities.Product", "Product")
                         .WithMany("ProductArticles")
-                        .HasForeignKey("Product_Id")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Product");
-
-                    b.Navigation("User_Pa");
-                });
-
-            modelBuilder.Entity("BnFurniture.Domain.Entities.ProductArticleOrderItem", b =>
-                {
-                    b.HasOne("BnFurniture.Domain.Entities.OrderItem", "OrderItem")
-                        .WithMany()
-                        .HasForeignKey("OrderItemId")
+                        .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("Author");
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("BnFurniture.Domain.Entities.ProductArticle_OrderItem", b =>
+                {
+                    b.HasOne("BnFurniture.Domain.Entities.OrderItem", "OrderItem")
+                        .WithMany("ProductArticles")
+                        .HasForeignKey("OrderItemId")
+                        .IsRequired();
+
                     b.HasOne("BnFurniture.Domain.Entities.ProductArticle", "ProductArticle")
-                        .WithMany()
+                        .WithMany("OrderItems")
                         .HasForeignKey("ProductArticleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -812,22 +869,48 @@ namespace BnFurniture.Infrastructure.Migrations
                     b.Navigation("ProductArticle");
                 });
 
+            modelBuilder.Entity("BnFurniture.Domain.Entities.ProductCategory", b =>
+                {
+                    b.HasOne("BnFurniture.Domain.Entities.ProductCategory", "ParentCategory")
+                        .WithMany()
+                        .HasForeignKey("ParentId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("ParentCategory");
+                });
+
             modelBuilder.Entity("BnFurniture.Domain.Entities.ProductCharacteristicConfiguration", b =>
                 {
-                    b.HasOne("BnFurniture.Domain.Entities.ProductArticle", "ProductArticles")
-                        .WithMany("ProductCharacteristicConfiguration")
-                        .HasForeignKey("Article_Id")
+                    b.HasOne("BnFurniture.Domain.Entities.ProductArticle", "ProductArticle")
+                        .WithMany("ProductCharacteristicConfigurations")
+                        .HasForeignKey("ArticleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BnFurniture.Domain.Entities.Characteristic", "Characteristic")
+                        .WithMany("ProductCharacteristicConfigurations")
+                        .HasForeignKey("CharacteristicId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("ProductArticles");
+                    b.HasOne("BnFurniture.Domain.Entities.CharacteristicValue", "CharacteristicValue")
+                        .WithMany("ProductCharacteristicConfigurations")
+                        .HasForeignKey("CharacteristicValueId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Characteristic");
+
+                    b.Navigation("CharacteristicValue");
+
+                    b.Navigation("ProductArticle");
                 });
 
             modelBuilder.Entity("BnFurniture.Domain.Entities.ProductMetrics", b =>
                 {
                     b.HasOne("BnFurniture.Domain.Entities.Product", "Product")
                         .WithOne("Metrics")
-                        .HasForeignKey("BnFurniture.Domain.Entities.ProductMetrics", "Product_Id")
+                        .HasForeignKey("BnFurniture.Domain.Entities.ProductMetrics", "ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -836,66 +919,76 @@ namespace BnFurniture.Infrastructure.Migrations
 
             modelBuilder.Entity("BnFurniture.Domain.Entities.ProductReview", b =>
                 {
-                    b.HasOne("BnFurniture.Domain.Entities.Product", "Products")
-                        .WithMany("ProductReview")
-                        .HasForeignKey("Product_id")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("BnFurniture.Domain.Entities.User", "User_Pr")
+                    b.HasOne("BnFurniture.Domain.Entities.User", "Author")
                         .WithMany("ProductReviews")
-                        .HasForeignKey("User_Id")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .HasForeignKey("AuthorId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Products");
+                    b.HasOne("BnFurniture.Domain.Entities.Product", "Product")
+                        .WithMany("ProductReviews")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("User_Pr");
+                    b.Navigation("Author");
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("BnFurniture.Domain.Entities.ProductSet", b =>
                 {
-                    b.HasOne("BnFurniture.Domain.Entities.User", "User_Ps")
+                    b.HasOne("BnFurniture.Domain.Entities.User", "Author")
                         .WithMany("ProductSets")
-                        .HasForeignKey("Author_Id")
+                        .HasForeignKey("AuthorId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("BnFurniture.Domain.Entities.ProductSetCategory", "ProductSetCategory")
                         .WithMany("ProductSets")
-                        .HasForeignKey("Setcategory_Id")
+                        .HasForeignKey("SetCategoryId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("ProductSetCategory");
+                    b.Navigation("Author");
 
-                    b.Navigation("User_Ps");
+                    b.Navigation("ProductSetCategory");
+                });
+
+            modelBuilder.Entity("BnFurniture.Domain.Entities.ProductSetCategory", b =>
+                {
+                    b.HasOne("BnFurniture.Domain.Entities.ProductSetCategory", "ParentCategory")
+                        .WithMany()
+                        .HasForeignKey("ParentId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("ParentCategory");
                 });
 
             modelBuilder.Entity("BnFurniture.Domain.Entities.ProductSetItem", b =>
                 {
+                    b.HasOne("BnFurniture.Domain.Entities.Product", "Product")
+                        .WithMany("ProductSetItems")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("BnFurniture.Domain.Entities.ProductSet", "ProductSet")
                         .WithMany("ProductSetItems")
-                        .HasForeignKey("ProductSet_Id")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .HasForeignKey("ProductSetId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BnFurniture.Domain.Entities.Product", "Products")
-                        .WithMany("ProductSetItem")
-                        .HasForeignKey("Product_Id")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                    b.Navigation("Product");
 
                     b.Navigation("ProductSet");
-
-                    b.Navigation("Products");
                 });
 
             modelBuilder.Entity("BnFurniture.Domain.Entities.ProductType", b =>
                 {
                     b.HasOne("BnFurniture.Domain.Entities.ProductCategory", "ProductCategory")
-                        .WithMany("ProductType")
-                        .HasForeignKey("Category_id")
+                        .WithMany("ProductTypes")
+                        .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
@@ -906,13 +999,13 @@ namespace BnFurniture.Infrastructure.Migrations
                 {
                     b.HasOne("BnFurniture.Domain.Entities.Permission", "Permission")
                         .WithMany("UserRole_Permissions")
-                        .HasForeignKey("Permission_Id")
+                        .HasForeignKey("PermissionId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("BnFurniture.Domain.Entities.UserRole", "UserRole")
-                        .WithMany("UserRole_Permissions_UsRol")
-                        .HasForeignKey("Role_Id")
+                        .WithMany("UserRole_Permissions")
+                        .HasForeignKey("UserRoleId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
@@ -923,61 +1016,73 @@ namespace BnFurniture.Infrastructure.Migrations
 
             modelBuilder.Entity("BnFurniture.Domain.Entities.UserWishlist", b =>
                 {
-                    b.HasOne("BnFurniture.Domain.Entities.User", "User_Wl")
-                        .WithMany("UserWishlist_Us")
-                        .HasForeignKey("User_Id")
-                        .OnDelete(DeleteBehavior.Restrict)
+                    b.HasOne("BnFurniture.Domain.Entities.User", "User")
+                        .WithMany("UserWishlists")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("User_Wl");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("BnFurniture.Domain.Entities.UserWishlistItem", b =>
                 {
-                    b.HasOne("BnFurniture.Domain.Entities.ProductArticle", "ProductArticle_Uwl")
-                        .WithMany("UserWishlistItems_Pa")
-                        .HasForeignKey("Article_Id")
-                        .OnDelete(DeleteBehavior.Restrict)
+                    b.HasOne("BnFurniture.Domain.Entities.ProductArticle", "ProductArticle")
+                        .WithMany("UserWishlistItems")
+                        .HasForeignKey("ProductArticleId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("BnFurniture.Domain.Entities.UserWishlist", "UserWishlist")
                         .WithMany("UserWishlistItems")
-                        .HasForeignKey("Wishlist_Id")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .HasForeignKey("UserWishlistId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("ProductArticle_Uwl");
+                    b.Navigation("ProductArticle");
 
                     b.Navigation("UserWishlist");
                 });
 
             modelBuilder.Entity("BnFurniture.Domain.Entities.User_UserRole", b =>
                 {
+                    b.HasOne("BnFurniture.Domain.Entities.User", "User")
+                        .WithOne("User_UserRole")
+                        .HasForeignKey("BnFurniture.Domain.Entities.User_UserRole", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("BnFurniture.Domain.Entities.UserRole", "UserRole")
                         .WithMany("User_UserRoles")
-                        .HasForeignKey("UserRole_Id")
+                        .HasForeignKey("UserRoleId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("BnFurniture.Domain.Entities.User", "User_Us_UsRole")
-                        .WithMany("User_UserRoles_Us")
-                        .HasForeignKey("User_Id")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                    b.Navigation("User");
 
                     b.Navigation("UserRole");
-
-                    b.Navigation("User_Us_UsRole");
                 });
 
-            modelBuilder.Entity("BnFurniture.Domain.Entities.Characteristics", b =>
+            modelBuilder.Entity("BnFurniture.Domain.Entities.Characteristic", b =>
                 {
-                    b.Navigation("CharacteristicsValues");
+                    b.Navigation("CharacteristicValues");
+
+                    b.Navigation("ProductCharacteristicConfigurations");
+                });
+
+            modelBuilder.Entity("BnFurniture.Domain.Entities.CharacteristicValue", b =>
+                {
+                    b.Navigation("ProductCharacteristicConfigurations");
                 });
 
             modelBuilder.Entity("BnFurniture.Domain.Entities.Order", b =>
                 {
                     b.Navigation("OrderItems");
+                });
+
+            modelBuilder.Entity("BnFurniture.Domain.Entities.OrderItem", b =>
+                {
+                    b.Navigation("ProductArticles");
                 });
 
             modelBuilder.Entity("BnFurniture.Domain.Entities.OrderStatus", b =>
@@ -997,23 +1102,23 @@ namespace BnFurniture.Infrastructure.Migrations
 
                     b.Navigation("ProductArticles");
 
-                    b.Navigation("ProductReview");
+                    b.Navigation("ProductReviews");
 
-                    b.Navigation("ProductSetItem");
-
-                    b.Navigation("Products");
+                    b.Navigation("ProductSetItems");
                 });
 
             modelBuilder.Entity("BnFurniture.Domain.Entities.ProductArticle", b =>
                 {
-                    b.Navigation("ProductCharacteristicConfiguration");
+                    b.Navigation("OrderItems");
 
-                    b.Navigation("UserWishlistItems_Pa");
+                    b.Navigation("ProductCharacteristicConfigurations");
+
+                    b.Navigation("UserWishlistItems");
                 });
 
             modelBuilder.Entity("BnFurniture.Domain.Entities.ProductCategory", b =>
                 {
-                    b.Navigation("ProductType");
+                    b.Navigation("ProductTypes");
                 });
 
             modelBuilder.Entity("BnFurniture.Domain.Entities.ProductSet", b =>
@@ -1039,27 +1144,28 @@ namespace BnFurniture.Infrastructure.Migrations
 
                     b.Navigation("PasswordResetTokens");
 
-                    b.Navigation("ProductArticles_Us");
+                    b.Navigation("ProductArticles");
 
                     b.Navigation("ProductReviews");
 
                     b.Navigation("ProductSets");
 
-                    b.Navigation("Products_Us");
+                    b.Navigation("Products");
 
-                    b.Navigation("UserWishlist_Us");
+                    b.Navigation("UserWishlists");
 
-                    b.Navigation("User_UserRoles_Us");
+                    b.Navigation("User_UserRole")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("BnFurniture.Domain.Entities.UserActivityType", b =>
                 {
-                    b.Navigation("AuditLogs_UsAcT");
+                    b.Navigation("AuditLogs");
                 });
 
             modelBuilder.Entity("BnFurniture.Domain.Entities.UserRole", b =>
                 {
-                    b.Navigation("UserRole_Permissions_UsRol");
+                    b.Navigation("UserRole_Permissions");
 
                     b.Navigation("User_UserRoles");
                 });

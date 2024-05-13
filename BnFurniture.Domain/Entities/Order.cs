@@ -1,21 +1,22 @@
-﻿namespace BnFurniture.Domain.Entities
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace BnFurniture.Domain.Entities;
+
+public class Order
 {
-    public class Order
-    {
-        public Guid Id { get; set; }
-        public Guid User_Id { get; set; }
-        public int Status_Id { get; set; }
-        public DateTime Created { get; set; }
-        public DateTime? Updated { get; set; } = null;
+    [Key]
+    public Guid Id { get; set; }
+    public Guid UserId { get; set; }
+    public int StatusId { get; set; }
+    public DateTime CreatedAt { get; set; }
+    public DateTime? ModifiedAt { get; set; }
 
-        // Navigation property for the related OrderItem
-        public ICollection<OrderItem> OrderItems { get; set; } = null!;
+    // Nav
+    [ForeignKey(nameof(StatusId))]
+    public OrderStatus Status { get; set; } = null!;
 
-        // Navigation property for the related OrderStatus
-        public OrderStatus? Status { get; set; }=null!;
-
-        // Navigation property for the related User
-        public User? User { get; set; } = null!;
-
-    }
+    [ForeignKey(nameof(UserId))]
+    public User User { get; set; } = null!;
+    public ICollection<OrderItem> OrderItems { get; set; } = null!;
 }

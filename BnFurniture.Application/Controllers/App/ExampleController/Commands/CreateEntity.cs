@@ -1,12 +1,12 @@
 ﻿using BnFurniture.Application.Abstractions;
-using BnFurniture.Application.Controllers.ExampleController.DTO;
+using BnFurniture.Application.Controllers.App.ExampleController.DTO;
 using BnFurniture.Application.Extensions;
 using BnFurniture.Domain.Entities;
 using BnFurniture.Domain.Responses;
 using Microsoft.Extensions.Logging;
 using System.Net;
 
-namespace BnFurniture.Application.Controllers.ExampleController.Commands;
+namespace BnFurniture.Application.Controllers.App.ExampleController.Commands;
 
 public sealed record CreateEntityCommand(ExampleEntityFormDTO entityForm);
 
@@ -18,7 +18,7 @@ public sealed class CreateEntityHandler : CommandHandler<CreateEntityCommand>
         IHandlerContext context) : base(context)
     {
         _validator = validator;
-    } 
+    }
 
     public override async Task<ApiCommandResponse> Handle(CreateEntityCommand request, CancellationToken cancellationToken)
     {

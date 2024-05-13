@@ -1,13 +1,18 @@
-﻿namespace BnFurniture.Domain.Entities
-{
-    public class PasswordResetToken
-    {
-        public Guid Id { get; set; }
-        public Guid User_Id { get; set; }
-        public String TokenValue { get; set; } = null!;
-        public DateTime ExpiryDate { get; set; }
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
-        // Navigation property for the related User
-        public User User_PasswordResetToken { get; set; } = null!;
-    }
+namespace BnFurniture.Domain.Entities;
+
+public class PasswordResetToken
+{
+    [Key]
+    public Guid Id { get; set; }
+    public Guid UserId { get; set; }
+    public string TokenValue { get; set; } = string.Empty;
+    public DateTime ExpiryDate { get; set; }
+
+    // Nav
+
+    [ForeignKey(nameof(UserId))]
+    public User User { get; set; } = null!;
 }

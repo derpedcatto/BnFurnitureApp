@@ -1,17 +1,22 @@
-﻿namespace BnFurniture.Domain.Entities
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace BnFurniture.Domain.Entities;
+
+public class OrderItem
 {
-    public class OrderItem
-    {
-        public Guid Id { get; set; }
-        public Guid Order_Id { get; set; }
-        public Guid Article_Id { get; set; }
-        public int Quantity { get; set; }
-        public decimal Price { get; set; }
-        public int Discount { get; set; }
+    [Key]
+    public Guid Id { get; set; }
+    public Guid OrderId { get; set; }
+    public Guid ArticleId { get; set; }
+    public int Quantity { get; set; }
+    public decimal Price { get; set; }
+    public int Discount { get; set; }
 
-        //Navigation property for the related Order
-        public Order Order { get; set; } = null!;
+    //Nav
+    [ForeignKey(nameof(OrderId))]
+    public Order Order { get; set; } = null!;
 
-
-    }
+    [ForeignKey(nameof(ArticleId))]
+    public virtual ICollection<ProductArticle_OrderItem> ProductArticles { get; set; } = null!;
 }

@@ -1,14 +1,20 @@
-﻿namespace BnFurniture.Domain.Entities
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace BnFurniture.Domain.Entities;
+
+public class ProductSetCategory
 {
-    public class ProductSetCategory
-    {
-        public Guid Id { get; set; }
-        public Guid Parent_id { get; set; }
-        public String Name { get; set; } = null!;
-        public int? Priority { get; set; }
+    [Key]
+    public Guid Id { get; set; }
+    public Guid? ParentId { get; set; }
 
-        // Navigation property for the related ProductSet
-        public ICollection<ProductSet>? ProductSets { get; set; } = null!;
+    public string Name { get; set; } = string.Empty;
+    public string Slug { get; set; } = string.Empty;
+    public int? Priority { get; set; }
 
-    }
+    // Nav
+    [ForeignKey(nameof(ParentId))]
+    public ProductSetCategory? ParentCategory { get; set; }
+    public ICollection<ProductSet> ProductSets { get; set; } = null!;
 }

@@ -19,4 +19,8 @@
     <ProjectReference Include="..\BnFurniture.Shared\BnFurniture.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Controllers\Admin\" />
+  </ItemGroup>
+
 </Project>

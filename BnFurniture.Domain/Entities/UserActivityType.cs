@@ -1,14 +1,14 @@
-﻿using BnFurniture.Domain.Entities;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace BnFurniture.Domain.Entities
+namespace BnFurniture.Domain.Entities;
+
+public class UserActivityType
 {
-    public class UserActivityType
-    {
-        public Guid Id { get; set; }
-        public String Name { get; set; } = null!;
-        public String? Description { get; set; }
+    [Key]
+    public Guid Id { get; set; }
+    public string Name { get; set; } = string.Empty;
+    public string? Description { get; set; }
 
-        // Navigation property for the related AuditLog
-        public ICollection<AuditLog> AuditLogs_UsAcT { get; set; } = null!;
-    }
+    // Nav
+    public ICollection<AuditLog> AuditLogs { get; set; } = null!;
 }

@@ -1,13 +1,16 @@
-﻿namespace BnFurniture.Domain.Entities
-{
-    public class ProductMetrics
-    {
-        public Guid Id { get; set; }
-        public Guid Product_Id { get; set; }
-        public long? Views { get; set; } = 0;
-        public long? Sales { get; set; } = 0;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
-        // Navigation property for the related ProductMetrics
-        public Product? Product { get; set; } = null!;
-    }
+namespace BnFurniture.Domain.Entities;
+
+public class ProductMetrics
+{
+    [Key]
+    public Guid Id { get; set; }
+    public Guid ProductId { get; set; }
+    public long Views { get; set; }
+    public long Sales { get; set; }
+
+    // Nav
+    public Product Product { get; set; } = null!;
 }
