@@ -86,6 +86,12 @@ public class ApplicationDbContext(DbContextOptions options) : DbContext(options)
         modelBuilder.Entity<Product>()
             .HasIndex(e => e.Slug)
             .IsUnique(true);
+        modelBuilder.Entity<ProductSet>()
+            .HasIndex(e => e.Slug)
+            .IsUnique(true); 
+        modelBuilder.Entity<ProductSetCategory>()
+            .HasIndex(e => e.Slug)
+            .IsUnique(true);
     }
 
     private void ConfigureKeys(ModelBuilder modelBuilder)

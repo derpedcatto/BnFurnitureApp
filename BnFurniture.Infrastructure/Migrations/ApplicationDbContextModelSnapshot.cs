@@ -483,7 +483,7 @@ namespace BnFurniture.Infrastructure.Migrations
 
                     b.Property<string>("Slug")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("Summary")
                         .HasColumnType("longtext");
@@ -496,6 +496,9 @@ namespace BnFurniture.Infrastructure.Migrations
                     b.HasIndex("AuthorId");
 
                     b.HasIndex("SetCategoryId");
+
+                    b.HasIndex("Slug")
+                        .IsUnique();
 
                     b.ToTable("ProductSet");
                 });
@@ -518,11 +521,14 @@ namespace BnFurniture.Infrastructure.Migrations
 
                     b.Property<string>("Slug")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("varchar(255)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ParentId");
+
+                    b.HasIndex("Slug")
+                        .IsUnique();
 
                     b.ToTable("ProductSetCategory");
                 });

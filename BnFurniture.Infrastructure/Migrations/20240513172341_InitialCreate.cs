@@ -95,7 +95,7 @@ namespace BnFurniture.Infrastructure.Migrations
                     ParentId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci"),
                     Name = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Slug = table.Column<string>(type: "longtext", nullable: false)
+                    Slug = table.Column<string>(type: "varchar(255)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Priority = table.Column<int>(type: "int", nullable: true)
                 },
@@ -276,7 +276,7 @@ namespace BnFurniture.Infrastructure.Migrations
                     AuthorId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     Name = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Slug = table.Column<string>(type: "longtext", nullable: false)
+                    Slug = table.Column<string>(type: "varchar(255)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Summary = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
@@ -803,9 +803,21 @@ namespace BnFurniture.Infrastructure.Migrations
                 column: "SetCategoryId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ProductSet_Slug",
+                table: "ProductSet",
+                column: "Slug",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ProductSetCategory_ParentId",
                 table: "ProductSetCategory",
                 column: "ParentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProductSetCategory_Slug",
+                table: "ProductSetCategory",
+                column: "Slug",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_ProductSetItem_ProductId",
