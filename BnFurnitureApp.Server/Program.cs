@@ -1,6 +1,6 @@
-﻿using ASP_Work.Services.MailSend;
-using BnFurniture.Application.Abstractions;
+﻿using BnFurniture.Application.Abstractions;
 using BnFurniture.Infrastructure.Persistence;
+using BnFurniture.Shared.Utilities.Email;
 using BnFurniture.Shared.Utilities.Hash;
 using BnFurnitureApp.Middleware;
 using BnFurnitureApp.Server.Middleware;
@@ -19,7 +19,6 @@ builder.Services.AddControllers().AddJsonOptions(o =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options => { options.CustomSchemaIds(s => s.FullName?.Replace("+", ".")); });
 builder.Services.AddHttpContextAccessor();
-builder.Services.AddSingleton<IMailServices, SendMessage>();
 
 
 // Suppress default error response model
@@ -57,7 +56,7 @@ builder.Services.AddHttpLogging(logging =>
     
 
 // Db Service registration
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+var connectionString = builder.Configuration.GetConnectionString("DerpeLocalConnection");
 var serverVersion = new MySqlServerVersion(new Version(8, 0, 30));
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
@@ -88,6 +87,7 @@ builder.Services.AddScoped<IHandlerContext, HandlerContext>();
 
 // Other Services registration
 builder.Services.AddSingleton<IHashService, Sha1HashService>();
+builder.Services.AddSingleton<IEmailService, EmailService>();
 
 
 

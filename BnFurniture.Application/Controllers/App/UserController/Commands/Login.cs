@@ -1,12 +1,12 @@
 ﻿using BnFurniture.Application.Abstractions;
-using BnFurniture.Application.Controllers.App.UserRegisterController.DTO;
+using BnFurniture.Application.Controllers.App.UserController.DTO;
 using BnFurniture.Application.Extensions;
 using BnFurniture.Domain.Responses;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System.Net;
 
-namespace BnFurniture.Application.Controllers.App.UserRegisterController.Commands;
+namespace BnFurniture.Application.Controllers.App.UserController.Commands;
 
 public sealed record LoginCommand(UserLoginDTO entityForm);
 
