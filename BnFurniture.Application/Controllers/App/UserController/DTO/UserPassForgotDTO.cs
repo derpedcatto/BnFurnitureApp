@@ -1,13 +1,13 @@
 ﻿using BnFurniture.Infrastructure.Persistence;
 using FluentValidation;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json.Serialization;
 
 namespace BnFurniture.Application.Controllers.App.UserController.DTO;
 
 public class UserPassForgotDTO
 {
-    [FromForm(Name = "emailOrPhone")]
+    [JsonPropertyName("emailOrPhone")]
     public string EmailOrPhone { get; set; } = null!;
 }
 

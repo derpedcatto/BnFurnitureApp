@@ -30,7 +30,7 @@ public class ExampleController : ControllerBase
 
     [HttpPost]
     public async Task<IActionResult> CreateExampleEntity([FromServices] CreateEntityHandler handler,
-        [FromForm] ExampleEntityFormDTO model)
+        [FromBody] ExampleEntityFormDTO model)
     {
         var command = new CreateEntityCommand(model);
 

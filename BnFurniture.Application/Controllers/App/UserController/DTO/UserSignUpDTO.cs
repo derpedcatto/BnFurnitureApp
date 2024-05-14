@@ -1,35 +1,35 @@
 ﻿using BnFurniture.Infrastructure.Persistence;
 using FluentValidation;
 using BnFurniture.Application.Extensions;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json.Serialization;
 
 namespace BnFurniture.Application.Controllers.App.UserController.DTO;
 
 public class UserSignUpDTO
 {
-    [FromForm(Name = "email")]
+    [JsonPropertyName("email")]
     public string Email { get; set; } = null!;
 
-    [FromForm(Name = "password")]
+    [JsonPropertyName("password")]
     public string Password { get; set; } = null!;
 
-    [FromForm(Name = "repeatPassword")]
+    [JsonPropertyName("repeatPassword")]
     public string RepeatPassword { get; set; } = null!; // TODO
 
-    [FromForm(Name = "firstName")]
+    [JsonPropertyName("firstName")]
     public string FirstName { get; set; } = null!;
 
-    [FromForm(Name = "lastName")]
+    [JsonPropertyName("lastName")]
     public string LastName { get; set; } = null!;
 
-    [FromForm(Name = "mobileNumber")]
+    [JsonPropertyName("mobileNumber")]
     public string? MobileNumber { get; set; }
 
-    [FromForm(Name = "address")]
+    [JsonPropertyName("address")]
     public string? Address { get; set; }    // TODO
 
-    [FromForm(Name = "agreeCheckbox")]
+    [JsonPropertyName("agreeCheckbox")]
     public bool Agree { get; set; }  // TODO
 }
 

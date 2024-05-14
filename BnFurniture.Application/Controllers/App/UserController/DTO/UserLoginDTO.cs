@@ -1,17 +1,17 @@
 ﻿using BnFurniture.Infrastructure.Persistence;
 using BnFurniture.Shared.Utilities.Hash;
 using FluentValidation;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json.Serialization;
 
 namespace BnFurniture.Application.Controllers.App.UserController.DTO;
 
 public class UserLoginDTO
 {
-    [FromForm(Name = "emailOrPhone")]
+    [JsonPropertyName("emailOrPhone")]
     public string EmailOrPhone { get; set; } = null!;
 
-    [FromForm(Name = "password")]
+    [JsonPropertyName("password")]
     public string Password { get; set; } = null!;
 }
 
