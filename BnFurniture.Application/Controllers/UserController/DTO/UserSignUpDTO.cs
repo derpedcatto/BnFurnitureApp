@@ -4,7 +4,7 @@ using BnFurniture.Application.Extensions;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 
-namespace BnFurniture.Application.Controllers.App.UserController.DTO;
+namespace BnFurniture.Application.Controllers.UserController.DTO;
 
 public class UserSignUpDTO
 {

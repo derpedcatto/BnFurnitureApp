@@ -2,9 +2,9 @@
 using BnFurniture.Domain.Responses;
 using BnFurniture.Domain.Entities;
 using System.Net;
-using BnFurniture.Application.Controllers.App.ExampleController.DTO;
+using BnFurniture.Application.Controllers.ExampleController.DTO;
 
-namespace BnFurniture.Application.Controllers.App.ExampleController.Queries;
+namespace BnFurniture.Application.Controllers.ExampleController.Queries;
 
 public sealed record GetEntityQuery(int days);
 

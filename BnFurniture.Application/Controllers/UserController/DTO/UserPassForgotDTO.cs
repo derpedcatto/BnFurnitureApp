@@ -3,7 +3,7 @@ using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 
-namespace BnFurniture.Application.Controllers.App.UserController.DTO;
+namespace BnFurniture.Application.Controllers.UserController.DTO;
 
 public class UserPassForgotDTO
 {
@@ -15,7 +15,7 @@ public class PassForgotDTOValidator : AbstractValidator<UserPassForgotDTO>
 {
     private readonly ApplicationDbContext _dbContext;
 
-    public PassForgotDTOValidator(ApplicationDbContext dbContext) 
+    public PassForgotDTOValidator(ApplicationDbContext dbContext)
     {
         _dbContext = dbContext;
 

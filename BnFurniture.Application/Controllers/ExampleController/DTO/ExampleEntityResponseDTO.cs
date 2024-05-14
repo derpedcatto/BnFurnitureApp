@@ -1,4 +1,4 @@
-﻿namespace BnFurniture.Application.Controllers.App.ExampleController.DTO;
+﻿namespace BnFurniture.Application.Controllers.ExampleController.DTO;
 
 public class ExampleEntityResponseDTO
 {

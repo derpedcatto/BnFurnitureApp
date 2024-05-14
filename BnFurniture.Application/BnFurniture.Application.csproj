@@ -7,6 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Controllers\Admin\**" />
+    <EmbeddedResource Remove="Controllers\Admin\**" />
+    <None Remove="Controllers\Admin\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="FluentValidation" Version="11.9.1" />
     <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.9.1" />
@@ -17,10 +23,6 @@
     <ProjectReference Include="..\BnFurniture.Domain\BnFurniture.Domain.csproj" />
     <ProjectReference Include="..\BnFurniture.Infrastructure\BnFurniture.Infrastructure.csproj" />
     <ProjectReference Include="..\BnFurniture.Shared\BnFurniture.Shared.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Controllers\Admin\" />
   </ItemGroup>
 
 </Project>

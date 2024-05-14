@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using BnFurniture.Infrastructure.Persistence;
-using BnFurniture.Application.Controllers.App.UserController.DTO;
-using BnFurniture.Application.Controllers.App.UserController.Commands;
+using BnFurniture.Application.Controllers.UserController.Commands;
+using BnFurniture.Application.Controllers.UserController.DTO;
 
 namespace BnFurnitureApp.Server.Controllers;
 

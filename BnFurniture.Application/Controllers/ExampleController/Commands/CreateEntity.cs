@@ -1,12 +1,12 @@
 ﻿using BnFurniture.Application.Abstractions;
-using BnFurniture.Application.Controllers.App.ExampleController.DTO;
+using BnFurniture.Application.Controllers.ExampleController.DTO;
 using BnFurniture.Application.Extensions;
 using BnFurniture.Domain.Entities;
 using BnFurniture.Domain.Responses;
 using Microsoft.Extensions.Logging;
 using System.Net;
 
-namespace BnFurniture.Application.Controllers.App.ExampleController.Commands;
+namespace BnFurniture.Application.Controllers.ExampleController.Commands;
 
 public sealed record CreateEntityCommand(ExampleEntityFormDTO entityForm);
 
