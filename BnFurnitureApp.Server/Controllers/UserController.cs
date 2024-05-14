@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using BnFurniture.Application.Controllers.App.UserRegisterController.Commands;
-using BnFurniture.Application.Controllers.App.UserRegisterController.DTO;
+using BnFurniture.Infrastructure.Persistence;
+using BnFurniture.Application.Controllers.App.UserController.DTO;
+using BnFurniture.Application.Controllers.App.UserController.Commands;
 
 namespace BnFurnitureApp.Server.Controllers;
 
@@ -23,6 +24,16 @@ public class UserController : ControllerBase
         [FromForm] UserLoginDTO model)
     {
         var command = new LoginCommand(model);
+
+        var apiResponse = await handler.Handle(command, CancellationToken.None);
+        return new JsonResult(apiResponse) { StatusCode = apiResponse.StatusCode };
+    }
+
+    [HttpPost("passforgot")]
+    public async Task<IActionResult> PassForgot([FromServices] PassForgotHandler handler,
+        [FromForm] UserPassForgotDTO model)
+    {
+        var command = new PassForgotCommand(model);
 
         var apiResponse = await handler.Handle(command, CancellationToken.None);
         return new JsonResult(apiResponse) { StatusCode = apiResponse.StatusCode };

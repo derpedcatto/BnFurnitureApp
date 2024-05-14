@@ -1,5 +1,6 @@
 ﻿using BnFurniture.Application.Abstractions;
 using BnFurniture.Infrastructure.Persistence;
+using BnFurniture.Shared.Utilities.Email;
 using BnFurniture.Shared.Utilities.Hash;
 using BnFurnitureApp.Middleware;
 using BnFurnitureApp.Server.Middleware;
@@ -52,10 +53,10 @@ builder.Services.AddHttpLogging(logging =>
     logging.MediaTypeOptions.AddText("multipart/form-data");
     logging.MediaTypeOptions.AddText("application/x-www-form-urlencoded");
 });  
-
+    
 
 // Db Service registration
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+var connectionString = builder.Configuration.GetConnectionString("DerpeLocalConnection");
 var serverVersion = new MySqlServerVersion(new Version(8, 0, 30));
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
@@ -86,6 +87,7 @@ builder.Services.AddScoped<IHandlerContext, HandlerContext>();
 
 // Other Services registration
 builder.Services.AddSingleton<IHashService, Sha1HashService>();
+builder.Services.AddSingleton<IEmailService, EmailService>();
 
 
 

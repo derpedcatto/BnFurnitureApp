@@ -4,7 +4,7 @@ using BnFurniture.Application.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace BnFurniture.Application.Controllers.App.UserRegisterController.DTO;
+namespace BnFurniture.Application.Controllers.App.UserController.DTO;
 
 public class UserSignUpDTO
 {
