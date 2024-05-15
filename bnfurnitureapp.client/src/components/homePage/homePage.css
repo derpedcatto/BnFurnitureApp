@@ -20,85 +20,6 @@
     margin-bottom: 50px;    
 }
 
-[class*="__homeCard"]{
-    position: relative;     
-    height: 400px;
-    background-color: #292F36; 
-    border-radius: 15px;
-    display: flex;
-    flex-direction: column; 
-    justify-content: flex-end;
-    align-items: stretch; 
-    margin-top: 20px;
-    margin-bottom: 20px;
-    background-size: cover;
-    background-position: center;
-}
-.homeCardFooter{
-    display: flex;
-    justify-content: center; 
-    align-items: center; 
-    padding-right: 30px;  
-    height: 80px;
-    background: #B6C4C2;
-    backdrop-filter: blur(5px);
-    border-radius: 0 0 15px 15px;
-}
-.homeCardText {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 29px;
-    font-family: 'Montserrat';
-    font-style: normal;
-    font-weight: 500;
-    font-size: 24px;
-    line-height: 29px;
-    text-align: center;
-    text-transform: uppercase;
-    color: #000000;
-    flex: none;
-    order: 0;
-    flex-grow: 0;
-}
-.homeCardSvg {
-    width: 40px;
-    height: 40px;
-    margin-right: 1rem;
-}
-.homeCardrow{
-    display: flex;
-    flex-direction: row;
-}
-.first__homeCard{
-    width: 52%; /* 781px/1540 */
-    background-image: url(/img/1.jpg); 
-}
-.tvelve__homeCard{
-    width:  45%; /* 678px/1540 */
-    background-image: url(/img/2.jpg); 
-    margin-left: auto;
-}
-.tree__homeCard{
-    display: flex;
-    flex-direction: row;
-    background-image: url(/img/3.jpg); 
-}
-.homeCardFooter1{
-    display: flex;
-    justify-content: end; 
-    align-items: center; 
-    border-radius: 0px 15px 15px 0px;
-    background: #B6C4C2;
-    backdrop-filter: blur(5px);
-    padding-left:  20px; 
-}
-
-
-
-
 .Frame20click{
     display: flex;
     position: absolute;
@@ -108,13 +29,10 @@
     transform: rotate(-90deg);
 }
 
-
 .homeCatalogrow{
     display: flex;
     justify-content:space-between;    
 }
-
-
 
 @media (max-width: 1128px) {
     .homePage{
