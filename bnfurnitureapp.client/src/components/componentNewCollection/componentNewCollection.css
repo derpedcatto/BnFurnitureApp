@@ -1,25 +1,3 @@
-
-.homeheaders{
-    width: 100%;
-    height: 29px;
-    font-family: 'Montserrat';
-    font-style: normal;
-    font-weight: 600;
-    font-size: 24px;
-    line-height: 100%; /* 29px/29 */
-    text-transform: uppercase;
-    color: #000000;
-    flex: none;
-    order: 0;
-    flex-grow: 0;
-    display: flex;
-    flex-direction: row;
-    padding: 10px 10px 10px 0px;
-    gap: 10px;
-    margin-top: 50px;
-    margin-bottom: 50px;    
-}
-
 [class*="__homeCard"]{
     position: relative;     
     height: 400px;
@@ -95,39 +73,3 @@
     backdrop-filter: blur(5px);
     padding-left:  20px; 
 }
-
-
-
-
-.Frame20click{
-    display: flex;
-    position: absolute;
-    width: 40px;
-    height: 40px;
-    background: #000000;
-    transform: rotate(-90deg);
-}
-
-
-.homeCatalogrow{
-    display: flex;
-    justify-content:space-between;    
-}
-
-
-
-@media (max-width: 1128px) {
-    .homePage{
-        width: 100%;
-        height: 100%;
-        margin: 0;
-        padding: 0;
-        }
-        html, body, #root {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
-            box-sizing: border-box;
-          }
-  }

@@ -1,122 +1,95 @@
-import React, { useEffect, useRef } from 'react';
-import Slider, { Settings } from 'react-slick';
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
-import './componentCarusel.css'
 
-//npm install slick-carousel
-//npm install @types/slick-carousel --save-dev
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import "./componentCarusel.css";
+import CardSlider from './componentCardSlider';
 
-const Carusel: React.FC = () => {
-  const sliderRef = useRef<Slider>(null);
-
-  useEffect(() => {
-    if (sliderRef.current) {
-      sliderRef.current.slickGoTo(0); // Початкове зміщення на перший елемент
-    }
-  }, []);
-
-  const settings: Settings = {
-    dots: true,
-    infinite: true,
+function Responsive() {
+  var settings = {
+   
+    dots: false,
+    infinite: false,
     speed: 500,
     slidesToShow: 6,
     slidesToScroll: 1,
+    initialSlide: 0,
+    prevArrow:   <svg width="40" height="40" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M14.7 21L23.1 29.4L23.1 12.6L14.7 21ZM-9.17939e-07 21C-7.90958e-07 18.095 0.551601 15.365 1.6548 12.81C2.758 10.255 4.2539 8.0325 6.1425 6.1425C8.0325 4.2525 10.255 2.7566 12.81 1.6548C15.365 0.552999 18.095 0.00139896 21 -9.17939e-07C23.905 -7.90958e-07 26.635 0.551599 29.19 1.6548C31.745 2.758 33.9675 4.2539 35.8575 6.1425C37.7475 8.0325 39.2434 10.255 40.3452 12.81C41.447 15.365 41.9986 18.095 42 21C42 23.905 41.4484 26.635 40.3452 29.19C39.242 31.745 37.7461 33.9675 35.8575 35.8575C33.9675 37.7475 31.745 39.2441 29.19 40.3473C26.635 41.4505 23.905 42.0014 21 42C18.095 42 15.365 41.4484 12.81 40.3452C10.255 39.242 8.0325 37.7461 6.1425 35.8575C4.2525 33.9675 2.7559 31.745 1.6527 29.19C0.549502 26.635 -0.00140104 23.905 -9.17939e-07 21Z" fill="black"/>
+                </svg>
+    ,
+    nextArrow:  <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M26 20L18 12L18 28L26 20ZM40 20C40 22.7667 39.4747 25.3667 38.424 27.8C37.3747 30.2333 35.95 32.35 34.15 34.15C32.35 35.95 30.2333 37.3747 27.8 38.424C25.3667 39.4747 22.7667 40 20 40C17.2333 40 14.6333 39.4747 12.2 38.424C9.76667 37.3747 7.65 35.95 5.85 34.15C4.05 32.35 2.62467 30.2333 1.574 27.8C0.524666 25.3667 -7.52784e-07 22.7667 -8.73637e-07 20C-9.94491e-07 17.2333 0.524665 14.6333 1.574 12.2C2.62467 9.76667 4.05 7.65 5.85 5.85C7.65 4.05 9.76667 2.62533 12.2 1.576C14.6333 0.525333 17.2333 -7.53802e-07 20 -8.74818e-07C22.7667 -9.95835e-07 25.3667 0.525332 27.8 1.576C30.2333 2.62533 32.35 4.05 34.15 5.85C35.95 7.65 37.3747 9.76666 38.424 12.2C39.4747 14.6333 40 17.2333 40 20Z" fill="black"/>
+                </svg>
+    
+    ,
     responsive: [
+      {
+        breakpoint: 1300,
+        settings: {
+          slidesToShow: 5,
+          slidesToScroll: 1,
+          infinite: true,
+          dots: false,
+          prevArrow: <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M26 20L18 12L18 28L26 20ZM40 20C40 22.7667 39.4747 25.3667 38.424 27.8C37.3747 30.2333 35.95 32.35 34.15 34.15C32.35 35.95 30.2333 37.3747 27.8 38.424C25.3667 39.4747 22.7667 40 20 40C17.2333 40 14.6333 39.4747 12.2 38.424C9.76667 37.3747 7.65 35.95 5.85 34.15C4.05 32.35 2.62467 30.2333 1.574 27.8C0.524666 25.3667 -7.52784e-07 22.7667 -8.73637e-07 20C-9.94491e-07 17.2333 0.524665 14.6333 1.574 12.2C2.62467 9.76667 4.05 7.65 5.85 5.85C7.65 4.05 9.76667 2.62533 12.2 1.576C14.6333 0.525333 17.2333 -7.53802e-07 20 -8.74818e-07C22.7667 -9.95835e-07 25.3667 0.525332 27.8 1.576C30.2333 2.62533 32.35 4.05 34.15 5.85C35.95 7.65 37.3747 9.76666 38.424 12.2C39.4747 14.6333 40 17.2333 40 20Z" fill="black"/>
+                     </svg>,
+          nextArrow: <svg  width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M26 20L18 12L18 28L26 20ZM40 20C40 22.7667 39.4747 25.3667 38.424 27.8C37.3747 30.2333 35.95 32.35 34.15 34.15C32.35 35.95 30.2333 37.3747 27.8 38.424C25.3667 39.4747 22.7667 40 20 40C17.2333 40 14.6333 39.4747 12.2 38.424C9.76667 37.3747 7.65 35.95 5.85 34.15C4.05 32.35 2.62467 30.2333 1.574 27.8C0.524666 25.3667 -7.52784e-07 22.7667 -8.73637e-07 20C-9.94491e-07 17.2333 0.524665 14.6333 1.574 12.2C2.62467 9.76667 4.05 7.65 5.85 5.85C7.65 4.05 9.76667 2.62533 12.2 1.576C14.6333 0.525333 17.2333 -7.53802e-07 20 -8.74818e-07C22.7667 -9.95835e-07 25.3667 0.525332 27.8 1.576C30.2333 2.62533 32.35 4.05 34.15 5.85C35.95 7.65 37.3747 9.76666 38.424 12.2C39.4747 14.6333 40 17.2333 40 20Z" fill="black"/>
+                     </svg>,
+        },
+      },
       {
         breakpoint: 1024,
         settings: {
-          slidesToShow: 4,
+          slidesToShow: 3,
+          slidesToScroll: 3,
+          infinite: true,
+          dots: false,
+          prevArrow: <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M26 20L18 12L18 28L26 20ZM40 20C40 22.7667 39.4747 25.3667 38.424 27.8C37.3747 30.2333 35.95 32.35 34.15 34.15C32.35 35.95 30.2333 37.3747 27.8 38.424C25.3667 39.4747 22.7667 40 20 40C17.2333 40 14.6333 39.4747 12.2 38.424C9.76667 37.3747 7.65 35.95 5.85 34.15C4.05 32.35 2.62467 30.2333 1.574 27.8C0.524666 25.3667 -7.52784e-07 22.7667 -8.73637e-07 20C-9.94491e-07 17.2333 0.524665 14.6333 1.574 12.2C2.62467 9.76667 4.05 7.65 5.85 5.85C7.65 4.05 9.76667 2.62533 12.2 1.576C14.6333 0.525333 17.2333 -7.53802e-07 20 -8.74818e-07C22.7667 -9.95835e-07 25.3667 0.525332 27.8 1.576C30.2333 2.62533 32.35 4.05 34.15 5.85C35.95 7.65 37.3747 9.76666 38.424 12.2C39.4747 14.6333 40 17.2333 40 20Z" fill="black"/>
+                     </svg>,
+          nextArrow: <svg  width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M26 20L18 12L18 28L26 20ZM40 20C40 22.7667 39.4747 25.3667 38.424 27.8C37.3747 30.2333 35.95 32.35 34.15 34.15C32.35 35.95 30.2333 37.3747 27.8 38.424C25.3667 39.4747 22.7667 40 20 40C17.2333 40 14.6333 39.4747 12.2 38.424C9.76667 37.3747 7.65 35.95 5.85 34.15C4.05 32.35 2.62467 30.2333 1.574 27.8C0.524666 25.3667 -7.52784e-07 22.7667 -8.73637e-07 20C-9.94491e-07 17.2333 0.524665 14.6333 1.574 12.2C2.62467 9.76667 4.05 7.65 5.85 5.85C7.65 4.05 9.76667 2.62533 12.2 1.576C14.6333 0.525333 17.2333 -7.53802e-07 20 -8.74818e-07C22.7667 -9.95835e-07 25.3667 0.525332 27.8 1.576C30.2333 2.62533 32.35 4.05 34.15 5.85C35.95 7.65 37.3747 9.76666 38.424 12.2C39.4747 14.6333 40 17.2333 40 20Z" fill="black"/>
+                     </svg>,
         },
       },
       {
         breakpoint: 600,
         settings: {
           slidesToShow: 2,
+          slidesToScroll: 2,
+          initialSlide: 2,
+          prevArrow: <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M26 20L18 12L18 28L26 20ZM40 20C40 22.7667 39.4747 25.3667 38.424 27.8C37.3747 30.2333 35.95 32.35 34.15 34.15C32.35 35.95 30.2333 37.3747 27.8 38.424C25.3667 39.4747 22.7667 40 20 40C17.2333 40 14.6333 39.4747 12.2 38.424C9.76667 37.3747 7.65 35.95 5.85 34.15C4.05 32.35 2.62467 30.2333 1.574 27.8C0.524666 25.3667 -7.52784e-07 22.7667 -8.73637e-07 20C-9.94491e-07 17.2333 0.524665 14.6333 1.574 12.2C2.62467 9.76667 4.05 7.65 5.85 5.85C7.65 4.05 9.76667 2.62533 12.2 1.576C14.6333 0.525333 17.2333 -7.53802e-07 20 -8.74818e-07C22.7667 -9.95835e-07 25.3667 0.525332 27.8 1.576C30.2333 2.62533 32.35 4.05 34.15 5.85C35.95 7.65 37.3747 9.76666 38.424 12.2C39.4747 14.6333 40 17.2333 40 20Z" fill="black"/>
+                     </svg>,
+          nextArrow: <svg  width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M26 20L18 12L18 28L26 20ZM40 20C40 22.7667 39.4747 25.3667 38.424 27.8C37.3747 30.2333 35.95 32.35 34.15 34.15C32.35 35.95 30.2333 37.3747 27.8 38.424C25.3667 39.4747 22.7667 40 20 40C17.2333 40 14.6333 39.4747 12.2 38.424C9.76667 37.3747 7.65 35.95 5.85 34.15C4.05 32.35 2.62467 30.2333 1.574 27.8C0.524666 25.3667 -7.52784e-07 22.7667 -8.73637e-07 20C-9.94491e-07 17.2333 0.524665 14.6333 1.574 12.2C2.62467 9.76667 4.05 7.65 5.85 5.85C7.65 4.05 9.76667 2.62533 12.2 1.576C14.6333 0.525333 17.2333 -7.53802e-07 20 -8.74818e-07C22.7667 -9.95835e-07 25.3667 0.525332 27.8 1.576C30.2333 2.62533 32.35 4.05 34.15 5.85C35.95 7.65 37.3747 9.76666 38.424 12.2C39.4747 14.6333 40 17.2333 40 20Z" fill="black"/>
+                     </svg>,
         },
       },
     ],
   };
-
+  
   return (
-    <div>
-      <Slider ref={sliderRef} {...settings}>
-        <div>
-          <div className='second__homeCard'>
-            <div className='Frame20'>
-              <div className='Frame20Text'>назва набору 1</div>
-            </div>
-          </div>
-        </div>
-        <div>
-          <div className='second__homeCard'>
-            <div className='Frame20'>
-              <div className='Frame20Text'>назва набору 2</div>
-            </div>
-          </div>
-        </div>
-        <div>
-          <div className='second__homeCard'>
-            <div className='Frame20'>
-              <div className='Frame20Text'>назва набору 3</div>
-            </div>
-          </div>
-        </div>
-        <div>
-          <div className='second__homeCard'>
-            <div className='Frame20'>
-              <div className='Frame20Text'>назва набору 4</div>
-            </div>
-          </div>
-        </div>
-        <div>
-          <div className='second__homeCard'>
-            <div className='Frame20'>
-              <div className='Frame20Text'>назва набору 5</div>
-            </div>
-          </div>
-        </div>
-        <div>
-          <div className='second__homeCard'>
-            <div className='Frame20'>
-              <div className='Frame20Text'>назва набору 6</div>
-            </div>
-          </div>
-        </div>
-        <div>
-          <div className='second__homeCard'>
-            <div className='Frame20'>
-              <div className='Frame20Text'>назва набору 7</div>
-            </div>
-          </div>
-        </div>
-        <div>
-          <div className='second__homeCard'>
-            <div className='Frame20'>
-              <div className='Frame20Text'>назва набору 8</div>
-            </div>
-          </div>
-        </div>
-        <div>
-          <div className='second__homeCard'>
-            <div className='Frame20'>
-              <div className='Frame20Text'>назва набору 9</div>
-            </div>
-          </div>
-        </div>
-        <div>
-          <div className='second__homeCard'>
-            <div className='Frame20'>
-              <div className='Frame20Text'>назва набору 10</div>
-            </div>
-          </div>
-        </div>
-        {/* Додайте ще 5 елементів каруселі */}
+    <div className="slider-container">
+      <Slider {...settings}>
+        <CardSlider />
+        <CardSlider />
+        <CardSlider />
+        <CardSlider />
+        <CardSlider />
+        <CardSlider />
+        <CardSlider />
+        <CardSlider />
+        <CardSlider />
+        <CardSlider />       
       </Slider>
     </div>
   );
-};
+}
 
-export default Carusel;
+export default Responsive;
+
 
 

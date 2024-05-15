@@ -1,0 +1,73 @@
+.colmhomcard{
+    display: flex;
+    flex-direction: row;
+    margin-left: 10%;
+}
+.component15 {
+    position: relative;
+    width: 200px;
+    height: 250px;
+    margin-right: 20px;    
+}
+.Group58 {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.frame16 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    background: #839D9A;
+    border-radius: 30px;
+    transform: translate(175%, 50%);
+    z-index: 2;
+}
+.top {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500;
+    font-size: 11px;
+    text-transform: uppercase;
+    color: #FFFFFF;
+}
+
+.group2 {
+    width: 160px;
+    height: 212px;
+    position: relative;
+}
+
+.Rectangle26 {
+    width: 100%;
+    height: 115px;
+    background-image: url(/img/homep1.png);
+    border-radius: 15px 15px 0 0;
+    justify-content: center;
+    align-items: flex-start;
+    background-size: cover; 
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.frame13 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+    background: #FFFFFF;
+    border-radius: 15px;
+}
+
+.bnText {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    text-transform: uppercase;
+    color: #000000;
+}

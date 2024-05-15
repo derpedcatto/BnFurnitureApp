@@ -1,0 +1,52 @@
+.newReleasesRow{
+    display: flex;
+    flex-direction: row;
+}
+
+
+.newRelease-1 {
+    display: flex;
+    position: relative;
+    width: 37%; /* 559px/1540 */
+    height: 275px;
+    background: url(/img/homes5-1.jpg), #D9D9D9;
+    border-radius: 15px;
+    margin-bottom: 20px;
+    background-size: cover;
+    background-position: center;
+}
+
+.newRelease-2 {
+    display: flex;
+    position: relative;
+    width: 62%; /* 901px/1540 */
+    height: 275px;
+    background: url(/img/homes5-2.jpg), #D9D9D9;
+    border-radius: 15px;
+    margin-left: auto;
+    background-size: cover;
+    background-position: center;
+}
+
+.newRelease-3 {
+    display: flex;
+    position: relative;
+    width: 62%;
+    height: 676px;
+    background: url(/img/homes5-3.jpg), #D9D9D9;
+    border-radius: 15px;
+    background-size: cover;
+    background-position: center;
+}
+
+.newRelease-4 {
+    display: flex;
+    position: relative;
+    width: 37%;
+    height: 676px;
+    background: url(/img/homes5-4.jpg), #D9D9D9;
+    border-radius: 15px;
+    margin-left: auto;
+    background-size: cover;
+    background-position: center;
+}

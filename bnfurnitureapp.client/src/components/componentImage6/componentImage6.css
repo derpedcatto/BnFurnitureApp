@@ -1,0 +1,58 @@
+.image-columns {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    position: relative; /* Додаємо позиціонування для можливості змістити SVG-елемент поверх */
+}
+
+.column {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    margin-right: 20px;
+}
+
+.image {    
+    background-size: cover;
+    background-position: center;
+    border-radius: 30px;
+    margin-bottom: 20px; 
+    margin-top: 20px;   
+}
+
+.image.horizontal1 {
+    background-image: url(/img/imgideas/homeideas1.jpg);
+    height: 595px;
+}
+
+.image.horizontal2 {
+    background-image: url(/img/imgideas/homeideas2.jpg);
+    height: 439px;
+}
+
+.image.horizontal3 {
+    background-image: url(/img/imgideas/homeideas3.jpg);
+    height: 595px;
+}
+
+.image.vertical1 {
+    background-image: url(/img/imgideas/homeideas4.jpg);
+    height: 439px;
+}
+
+.image.vertical2 {
+    background-image: url(/img/imgideas/homeideas5.jpg);
+    height: 595px;
+}
+
+.image.vertical3 {
+    background-image: url(/img/imgideas/homeideas6.jpg);
+    height: 439px;
+}
+.svg-overlay {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    z-index: 1; /* Щоб SVG-елемент був поверх інших елементів */
+    margin:20px;
+  }

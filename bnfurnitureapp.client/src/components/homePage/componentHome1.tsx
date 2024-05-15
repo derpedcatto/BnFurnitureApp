@@ -4,6 +4,7 @@ import './componentHome1.css'
 import Header from '../header/header';
 import SearchPage from '../searchPage/searchPage';
 import ComponentZero from '../componentZero/componentZero';
+import CardHome from '../componentCardHome/componentCardHome';
 
 const ComponentHome1: React.FC = () => {
   return (
@@ -30,48 +31,9 @@ const ComponentHome1: React.FC = () => {
               </svg>
             </div>
         </div>
-      <div className='colmhomcard'>
-        <div className="component15">     
-            <div className="Group58">
-                <div className="frame16">
-                    <div className="top">Top</div>
-                </div>
-                <div className="group2">
-                    <div className="Rectangle26"></div>
-                    <div className="frame13">
-                        <div className="bnText">Подушки спальна кімната... 12$</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div className="component15">     
-            <div className="Group58">
-                <div className="frame16">
-                    <div className="top">Top</div>
-                </div>
-                <div className="group2">
-                    <div className="Rectangle26"></div>
-                    <div className="frame13">
-                        <div className="bnText">Подушки спальна кімната... 12$</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div className="component15">     
-            <div className="Group58">
-                <div className="frame16">
-                    <div className="top">Top</div>
-                </div>
-                <div className="group2">
-                    <div className="Rectangle26"></div>
-                    <div className="frame13">
-                        <div className="bnText">Подушки спальна кімната... 12$</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-      </div>
+  
+        <CardHome/>
+      
       <div className='frame19'>
         <div className='frame19Text'>
            ЛОВИ МОМЕНТ | <strong>Знижки до 60% </strong>на вибрані категорії товарів!

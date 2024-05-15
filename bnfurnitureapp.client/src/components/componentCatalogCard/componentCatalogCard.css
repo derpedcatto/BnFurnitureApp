@@ -1,0 +1,35 @@
+
+.catalogCard {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    width: 11.883117%; /* 183px/1540 */
+    height: 204px;   
+}
+.catalogCardImg {
+    display: flex;
+    flex-direction: row;
+    background-size:contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 100%; /* 161px/1540 */
+    height: 191px;
+    background-image: url(/img/imgcatalog/catalog1.png); 
+}
+.catalogCardText{
+    width: 121px;
+    height: 17px; 
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 17px;
+    text-align: center;
+    text-transform: uppercase;
+    color: #000000;
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+}

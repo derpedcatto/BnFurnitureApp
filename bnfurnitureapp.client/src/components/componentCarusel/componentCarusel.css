@@ -1,41 +1,16 @@
-.second__homeCard{
-    display: flex;
-    position: relative;
-    width: 14.220779%; /* 219px/1540 */
-    height: 286px;
-    background: url(.jpg), #D9D9D9;
-    border-radius: 15px;
-    align-items: center;
-    justify-content: flex-end;
+
+.slick-prev,.slick-next  {
+    z-index: 1;
+    width: 40px;
+    height: 40px;    
 }
-.Frame20{
+.slick-slide {
     display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    padding: 10px 20px;
-    gap: 10px;
-    position: relative;
-    width: 75%; /* 191px/286 */
-    height: 40px;
-    background: #FFFFFF;
-    border-radius: 30px;
-    margin-bottom: 20px;
 }
-.Frame20Text{
-    display: flex;
-    flex-direction: row;   
-    align-items: center;    
-    height: 17px;
-    font-family: 'Montserrat';
-    font-style: normal;
-    font-weight: 600;
-    font-size: 14px;
-    line-height: 17px;
-    text-align: center;
-    text-transform: uppercase;
-    color: #000000;
-    flex: none;
-    order: 0;
-    flex-grow: 0;
+.slick-next {
+    margin-top: -10px; /* Коригування вертикального положення */
+    right: -10px;
+}
+.slick-prev  {
+   left: -10px;
 }
