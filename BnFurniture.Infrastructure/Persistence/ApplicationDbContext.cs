@@ -71,9 +71,21 @@ public class ApplicationDbContext(DbContextOptions options) : DbContext(options)
         modelBuilder.Entity<ProductCategory>()
             .HasIndex(e => e.Slug)
             .IsUnique(true);
-        modelBuilder.Entity<ProductType>()
-            .HasIndex(e => e.Slug)
-            .IsUnique(true);
+        //modelBuilder.Entity<ProductType>()
+        //    .HasIndex(e => e.Slug)
+        //    .IsUnique(true);
+        modelBuilder.Entity<ProductType>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Name).IsRequired().HasMaxLength(100);
+            entity.Property(e => e.Slug).IsRequired().HasMaxLength(100);
+            entity.HasIndex(e => e.Slug).IsUnique();
+            entity.HasOne(e => e.ProductCategory)
+                .WithMany(pc => pc.ProductTypes)
+                .HasForeignKey(e => e.CategoryId);
+        });
+
+
         modelBuilder.Entity<Characteristic>()
             .HasIndex(e => e.Slug)
             .IsUnique(true);
