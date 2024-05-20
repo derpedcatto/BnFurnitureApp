@@ -1,12 +1,12 @@
-﻿using BnFurniture.Application.Controllers.App.ExampleController.Commands;
-using BnFurniture.Application.Controllers.App.ExampleController.DTO;
-using BnFurniture.Application.Controllers.App.ExampleController.Queries;
+﻿using BnFurniture.Application.Controllers.ExampleController.Commands;
+using BnFurniture.Application.Controllers.ExampleController.DTO;
+using BnFurniture.Application.Controllers.ExampleController.Queries;
 using Microsoft.AspNetCore.Mvc;
 
-namespace BnFurnitureApp.Server.Controllers;
+namespace BnFurnitureAdmin.Server.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("api/[controller]")]
 public class ExampleController : ControllerBase
 {
     [HttpGet]

@@ -2,9 +2,10 @@
 using BnFurniture.Infrastructure.Persistence;
 using BnFurniture.Shared.Utilities.Email;
 using BnFurniture.Shared.Utilities.Hash;
-using BnFurnitureApp.Middleware;
-using BnFurnitureApp.Server.Middleware;
+using BnFurnitureAdmin.Middleware;
+using BnFurnitureAdmin.Server.Middleware;
 using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -86,7 +87,7 @@ builder.Services.AddScoped<IHandlerContext, HandlerContext>();
 
 
 // Other Services registration
-builder.Services.AddSingleton<IHashService, Sha1HashService>();
+builder.Services.AddSingleton<IHashService, Sha256HashService>();
 builder.Services.AddSingleton<IEmailService, EmailService>();
 
 
@@ -108,7 +109,7 @@ await CheckDatabaseConnectionAsync(app, logger);
 app.UseDefaultFiles();
 app.UseStaticFiles();
 
-// Configure the HTTP request pipeline.
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -122,6 +123,7 @@ app.UseAuthorization();
 
 app.UseSession();
 app.UseMiddleware<SessionAuthMiddleware>();
+app.UseMiddleware<AuthorizationMiddleware>();
 
 app.MapControllers();
 

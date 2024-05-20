@@ -1,7 +1,7 @@
 ﻿using BnFurniture.Infrastructure.Persistence;
 using System.Security.Claims;
 
-namespace BnFurnitureApp.Server.Middleware;
+namespace BnFurnitureAdmin.Server.Middleware;
 
 public class SessionAuthMiddleware
 {

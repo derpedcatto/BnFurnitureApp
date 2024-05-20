@@ -17,7 +17,7 @@ namespace BnFurniture.Infrastructure.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.4")
+                .HasAnnotation("ProductVersion", "8.0.5")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
@@ -64,12 +64,9 @@ namespace BnFurniture.Infrastructure.Migrations
 
                     b.Property<string>("Slug")
                         .IsRequired()
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("longtext");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("Slug")
-                        .IsUnique();
 
                     b.ToTable("Characteristic");
                 });
@@ -88,7 +85,7 @@ namespace BnFurniture.Infrastructure.Migrations
 
                     b.Property<string>("Slug")
                         .IsRequired()
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Value")
                         .IsRequired()
@@ -97,9 +94,6 @@ namespace BnFurniture.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CharacteristicId");
-
-                    b.HasIndex("Slug")
-                        .IsUnique();
 
                     b.ToTable("CharacteristicValue");
                 });
@@ -217,6 +211,28 @@ namespace BnFurniture.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Permission");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("1cbc57bc-38b2-4f4a-8419-cfc60434b5a0"),
+                            Name = "DashboardAccess"
+                        },
+                        new
+                        {
+                            Id = new Guid("8b059966-fcb1-4bb2-b260-8d50d64d952a"),
+                            Name = "UpdateAccess"
+                        },
+                        new
+                        {
+                            Id = new Guid("981446f2-1508-40a0-9a71-549703d56dd6"),
+                            Name = "DeleteAccess"
+                        },
+                        new
+                        {
+                            Id = new Guid("a61281ac-2bc2-498e-905c-a7912f7b1c3f"),
+                            Name = "CreateAccess"
+                        });
                 });
 
             modelBuilder.Entity("BnFurniture.Domain.Entities.Product", b =>
@@ -572,14 +588,11 @@ namespace BnFurniture.Infrastructure.Migrations
 
                     b.Property<string>("Slug")
                         .IsRequired()
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("longtext");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
-
-                    b.HasIndex("Slug")
-                        .IsUnique();
 
                     b.ToTable("ProductType");
                 });
@@ -621,6 +634,17 @@ namespace BnFurniture.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("User");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("cf824881-8bec-4d9e-95a3-5deef16065b5"),
+                            Email = "sashavannovski@gmail.com",
+                            FirstName = "Oleksandr",
+                            LastName = "Vannovskyi",
+                            Password = "8C6976E5B5410415BDE908BD4DEE15DFB167A9C873FC4BB8A81F6F2AB448A918",
+                            RegisteredAt = new DateTime(2024, 5, 20, 17, 39, 55, 316, DateTimeKind.Local).AddTicks(6578)
+                        });
                 });
 
             modelBuilder.Entity("BnFurniture.Domain.Entities.UserActivityType", b =>
@@ -657,6 +681,13 @@ namespace BnFurniture.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("UserRole");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("200609fb-4fc1-4762-aa61-6a4fcad74465"),
+                            Name = "Admin"
+                        });
                 });
 
             modelBuilder.Entity("BnFurniture.Domain.Entities.UserRole_Permission", b =>
@@ -678,6 +709,32 @@ namespace BnFurniture.Infrastructure.Migrations
                     b.HasIndex("UserRoleId");
 
                     b.ToTable("UserRole_Permission");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("c2ea9855-859b-47bf-89c8-159b8a2c2438"),
+                            PermissionId = new Guid("1cbc57bc-38b2-4f4a-8419-cfc60434b5a0"),
+                            UserRoleId = new Guid("200609fb-4fc1-4762-aa61-6a4fcad74465")
+                        },
+                        new
+                        {
+                            Id = new Guid("58330000-c041-48f3-bfd8-f7730f6b3d87"),
+                            PermissionId = new Guid("8b059966-fcb1-4bb2-b260-8d50d64d952a"),
+                            UserRoleId = new Guid("200609fb-4fc1-4762-aa61-6a4fcad74465")
+                        },
+                        new
+                        {
+                            Id = new Guid("dc7a3092-4f49-4eb0-859c-9755d8f0d847"),
+                            PermissionId = new Guid("981446f2-1508-40a0-9a71-549703d56dd6"),
+                            UserRoleId = new Guid("200609fb-4fc1-4762-aa61-6a4fcad74465")
+                        },
+                        new
+                        {
+                            Id = new Guid("84cd3358-c191-4782-bcd3-96cbfdf7609e"),
+                            PermissionId = new Guid("a61281ac-2bc2-498e-905c-a7912f7b1c3f"),
+                            UserRoleId = new Guid("200609fb-4fc1-4762-aa61-6a4fcad74465")
+                        });
                 });
 
             modelBuilder.Entity("BnFurniture.Domain.Entities.UserWishlist", b =>
@@ -740,6 +797,14 @@ namespace BnFurniture.Infrastructure.Migrations
                     b.HasIndex("UserRoleId");
 
                     b.ToTable("User_UserRole");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("278ddc2f-972a-48ea-9692-896762a4b2fa"),
+                            UserId = new Guid("cf824881-8bec-4d9e-95a3-5deef16065b5"),
+                            UserRoleId = new Guid("200609fb-4fc1-4762-aa61-6a4fcad74465")
+                        });
                 });
 
             modelBuilder.Entity("BnFurniture.Domain.Entities.AuditLog", b =>

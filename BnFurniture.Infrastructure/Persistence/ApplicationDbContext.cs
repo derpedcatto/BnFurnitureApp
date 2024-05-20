@@ -1,6 +1,7 @@
-﻿using BnFurniture.Domain.Entities;
+﻿using BnFurniture.Domain.Constants;
+using BnFurniture.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
-using System.Runtime.CompilerServices;
+using System.Reflection;
 
 namespace BnFurniture.Infrastructure.Persistence;
 
@@ -41,8 +42,66 @@ public class ApplicationDbContext(DbContextOptions options) : DbContext(options)
         ConfigureKeys(modelBuilder);
         ConfigureProperties(modelBuilder);
         ConfigureRelationship(modelBuilder);
+        Seed(modelBuilder);
     }
 
+
+    private void Seed(ModelBuilder modelBuilder)
+    {
+        var adminId = Guid.NewGuid();
+        var adminRoleId = Guid.NewGuid();
+
+        /* Permissions */
+        var permissionList = new List<Permission>()
+        {
+            new() { Name = Permissions.DashboardAccess },
+            new() { Name = Permissions.UpdateAccess },
+            new() { Name = Permissions.DeleteAccess },
+            new() { Name = Permissions.CreateAccess }
+        };
+        foreach (var permission in permissionList)
+        {
+            permission.Id = Guid.NewGuid();
+            modelBuilder.Entity<Permission>().HasData(permission);
+        }
+
+        /* Admin User */
+        modelBuilder.Entity<User>().HasData(
+            new User
+            {
+                Id = adminId,
+                Email = "sashavannovski@gmail.com",
+                Password = "8C6976E5B5410415BDE908BD4DEE15DFB167A9C873FC4BB8A81F6F2AB448A918",  // SHA256, "admin"
+                FirstName = "Oleksandr",
+                LastName = "Vannovskyi",
+                RegisteredAt = DateTime.Now,
+            });
+
+        /* User Roles */
+        modelBuilder.Entity<UserRole>().HasData(
+            new UserRole { Id = adminRoleId, Name = "Admin" });
+
+        /* UserRole_Permission */
+        foreach (var permission in permissionList)
+        {
+            modelBuilder.Entity<UserRole_Permission>().HasData(
+                new UserRole_Permission
+                {
+                    Id = Guid.NewGuid(),
+                    UserRoleId = adminRoleId,
+                    PermissionId = permission.Id
+                });
+        }
+
+        /* User_UserRole */
+        modelBuilder.Entity<User_UserRole>().HasData(
+            new User_UserRole
+            {
+                Id = Guid.NewGuid(),
+                UserId = adminId,
+                UserRoleId = adminRoleId
+            });
+    }
 
     private void ConfigureProperties(ModelBuilder modelBuilder)
     {
@@ -68,18 +127,25 @@ public class ApplicationDbContext(DbContextOptions options) : DbContext(options)
             .HasMaxLength(100);
 
         // Set `Unique` attribute to all `Slug` fields
+
         modelBuilder.Entity<ProductCategory>()
             .HasIndex(e => e.Slug)
             .IsUnique(true);
+
+        /*
         modelBuilder.Entity<ProductType>()
             .HasIndex(e => e.Slug)
             .IsUnique(true);
-        modelBuilder.Entity<Characteristic>()
+            modelBuilder.Entity<Characteristic>()
             .HasIndex(e => e.Slug)
             .IsUnique(true);
+        */
+
+        /*
         modelBuilder.Entity<CharacteristicValue>()
             .HasIndex(e => e.Slug)
             .IsUnique(true);
+        */
         modelBuilder.Entity<ProductArticle>()
             .HasIndex(e => e.Slug)
             .IsUnique(true);
@@ -369,14 +435,3 @@ public class ApplicationDbContext(DbContextOptions options) : DbContext(options)
             .OnDelete(DeleteBehavior.Cascade);  // +
     }
 }
-
-/*
-protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-{
-    if (!optionsBuilder.IsConfigured)
-    {
-        // Указание строки подключения для MySQL
-        optionsBuilder.UseMySql("DefaultConnection", new MySqlServerVersion(new Version(8, 0, 30)));
-    }
-}
-*/
