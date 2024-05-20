@@ -2,6 +2,7 @@
 using BnFurniture.Infrastructure.Persistence;
 using BnFurniture.Application.Controllers.UserController.Commands;
 using BnFurniture.Application.Controllers.UserController.DTO;
+using BnFurniture.Application.Controllers.App.UserController.Commands;
 
 namespace BnFurnitureApp.Server.Controllers;
 

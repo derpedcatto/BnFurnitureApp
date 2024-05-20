@@ -1,4 +1,6 @@
 ﻿using BnFurniture.Application.Abstractions;
+using BnFurniture.Application.Controllers.ProductCategoryController.Commands;
+using BnFurniture.Application.Controllers.ProductCategoryController.DTO;
 using BnFurniture.Infrastructure.Persistence;
 using BnFurniture.Shared.Utilities.Email;
 using BnFurniture.Shared.Utilities.Hash;
@@ -60,7 +62,8 @@ var connectionString = builder.Configuration.GetConnectionString("DerpeLocalConn
 var serverVersion = new MySqlServerVersion(new Version(8, 0, 30));
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
-    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
+    // options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
+    options.UseMySql(connectionString, serverVersion, b => b.MigrationsAssembly("BnFurniture.Infrastructure"));
 });
 
 
@@ -85,6 +88,14 @@ foreach (var type in typeof(BnFurniture.Application.AssemblyClass).Assembly.GetT
 builder.Services.AddScoped<IHandlerContext, HandlerContext>();
 
 
+builder.Services.AddScoped<IValidator<ProductCategoryDTO>, ProductCategoryDTOValidator>();
+builder.Services.AddScoped<AddProductCategoryHandler>();
+builder.Services.AddScoped<GetProductCategoriesHandler>();
+builder.Services.AddScoped<DeleteProductCategoryHandler>();
+builder.Services.AddScoped<UpdateProductCategoryHandler>();
+
+
+
 // Other Services registration
 builder.Services.AddSingleton<IHashService, Sha1HashService>();
 builder.Services.AddSingleton<IEmailService, EmailService>();
@@ -93,7 +104,22 @@ builder.Services.AddSingleton<IEmailService, EmailService>();
 
 var app = builder.Build();
 
+// Checking DB connection
+using (var serviceScope = app.Services.CreateScope())
+{
+    var dbContext = serviceScope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
+    if (dbContext.Database.CanConnect())
+    {
+        var databaseName = dbContext.Database.GetDbConnection().Database;
+        Console.WriteLine($"Connected to the database: {databaseName}");
+    }
+    else
+    {
+        Console.WriteLine("Failed to connect to the database.");
+        // Здесь можно предпринять дополнительные действия в случае неудачного подключения
+    }
+}
 
 // Middleware registration
 app.UseHttpLogging();
