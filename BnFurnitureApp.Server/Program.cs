@@ -1,6 +1,7 @@
 ﻿using BnFurniture.Application.Abstractions;
 using BnFurniture.Application.Controllers.ProductCategoryController.Commands;
 using BnFurniture.Application.Controllers.ProductCategoryController.DTO;
+using BnFurniture.Application.Controllers.ProductController.DTO;
 using BnFurniture.Application.Controllers.ProductTypeController.Commands;
 using BnFurniture.Application.Controllers.ProductTypeController.DTO;
 using BnFurniture.Infrastructure.Persistence;
@@ -90,16 +91,17 @@ foreach (var type in typeof(BnFurniture.Application.AssemblyClass).Assembly.GetT
 builder.Services.AddScoped<IHandlerContext, HandlerContext>();
 
 
-builder.Services.AddScoped<IValidator<ProductCategoryDTO>, ProductCategoryDTOValidator>();
-builder.Services.AddScoped<AddProductCategoryHandler>();
-builder.Services.AddScoped<GetProductCategoriesHandler>();
-builder.Services.AddScoped<DeleteProductCategoryHandler>();
-builder.Services.AddScoped<UpdateProductCategoryHandler>();
-builder.Services.AddScoped<IValidator<ProductTypeDTO>, ProductTypeDTOValidator>();
-builder.Services.AddScoped<CreateProductTypeHandler>();
-builder.Services.AddScoped<GetAllProductTypesHandler>();
-builder.Services.AddScoped<UpdateProductTypeHandler>();
-builder.Services.AddScoped<DeleteProductTypeHandler>();
+//builder.Services.AddScoped<IValidator<ProductCategoryDTO>, ProductCategoryDTOValidator>();
+//builder.Services.AddScoped<AddProductCategoryHandler>();
+//builder.Services.AddScoped<GetProductCategoriesHandler>();
+//builder.Services.AddScoped<DeleteProductCategoryHandler>();
+//builder.Services.AddScoped<UpdateProductCategoryHandler>();
+//builder.Services.AddScoped<IValidator<ProductTypeDTO>, ProductTypeDTOValidator>();
+//builder.Services.AddScoped<CreateProductTypeHandler>();
+////builder.Services.AddScoped<GetAllProductTypesHandler>();
+//builder.Services.AddScoped<UpdateProductTypeHandler>();
+//builder.Services.AddScoped<DeleteProductTypeHandler>();
+////  builder.Services.AddScoped<IValidator<ProductDTO>, ProductDTOValidator>();
 
 
 
