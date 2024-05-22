@@ -12,5 +12,6 @@ public class ProductMetrics
     public long Sales { get; set; }
 
     // Nav
+    [ForeignKey(nameof(ProductId))]
     public Product Product { get; set; } = null!;
 }

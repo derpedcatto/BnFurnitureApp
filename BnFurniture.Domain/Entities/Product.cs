@@ -9,7 +9,6 @@ public class Product
     public Guid Id { get; set; }
     public Guid ProductTypeId { get; set; }
     public Guid AuthorId { get; set; }
-    public Guid MetricId { get; set; }
     public string Name { get; set; } = string.Empty;
     public string Slug { get; set; } = string.Empty;
     public string? Summary { get; set; } 
@@ -27,7 +26,6 @@ public class Product
     [ForeignKey(nameof(AuthorId))]
     public User Author { get; set; } = null!;
 
-    [ForeignKey(nameof(MetricId))]
     public ProductMetrics Metrics { get; set; } = null!;
 
     public ICollection<ProductSetItem> ProductSetItems { get; set; } = null!;
