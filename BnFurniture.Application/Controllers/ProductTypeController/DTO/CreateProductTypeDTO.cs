@@ -51,7 +51,7 @@ public class CreateProductTypeDTOValidator : AbstractValidator<CreateProductType
 
     private async Task<bool> IsCategorySlugUnique(Guid categoryId, string slug, CancellationToken ct)
     {
-        return await _dbContext.ProductCategory
+        return ! await _dbContext.ProductCategory
             .AnyAsync(pc => pc.Id == categoryId && pc.Slug == slug, ct);
     }
 
