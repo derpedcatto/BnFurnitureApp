@@ -36,7 +36,7 @@ public sealed class CreateCategoryHandler : CommandHandler<CreateCategoryCommand
         var newCategory = new ProductCategory()
         {
             Id = Guid.NewGuid(),
-            ParentId = dto.ParentId == null ? null : dto.ParentId,
+            ParentId = dto.ParentId,
             Name = dto.Name,
             Slug = dto.Slug,
             Priority = dto.Priority

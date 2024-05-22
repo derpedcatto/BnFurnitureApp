@@ -1,4 +1,5 @@
-﻿using BnFurniture.Infrastructure.Persistence;
+﻿using BnFurniture.Application.Extensions;
+using BnFurniture.Infrastructure.Persistence;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
@@ -34,7 +35,8 @@ public class CreateCategoryDTOValidator : AbstractValidator<CreateCategoryDTO>
 
         RuleFor(x => x.Slug)
             .NotNull().WithMessage("Slug is null.")
-            .NotEmpty().WithMessage("Slug is empty.");
+            .NotEmpty().WithMessage("Slug is empty.")
+            .UrlSlug();
 
         RuleFor(x => x.ParentId)
             .MustAsync((dto, id, ct) => { return IsParentIdValid(dto.ParentId!.Value, ct); }).WithMessage("Parent Category with this Id does not exist")

@@ -1,11 +1,11 @@
 ﻿namespace BnFurniture.Application.Controllers.CategoryController.DTO;
 
-public class ProductCategoryDTO
+public class ResponseProductCategoryDTO
 {
     public Guid Id { get; set; }
     public string Name { get; set; } = string.Empty;
     public string Slug { get; set; } = string.Empty;
     public int? Priority { get; set; }
 
-    public List<ProductCategoryDTO>? SubCategories { get; set; }
+    public List<ResponseProductCategoryDTO>? SubCategories { get; set; }
 }

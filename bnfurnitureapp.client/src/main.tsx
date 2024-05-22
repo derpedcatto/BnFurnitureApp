@@ -3,9 +3,12 @@ import ReactDOM from 'react-dom/client'
 import App from './app/App.tsx'
 import { Provider } from 'react-redux'
 import { store } from './app/store.ts'
+import axios from 'axios'
 
 import './global.scss'
 import './reset.scss'
+
+axios.defaults.baseURL = 'https://localhost:7249';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>

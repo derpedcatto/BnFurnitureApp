@@ -64,9 +64,12 @@ namespace BnFurniture.Infrastructure.Migrations
 
                     b.Property<string>("Slug")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("varchar(255)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Slug")
+                        .IsUnique();
 
                     b.ToTable("Characteristic");
                 });
@@ -215,22 +218,22 @@ namespace BnFurniture.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("1cbc57bc-38b2-4f4a-8419-cfc60434b5a0"),
+                            Id = new Guid("dbae7b6e-0715-4be9-bb59-73b50fcc4703"),
                             Name = "DashboardAccess"
                         },
                         new
                         {
-                            Id = new Guid("8b059966-fcb1-4bb2-b260-8d50d64d952a"),
+                            Id = new Guid("63510989-c806-4dc9-96a1-c942be1ceaaa"),
                             Name = "UpdateAccess"
                         },
                         new
                         {
-                            Id = new Guid("981446f2-1508-40a0-9a71-549703d56dd6"),
+                            Id = new Guid("c63ea19a-39e0-49cd-9226-5462f9cb47eb"),
                             Name = "DeleteAccess"
                         },
                         new
                         {
-                            Id = new Guid("a61281ac-2bc2-498e-905c-a7912f7b1c3f"),
+                            Id = new Guid("a2280f81-e34a-4461-ba5d-e27b6635143a"),
                             Name = "CreateAccess"
                         });
                 });
@@ -321,10 +324,6 @@ namespace BnFurniture.Infrastructure.Migrations
                     b.Property<Guid>("ProductId")
                         .HasColumnType("char(36)");
 
-                    b.Property<string>("Slug")
-                        .IsRequired()
-                        .HasColumnType("varchar(255)");
-
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime(6)");
 
@@ -333,9 +332,6 @@ namespace BnFurniture.Infrastructure.Migrations
                     b.HasIndex("AuthorId");
 
                     b.HasIndex("ProductId");
-
-                    b.HasIndex("Slug")
-                        .IsUnique();
 
                     b.ToTable("ProductArticle");
                 });
@@ -638,12 +634,12 @@ namespace BnFurniture.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("cf824881-8bec-4d9e-95a3-5deef16065b5"),
+                            Id = new Guid("adad13d5-2468-4f9c-9ddc-b0940569df8a"),
                             Email = "sashavannovski@gmail.com",
                             FirstName = "Oleksandr",
                             LastName = "Vannovskyi",
                             Password = "8C6976E5B5410415BDE908BD4DEE15DFB167A9C873FC4BB8A81F6F2AB448A918",
-                            RegisteredAt = new DateTime(2024, 5, 20, 17, 39, 55, 316, DateTimeKind.Local).AddTicks(6578)
+                            RegisteredAt = new DateTime(2024, 5, 22, 11, 21, 55, 272, DateTimeKind.Local).AddTicks(9460)
                         });
                 });
 
@@ -685,7 +681,7 @@ namespace BnFurniture.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("200609fb-4fc1-4762-aa61-6a4fcad74465"),
+                            Id = new Guid("e45834c7-bd1a-4ba6-9c13-e9ee2c74fd3e"),
                             Name = "Admin"
                         });
                 });
@@ -713,27 +709,27 @@ namespace BnFurniture.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("c2ea9855-859b-47bf-89c8-159b8a2c2438"),
-                            PermissionId = new Guid("1cbc57bc-38b2-4f4a-8419-cfc60434b5a0"),
-                            UserRoleId = new Guid("200609fb-4fc1-4762-aa61-6a4fcad74465")
+                            Id = new Guid("f774da6c-effb-4ee9-b40a-cc1a934dafbc"),
+                            PermissionId = new Guid("dbae7b6e-0715-4be9-bb59-73b50fcc4703"),
+                            UserRoleId = new Guid("e45834c7-bd1a-4ba6-9c13-e9ee2c74fd3e")
                         },
                         new
                         {
-                            Id = new Guid("58330000-c041-48f3-bfd8-f7730f6b3d87"),
-                            PermissionId = new Guid("8b059966-fcb1-4bb2-b260-8d50d64d952a"),
-                            UserRoleId = new Guid("200609fb-4fc1-4762-aa61-6a4fcad74465")
+                            Id = new Guid("2e3d6c34-f099-4a60-934e-c377ffcdd113"),
+                            PermissionId = new Guid("63510989-c806-4dc9-96a1-c942be1ceaaa"),
+                            UserRoleId = new Guid("e45834c7-bd1a-4ba6-9c13-e9ee2c74fd3e")
                         },
                         new
                         {
-                            Id = new Guid("dc7a3092-4f49-4eb0-859c-9755d8f0d847"),
-                            PermissionId = new Guid("981446f2-1508-40a0-9a71-549703d56dd6"),
-                            UserRoleId = new Guid("200609fb-4fc1-4762-aa61-6a4fcad74465")
+                            Id = new Guid("3591b2d7-d541-4330-9fbf-f52d1b179c18"),
+                            PermissionId = new Guid("c63ea19a-39e0-49cd-9226-5462f9cb47eb"),
+                            UserRoleId = new Guid("e45834c7-bd1a-4ba6-9c13-e9ee2c74fd3e")
                         },
                         new
                         {
-                            Id = new Guid("84cd3358-c191-4782-bcd3-96cbfdf7609e"),
-                            PermissionId = new Guid("a61281ac-2bc2-498e-905c-a7912f7b1c3f"),
-                            UserRoleId = new Guid("200609fb-4fc1-4762-aa61-6a4fcad74465")
+                            Id = new Guid("1caf88d1-87c4-451d-9cd3-54cf9d62b5f0"),
+                            PermissionId = new Guid("a2280f81-e34a-4461-ba5d-e27b6635143a"),
+                            UserRoleId = new Guid("e45834c7-bd1a-4ba6-9c13-e9ee2c74fd3e")
                         });
                 });
 
@@ -801,9 +797,9 @@ namespace BnFurniture.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("278ddc2f-972a-48ea-9692-896762a4b2fa"),
-                            UserId = new Guid("cf824881-8bec-4d9e-95a3-5deef16065b5"),
-                            UserRoleId = new Guid("200609fb-4fc1-4762-aa61-6a4fcad74465")
+                            Id = new Guid("9b5b3e45-3760-4e27-9b2d-55539cd83baa"),
+                            UserId = new Guid("adad13d5-2468-4f9c-9ddc-b0940569df8a"),
+                            UserRoleId = new Guid("e45834c7-bd1a-4ba6-9c13-e9ee2c74fd3e")
                         });
                 });
 

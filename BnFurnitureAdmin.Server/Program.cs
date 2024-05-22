@@ -67,6 +67,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 // FluentValidation Services registration
 builder.Services.AddValidatorsFromAssemblyContaining<BnFurniture.Application.AssemblyClass>();
+FluentValidation.ValidatorOptions.Global.PropertyNameResolver = (type, member, expression) =>
+    ToCamelCase(member?.Name);
 foreach (var type in typeof(BnFurniture.Application.AssemblyClass).Assembly.GetTypes()
     .Where(x => x.Name.EndsWith("DTOValidator") && !x.IsAbstract && !x.IsInterface))
 {
@@ -131,6 +133,17 @@ app.MapControllers();
 app.Run();
 
 
+
+static string? ToCamelCase(string? str)
+{
+    if (string.IsNullOrEmpty(str) || !char.IsUpper(str[0]))
+        return str;
+
+    char[] chars = str.ToCharArray();
+
+    chars[0] = char.ToLowerInvariant(chars[0]);
+    return new string(chars);
+}
 
 static async Task CheckDatabaseConnectionAsync(WebApplication app, ILogger logger)
 {

@@ -10,7 +10,6 @@ public class ProductArticle
     public Guid ProductId { get; set; }
     public Guid AuthorId { get; set; }
     public string Name { get; set; } = string.Empty;
-    public string Slug { get; set; } = string.Empty;
     public DateTime CreatedAt { get; set; }
     public DateTime? UpdatedAt { get; set; }
     public decimal Price { get; set; } // Precision must be (19, 2)

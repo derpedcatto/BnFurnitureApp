@@ -20,6 +20,13 @@ builder.Services.AddControllers().AddJsonOptions(o =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options => { options.CustomSchemaIds(s => s.FullName?.Replace("+", ".")); });
 builder.Services.AddHttpContextAccessor();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowSpecificOrigin",
+        builder => builder.WithOrigins("http://localhost:5173")
+                          .AllowAnyHeader()
+                          .AllowAnyMethod());
+});
 
 
 // Suppress default error response model
@@ -67,6 +74,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 // FluentValidation Services registration
 builder.Services.AddValidatorsFromAssemblyContaining<BnFurniture.Application.AssemblyClass>();
+FluentValidation.ValidatorOptions.Global.PropertyNameResolver = (type, member, expression) =>
+    ToCamelCase(member?.Name);
 foreach (var type in typeof(BnFurniture.Application.AssemblyClass).Assembly.GetTypes()
     .Where(x => x.Name.EndsWith("DTOValidator") && !x.IsAbstract && !x.IsInterface))
 {
@@ -116,6 +125,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseCors("AllowSpecificOrigin");
+
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
@@ -131,6 +142,18 @@ app.MapFallbackToFile("/index.html");
 
 app.Run();
 
+
+
+static string? ToCamelCase(string? str)
+{
+    if (string.IsNullOrEmpty(str) || !char.IsUpper(str[0]))
+        return str;
+
+    char[] chars = str.ToCharArray();
+
+    chars[0] = char.ToLowerInvariant(chars[0]);
+    return new string(chars);
+}
 
 static async Task CheckDatabaseConnectionAsync(WebApplication app, ILogger logger)
 {

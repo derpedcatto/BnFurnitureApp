@@ -30,7 +30,7 @@ const Nav = () => {
             <NavLink to="sets">Набори</NavLink>
           </div>
           <div className={styles['nav-rightside']}>
-            <NavLink to={isLoggedIn ? '/user/cabinet' : '/auth/register'}>
+            <NavLink to={isLoggedIn ? '/user/cabinet' : '/auth/login'}>
               <div className={`${styles['svg-icon-container']} ${styles['user']}`}>
                 <UserIcon className={styles['user-icon']} />
                 <p>Привіт! Увійдіть в систему</p>

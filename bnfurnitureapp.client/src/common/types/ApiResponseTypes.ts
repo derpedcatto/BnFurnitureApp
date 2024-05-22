@@ -2,7 +2,7 @@ interface ApiBaseResponse {
   isSuccess: boolean;
   statusCode: number;
   message?: string;
-  errors?: Record<string, string[]>;
+  errors?: { [key: string]: string[] };
 }
 
 interface ApiCommandResponse extends ApiBaseResponse {

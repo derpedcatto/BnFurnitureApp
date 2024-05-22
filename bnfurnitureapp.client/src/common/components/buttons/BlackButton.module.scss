@@ -1,0 +1,31 @@
+@import '../../../global.scss';
+
+.black-button {
+  color: white;
+  background-color: black;
+  border-radius: $button-radius;
+  padding: 0.7rem;
+  border: 0;
+  cursor: pointer;
+
+  &:hover {
+    transition: 0.3s;
+    background: rgba(0,0,0,0);
+    color: black;
+    box-shadow: inset 0 0 0 3px black;
+  }
+
+  &:disabled {
+    transition: 0.3s;
+    background-color: gray;  
+    color: darkgray;        
+    cursor: not-allowed;     
+    box-shadow: none;        
+
+    &:hover {
+      background: gray;     
+      color: darkgray;      
+      box-shadow: none;
+    }
+  }
+}

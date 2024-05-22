@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace BnFurniture.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class UniqueSlugChanges_AdminSeed : Migration
+    public partial class SlugChanges_AdminSeed : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -18,12 +18,16 @@ namespace BnFurniture.Infrastructure.Migrations
                 table: "ProductType");
 
             migrationBuilder.DropIndex(
+                name: "IX_ProductArticle_Slug",
+                table: "ProductArticle");
+
+            migrationBuilder.DropIndex(
                 name: "IX_CharacteristicValue_Slug",
                 table: "CharacteristicValue");
 
-            migrationBuilder.DropIndex(
-                name: "IX_Characteristic_Slug",
-                table: "Characteristic");
+            migrationBuilder.DropColumn(
+                name: "Slug",
+                table: "ProductArticle");
 
             migrationBuilder.AlterColumn<string>(
                 name: "Slug",
@@ -45,52 +49,42 @@ namespace BnFurniture.Infrastructure.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4")
                 .OldAnnotation("MySql:CharSet", "utf8mb4");
 
-            migrationBuilder.AlterColumn<string>(
-                name: "Slug",
-                table: "Characteristic",
-                type: "longtext",
-                nullable: false,
-                oldClrType: typeof(string),
-                oldType: "varchar(255)")
-                .Annotation("MySql:CharSet", "utf8mb4")
-                .OldAnnotation("MySql:CharSet", "utf8mb4");
-
             migrationBuilder.InsertData(
                 table: "Permission",
                 columns: new[] { "Id", "Description", "Name" },
                 values: new object[,]
                 {
-                    { new Guid("1cbc57bc-38b2-4f4a-8419-cfc60434b5a0"), null, "DashboardAccess" },
-                    { new Guid("8b059966-fcb1-4bb2-b260-8d50d64d952a"), null, "UpdateAccess" },
-                    { new Guid("981446f2-1508-40a0-9a71-549703d56dd6"), null, "DeleteAccess" },
-                    { new Guid("a61281ac-2bc2-498e-905c-a7912f7b1c3f"), null, "CreateAccess" }
+                    { new Guid("63510989-c806-4dc9-96a1-c942be1ceaaa"), null, "UpdateAccess" },
+                    { new Guid("a2280f81-e34a-4461-ba5d-e27b6635143a"), null, "CreateAccess" },
+                    { new Guid("c63ea19a-39e0-49cd-9226-5462f9cb47eb"), null, "DeleteAccess" },
+                    { new Guid("dbae7b6e-0715-4be9-bb59-73b50fcc4703"), null, "DashboardAccess" }
                 });
 
             migrationBuilder.InsertData(
                 table: "User",
                 columns: new[] { "Id", "Address", "Email", "FirstName", "LastLoginAt", "LastName", "Password", "PhoneNumber", "RegisteredAt" },
-                values: new object[] { new Guid("cf824881-8bec-4d9e-95a3-5deef16065b5"), null, "sashavannovski@gmail.com", "Oleksandr", null, "Vannovskyi", "8C6976E5B5410415BDE908BD4DEE15DFB167A9C873FC4BB8A81F6F2AB448A918", null, new DateTime(2024, 5, 20, 17, 39, 55, 316, DateTimeKind.Local).AddTicks(6578) });
+                values: new object[] { new Guid("adad13d5-2468-4f9c-9ddc-b0940569df8a"), null, "sashavannovski@gmail.com", "Oleksandr", null, "Vannovskyi", "8C6976E5B5410415BDE908BD4DEE15DFB167A9C873FC4BB8A81F6F2AB448A918", null, new DateTime(2024, 5, 22, 11, 21, 55, 272, DateTimeKind.Local).AddTicks(9460) });
 
             migrationBuilder.InsertData(
                 table: "UserRole",
                 columns: new[] { "Id", "Description", "Name" },
-                values: new object[] { new Guid("200609fb-4fc1-4762-aa61-6a4fcad74465"), null, "Admin" });
+                values: new object[] { new Guid("e45834c7-bd1a-4ba6-9c13-e9ee2c74fd3e"), null, "Admin" });
 
             migrationBuilder.InsertData(
                 table: "UserRole_Permission",
                 columns: new[] { "Id", "PermissionId", "UserRoleId" },
                 values: new object[,]
                 {
-                    { new Guid("58330000-c041-48f3-bfd8-f7730f6b3d87"), new Guid("8b059966-fcb1-4bb2-b260-8d50d64d952a"), new Guid("200609fb-4fc1-4762-aa61-6a4fcad74465") },
-                    { new Guid("84cd3358-c191-4782-bcd3-96cbfdf7609e"), new Guid("a61281ac-2bc2-498e-905c-a7912f7b1c3f"), new Guid("200609fb-4fc1-4762-aa61-6a4fcad74465") },
-                    { new Guid("c2ea9855-859b-47bf-89c8-159b8a2c2438"), new Guid("1cbc57bc-38b2-4f4a-8419-cfc60434b5a0"), new Guid("200609fb-4fc1-4762-aa61-6a4fcad74465") },
-                    { new Guid("dc7a3092-4f49-4eb0-859c-9755d8f0d847"), new Guid("981446f2-1508-40a0-9a71-549703d56dd6"), new Guid("200609fb-4fc1-4762-aa61-6a4fcad74465") }
+                    { new Guid("1caf88d1-87c4-451d-9cd3-54cf9d62b5f0"), new Guid("a2280f81-e34a-4461-ba5d-e27b6635143a"), new Guid("e45834c7-bd1a-4ba6-9c13-e9ee2c74fd3e") },
+                    { new Guid("2e3d6c34-f099-4a60-934e-c377ffcdd113"), new Guid("63510989-c806-4dc9-96a1-c942be1ceaaa"), new Guid("e45834c7-bd1a-4ba6-9c13-e9ee2c74fd3e") },
+                    { new Guid("3591b2d7-d541-4330-9fbf-f52d1b179c18"), new Guid("c63ea19a-39e0-49cd-9226-5462f9cb47eb"), new Guid("e45834c7-bd1a-4ba6-9c13-e9ee2c74fd3e") },
+                    { new Guid("f774da6c-effb-4ee9-b40a-cc1a934dafbc"), new Guid("dbae7b6e-0715-4be9-bb59-73b50fcc4703"), new Guid("e45834c7-bd1a-4ba6-9c13-e9ee2c74fd3e") }
                 });
 
             migrationBuilder.InsertData(
                 table: "User_UserRole",
                 columns: new[] { "Id", "UserId", "UserRoleId" },
-                values: new object[] { new Guid("278ddc2f-972a-48ea-9692-896762a4b2fa"), new Guid("cf824881-8bec-4d9e-95a3-5deef16065b5"), new Guid("200609fb-4fc1-4762-aa61-6a4fcad74465") });
+                values: new object[] { new Guid("9b5b3e45-3760-4e27-9b2d-55539cd83baa"), new Guid("adad13d5-2468-4f9c-9ddc-b0940569df8a"), new Guid("e45834c7-bd1a-4ba6-9c13-e9ee2c74fd3e") });
         }
 
         /// <inheritdoc />
@@ -99,57 +93,57 @@ namespace BnFurniture.Infrastructure.Migrations
             migrationBuilder.DeleteData(
                 table: "UserRole_Permission",
                 keyColumn: "Id",
-                keyValue: new Guid("58330000-c041-48f3-bfd8-f7730f6b3d87"));
+                keyValue: new Guid("1caf88d1-87c4-451d-9cd3-54cf9d62b5f0"));
 
             migrationBuilder.DeleteData(
                 table: "UserRole_Permission",
                 keyColumn: "Id",
-                keyValue: new Guid("84cd3358-c191-4782-bcd3-96cbfdf7609e"));
+                keyValue: new Guid("2e3d6c34-f099-4a60-934e-c377ffcdd113"));
 
             migrationBuilder.DeleteData(
                 table: "UserRole_Permission",
                 keyColumn: "Id",
-                keyValue: new Guid("c2ea9855-859b-47bf-89c8-159b8a2c2438"));
+                keyValue: new Guid("3591b2d7-d541-4330-9fbf-f52d1b179c18"));
 
             migrationBuilder.DeleteData(
                 table: "UserRole_Permission",
                 keyColumn: "Id",
-                keyValue: new Guid("dc7a3092-4f49-4eb0-859c-9755d8f0d847"));
+                keyValue: new Guid("f774da6c-effb-4ee9-b40a-cc1a934dafbc"));
 
             migrationBuilder.DeleteData(
                 table: "User_UserRole",
                 keyColumn: "Id",
-                keyValue: new Guid("278ddc2f-972a-48ea-9692-896762a4b2fa"));
+                keyValue: new Guid("9b5b3e45-3760-4e27-9b2d-55539cd83baa"));
 
             migrationBuilder.DeleteData(
                 table: "Permission",
                 keyColumn: "Id",
-                keyValue: new Guid("1cbc57bc-38b2-4f4a-8419-cfc60434b5a0"));
+                keyValue: new Guid("63510989-c806-4dc9-96a1-c942be1ceaaa"));
 
             migrationBuilder.DeleteData(
                 table: "Permission",
                 keyColumn: "Id",
-                keyValue: new Guid("8b059966-fcb1-4bb2-b260-8d50d64d952a"));
+                keyValue: new Guid("a2280f81-e34a-4461-ba5d-e27b6635143a"));
 
             migrationBuilder.DeleteData(
                 table: "Permission",
                 keyColumn: "Id",
-                keyValue: new Guid("981446f2-1508-40a0-9a71-549703d56dd6"));
+                keyValue: new Guid("c63ea19a-39e0-49cd-9226-5462f9cb47eb"));
 
             migrationBuilder.DeleteData(
                 table: "Permission",
                 keyColumn: "Id",
-                keyValue: new Guid("a61281ac-2bc2-498e-905c-a7912f7b1c3f"));
+                keyValue: new Guid("dbae7b6e-0715-4be9-bb59-73b50fcc4703"));
 
             migrationBuilder.DeleteData(
                 table: "User",
                 keyColumn: "Id",
-                keyValue: new Guid("cf824881-8bec-4d9e-95a3-5deef16065b5"));
+                keyValue: new Guid("adad13d5-2468-4f9c-9ddc-b0940569df8a"));
 
             migrationBuilder.DeleteData(
                 table: "UserRole",
                 keyColumn: "Id",
-                keyValue: new Guid("200609fb-4fc1-4762-aa61-6a4fcad74465"));
+                keyValue: new Guid("e45834c7-bd1a-4ba6-9c13-e9ee2c74fd3e"));
 
             migrationBuilder.AlterColumn<string>(
                 name: "Slug",
@@ -161,19 +155,17 @@ namespace BnFurniture.Infrastructure.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4")
                 .OldAnnotation("MySql:CharSet", "utf8mb4");
 
-            migrationBuilder.AlterColumn<string>(
+            migrationBuilder.AddColumn<string>(
                 name: "Slug",
-                table: "CharacteristicValue",
+                table: "ProductArticle",
                 type: "varchar(255)",
                 nullable: false,
-                oldClrType: typeof(string),
-                oldType: "longtext")
-                .Annotation("MySql:CharSet", "utf8mb4")
-                .OldAnnotation("MySql:CharSet", "utf8mb4");
+                defaultValue: "")
+                .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.AlterColumn<string>(
                 name: "Slug",
-                table: "Characteristic",
+                table: "CharacteristicValue",
                 type: "varchar(255)",
                 nullable: false,
                 oldClrType: typeof(string),
@@ -188,14 +180,14 @@ namespace BnFurniture.Infrastructure.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_CharacteristicValue_Slug",
-                table: "CharacteristicValue",
+                name: "IX_ProductArticle_Slug",
+                table: "ProductArticle",
                 column: "Slug",
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Characteristic_Slug",
-                table: "Characteristic",
+                name: "IX_CharacteristicValue_Slug",
+                table: "CharacteristicValue",
                 column: "Slug",
                 unique: true);
         }

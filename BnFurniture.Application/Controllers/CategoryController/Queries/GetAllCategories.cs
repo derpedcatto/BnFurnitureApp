@@ -12,9 +12,9 @@ public sealed record GetAllCategoriesQuery();
 
 public sealed class GetAllCategoriesResponse
 {
-    public List<ProductCategoryDTO> Categories { get; private set; }
+    public List<ResponseProductCategoryDTO> Categories { get; private set; }
 
-    public GetAllCategoriesResponse(List<ProductCategoryDTO> categories)
+    public GetAllCategoriesResponse(List<ResponseProductCategoryDTO> categories)
     {
         Categories = categories;
     }
@@ -45,10 +45,10 @@ public sealed class GetAllCategoriesHandler : QueryHandler<GetAllCategoriesQuery
         };
     }
 
-    private List<ProductCategoryDTO> MapCategoriesToDTOs(List<ProductCategory> categories)
+    private List<ResponseProductCategoryDTO> MapCategoriesToDTOs(List<ProductCategory> categories)
     {
         var categoryDictionary = categories.ToDictionary(c => c.Id);
-        var dtoDictionary = new Dictionary<Guid, ProductCategoryDTO>();
+        var dtoDictionary = new Dictionary<Guid, ResponseProductCategoryDTO>();
 
         foreach (var category in categories)
         {
@@ -66,7 +66,7 @@ public sealed class GetAllCategoriesHandler : QueryHandler<GetAllCategoriesQuery
 
                 if (dtoDictionary[category.ParentId.Value].SubCategories == null)
                 {
-                    dtoDictionary[category.ParentId.Value].SubCategories = new List<ProductCategoryDTO>();
+                    dtoDictionary[category.ParentId.Value].SubCategories = new List<ResponseProductCategoryDTO>();
                 }
 
                 dtoDictionary[category.ParentId.Value].SubCategories.Add(dtoDictionary[category.Id]);
@@ -76,9 +76,9 @@ public sealed class GetAllCategoriesHandler : QueryHandler<GetAllCategoriesQuery
         return dtoDictionary.Values.Where(dto => dto.SubCategories != null).ToList();
     }
 
-    private ProductCategoryDTO MapCategoryToDTO(ProductCategory category)
+    private ResponseProductCategoryDTO MapCategoryToDTO(ProductCategory category)
     {
-        return new ProductCategoryDTO
+        return new ResponseProductCategoryDTO
         {
             Id = category.Id,
             Name = category.Name,

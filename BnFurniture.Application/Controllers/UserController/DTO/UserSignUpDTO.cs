@@ -15,7 +15,7 @@ public class UserSignUpDTO
     public string Password { get; set; } = null!;
 
     [JsonPropertyName("repeatPassword")]
-    public string RepeatPassword { get; set; } = null!; // TODO
+    public string RepeatPassword { get; set; } = null!;
 
     [JsonPropertyName("firstName")]
     public string FirstName { get; set; } = null!;
@@ -27,10 +27,10 @@ public class UserSignUpDTO
     public string? MobileNumber { get; set; }
 
     [JsonPropertyName("address")]
-    public string? Address { get; set; }    // TODO
+    public string? Address { get; set; }
 
     [JsonPropertyName("agreeCheckbox")]
-    public bool Agree { get; set; }  // TODO
+    public bool Agree { get; set; } 
 }
 
 public class UserSignUpDTOValidator : AbstractValidator<UserSignUpDTO>
@@ -61,12 +61,16 @@ public class UserSignUpDTOValidator : AbstractValidator<UserSignUpDTO>
         RuleFor(x => x.LastName)
             .NotEmpty().WithMessage("Прізвище не може бути порожнім.");
 
-        RuleFor(x => x.MobileNumber)
-            .PhoneNumber().WithMessage("Номер телефона не є валідним. Приклад валідного номеру = '380980473401'")
-                .When(x => x.MobileNumber != null);
+        When(x => ! string.IsNullOrEmpty(x.MobileNumber), () =>
+        {
+            RuleFor(x => x.MobileNumber)!
+                .PhoneNumber().WithMessage("Номер телефона не є валідним. Приклад валідного номеру = '380XXXXXXXXX'")
+                .MustAsync(IsPhoneNumberUser).WithMessage("Користувач з таким номером телефону вже зареєстрований.");
+        });
 
         RuleFor(x => x.Address)
-            .NotEmpty().When(x => x.Address != null);
+            .NotEmpty()
+                .When(x => ! string.IsNullOrEmpty(x.Address));
 
         RuleFor(x => x.Agree)
             .Equal(true).WithMessage("Погодьтесь з Політикою Конфіденційності.");
@@ -77,6 +81,12 @@ public class UserSignUpDTOValidator : AbstractValidator<UserSignUpDTO>
     private async Task<bool> IsLoginUsed(string login, CancellationToken cancellationToken)
     {
         var result = await _dbContext.User.AnyAsync(u => u.Email == login, cancellationToken);
+        return !result;
+    }
+
+    private async Task<bool> IsPhoneNumberUser(string login, CancellationToken cancellationToken)
+    {
+        var result = await _dbContext.User.AnyAsync(u => u.PhoneNumber == login, cancellationToken);
         return !result;
     }
 }

@@ -1,117 +1,21 @@
 @import "../../../global.scss";
 
-.container {
+.fieldset {
   display: flex;
-  flex-direction: row;
-  width: 100%;
-  font-size: 0.9rem;
-
-  input {
-    padding: 10px 5px;
-    border-radius: 5px;
-    border: 1px solid $text-gray-color;
-    font-size: 1rem;
-  }
-
-  input:focus {
-    outline: none;
-  }
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  border: 0;
+  margin: 1rem 0;
 
   label {
-    user-select: none;
-    margin-top: 1rem;
-    margin-bottom: 0.2rem;
-    font-weight: 500;
-  }
-
-  fieldset {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 1rem;
-    border: 0;  
-    margin: 1rem 0;
-
-    label {
-      text-wrap: pretty;
-      margin: 0;
-    }
-  }                                                                                              
-
-  /* Small screens */
-  @media screen and (min-width: $br-sm) and (max-width: calc($br-md - 1px)) {
-    flex-direction: column;
-  }
-
-  /* Extra small screens */
-  @media screen and (max-width: calc($br-sm - 1px)) {
-    flex-direction: column;
+    text-wrap: pretty;
+    margin: 0;
   }
 }
 
 .gray-text {
   color: $text-gray-color;
-}
-
-.image-container {
-  overflow: hidden;
-  max-width: 30%;
-  // height: 100vh;
-  height: 100%;
-  position: fixed;
-
-  img {
-    height: 100%;
-    object-fit: cover;
-  }
-
-  /* Small screens */
-  @media screen and (min-width: $br-sm) and (max-width: calc($br-md - 1px)) {
-    height: 40vh;
-    max-width: 100%;
-    position: inherit;
-
-    img {
-      height: auto;
-      transform: translateY(-40%);
-    }
-  }
-
-  /* Extra small screens */
-  @media screen and (max-width: calc($br-sm - 1px)) {
-    height: 30vh;
-    max-width: 100%;
-    position: inherit;
-
-    img {
-      height: auto;
-      transform: translateY(-40%);
-    }
-  }
-}
-
-.form-container {
-  display: flex;
-  flex-direction: column;
-  max-width: 600px;
-  padding: 100px 90px 100px 50px;
-  margin-left: 30%;
-
-  /* Small screens */
-  @media screen and (min-width: $br-sm) and (max-width: calc($br-md - 1px)) {
-    margin-left: 0;
-    font-size: 1rem;
-    max-width: 100%;
-    padding: 20px 40px 100px 40px;
-  }
-
-  /* Extra small screens */
-  @media screen and (max-width: calc($br-sm - 1px)) {
-    margin-left: 0;
-    font-size: 1rem;
-    max-width: 100%;
-    padding: 20px 20px 100px 20px;
-  }
 }
 
 .checkbox-wrapper {

@@ -48,7 +48,7 @@ public class ApplicationDbContext(DbContextOptions options) : DbContext(options)
 
     private void Seed(ModelBuilder modelBuilder)
     {
-        var adminId = Guid.NewGuid();
+        var adminId = new Guid("ADAD13d5-2468-4f9c-9ddc-b0940569df8a");
         var adminRoleId = Guid.NewGuid();
 
         /* Permissions */
@@ -131,24 +131,19 @@ public class ApplicationDbContext(DbContextOptions options) : DbContext(options)
         modelBuilder.Entity<ProductCategory>()
             .HasIndex(e => e.Slug)
             .IsUnique(true);
-
         /*
         modelBuilder.Entity<ProductType>()
             .HasIndex(e => e.Slug)
             .IsUnique(true);
-            modelBuilder.Entity<Characteristic>()
+        */
+        modelBuilder.Entity<Characteristic>()
             .HasIndex(e => e.Slug)
             .IsUnique(true);
-        */
-
         /*
         modelBuilder.Entity<CharacteristicValue>()
             .HasIndex(e => e.Slug)
             .IsUnique(true);
         */
-        modelBuilder.Entity<ProductArticle>()
-            .HasIndex(e => e.Slug)
-            .IsUnique(true);
         modelBuilder.Entity<Product>()
             .HasIndex(e => e.Slug)
             .IsUnique(true);
