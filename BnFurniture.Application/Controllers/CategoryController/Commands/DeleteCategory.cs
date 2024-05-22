@@ -29,7 +29,7 @@ public sealed class DeleteCategoryHandler : CommandHandler<DeleteCategoryCommand
             return new ApiCommandResponse(false, (int)HttpStatusCode.UnprocessableEntity)
             {
                 Message = "Валідація не пройшла перевірку",
-                Errors = new() { ["categoryId"] = ["Category ID not found in database"] }
+                Errors = new() { ["categoryId"] = ["Category ID not found in database."] }
             };
         }
 

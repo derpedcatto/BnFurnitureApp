@@ -7,7 +7,7 @@ using System.Net;
 
 namespace BnFurniture.Application.Controllers.CategoryController.Commands;
 
-public sealed record CreateCategoryCommand(CreateCategoryDTO initialForm);
+public sealed record CreateCategoryCommand(CreateCategoryDTO dto);
 
 public sealed class CreateCategoryHandler : CommandHandler<CreateCategoryCommand>
 {
@@ -19,9 +19,9 @@ public sealed class CreateCategoryHandler : CommandHandler<CreateCategoryCommand
         _validator = validator;
     }
 
-    public override async Task<ApiCommandResponse> Handle(CreateCategoryCommand request, CancellationToken cancellationToken)
+    public override async Task<ApiCommandResponse> Handle(CreateCategoryCommand command, CancellationToken cancellationToken)
     {
-        var dto = request.initialForm;
+        var dto = command.dto;
 
         var validationResult = await _validator.ValidateAsync(dto, cancellationToken);
         if (!validationResult.IsValid)

@@ -3,7 +3,6 @@ using BnFurniture.Application.Controllers.CategoryController.DTO;
 using BnFurniture.Domain.Entities;
 using BnFurniture.Domain.Responses;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
 using System.Net;
 
 namespace BnFurniture.Application.Controllers.CategoryController.Queries;

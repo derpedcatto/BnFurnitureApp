@@ -33,14 +33,20 @@ public class CreateCategoryDTOValidator : AbstractValidator<CreateCategoryDTO>
             .NotNull().WithMessage("Name is null.")
             .NotEmpty().WithMessage("Name is empty.");
 
-        RuleFor(x => x.Slug)
+        RuleFor(x => x.Slug).Cascade(CascadeMode.Stop)
             .NotNull().WithMessage("Slug is null.")
             .NotEmpty().WithMessage("Slug is empty.")
-            .UrlSlug();
+            .UrlSlug()
+            .MustAsync(IsSlugUnique).WithMessage("Slug is not unique.");
 
         RuleFor(x => x.ParentId)
             .MustAsync((dto, id, ct) => { return IsParentIdValid(dto.ParentId!.Value, ct); }).WithMessage("Parent Category with this Id does not exist")
                 .When(x => x.ParentId != null);
+    }
+
+    private async Task<bool> IsSlugUnique(string slug, CancellationToken ct)
+    {
+        return ! await _dbContext.ProductCategory.AnyAsync(c => c.Slug == slug, ct);
     }
 
     private async Task<bool> IsParentIdValid(Guid parentId, CancellationToken ct)

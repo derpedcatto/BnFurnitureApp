@@ -32,17 +32,20 @@ public class UpdateCategoryDTOValidator : AbstractValidator<UpdateCategoryDTO>
     {
         _dbContext = dbContext;
 
-        RuleFor(x => x.Id)
+        RuleFor(x => x.Id).Cascade(CascadeMode.Stop)
+            .NotNull().WithMessage("Id cannot be null.")
+            .NotEmpty().WithMessage("Id cannot be empty.")
             .MustAsync(IsIdValid).WithMessage("Category with this Id does not exist.");
 
         RuleFor(x => x.Name)
             .NotNull().WithMessage("Name is null.")
             .NotEmpty().WithMessage("Name is empty.");
 
-        RuleFor(x => x.Slug)
+        RuleFor(x => x.Slug).Cascade(CascadeMode.Stop)
             .NotNull().WithMessage("Slug is null.")
             .NotEmpty().WithMessage("Slug is empty.")
-            .UrlSlug();
+            .UrlSlug()
+            .MustAsync(IsSlugUnique).WithMessage("Slug is not unique.");
 
         When(x => x.ParentId != null, () =>
         {
@@ -50,6 +53,15 @@ public class UpdateCategoryDTOValidator : AbstractValidator<UpdateCategoryDTO>
                 .MustAsync((dto, parentId, ct) => { return IsParentIdValid(dto.ParentId, ct); })
                     .WithMessage("Parent Category with this Id does not exist.");
         });
+
+        RuleFor(x => x.Priority)
+            .GreaterThanOrEqualTo(0).WithMessage("Priority must be a positive integer or zero.")
+                .When(x => x.Priority.HasValue);
+    }
+
+    private async Task<bool> IsSlugUnique(string slug, CancellationToken ct)
+    {
+        return await _dbContext.ProductCategory.AnyAsync(c => c.Slug == slug, ct);
     }
 
     private async Task<bool> IsIdValid(Guid Id, CancellationToken ct)

@@ -17,7 +17,7 @@ public class CategoryController : Controller
     {
         var query = new GetAllCategoriesQuery();
 
-        var apiResponse = await handler.Handle(query, CancellationToken.None);
+        var apiResponse = await handler.Handle(query, HttpContext.RequestAborted);
         return new JsonResult(apiResponse) { StatusCode = apiResponse.StatusCode };
     }
 
