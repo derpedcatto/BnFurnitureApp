@@ -4,10 +4,12 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace BnFurniture.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class Add_230524_Diploma : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -177,7 +179,7 @@ namespace BnFurniture.Infrastructure.Migrations
                     CharacteristicId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     Value = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Slug = table.Column<string>(type: "varchar(255)", nullable: false)
+                    Slug = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Priority = table.Column<int>(type: "int", nullable: true)
                 },
@@ -201,7 +203,7 @@ namespace BnFurniture.Infrastructure.Migrations
                     CategoryId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     Name = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Slug = table.Column<string>(type: "varchar(255)", nullable: false)
+                    Slug = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Priority = table.Column<int>(type: "int", nullable: true)
                 },
@@ -411,7 +413,6 @@ namespace BnFurniture.Infrastructure.Migrations
                     Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     ProductTypeId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     AuthorId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    MetricId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     Name = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Slug = table.Column<string>(type: "varchar(255)", nullable: false)
@@ -476,8 +477,6 @@ namespace BnFurniture.Infrastructure.Migrations
                     ProductId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     AuthorId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     Name = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Slug = table.Column<string>(type: "varchar(255)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: true),
@@ -666,6 +665,43 @@ namespace BnFurniture.Infrastructure.Migrations
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
+            migrationBuilder.InsertData(
+                table: "Permission",
+                columns: new[] { "Id", "Description", "Name" },
+                values: new object[,]
+                {
+                    { new Guid("312471d4-9393-408a-9d71-b84c43e8dc42"), null, "DeleteAccess" },
+                    { new Guid("6807b0d3-e10d-47a3-b8ca-551f9acdf114"), null, "DashboardAccess" },
+                    { new Guid("6c0e4ed2-bf6d-4abb-b3bf-9c9a5811fa88"), null, "UpdateAccess" },
+                    { new Guid("77a78f12-7016-43d5-8d98-c28135fd3335"), null, "CreateAccess" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "User",
+                columns: new[] { "Id", "Address", "Email", "FirstName", "LastLoginAt", "LastName", "Password", "PhoneNumber", "RegisteredAt" },
+                values: new object[] { new Guid("adad13d5-2468-4f9c-9ddc-b0940569df8a"), null, "sashavannovski@gmail.com", "Oleksandr", null, "Vannovskyi", "8C6976E5B5410415BDE908BD4DEE15DFB167A9C873FC4BB8A81F6F2AB448A918", null, new DateTime(2024, 5, 23, 13, 52, 20, 762, DateTimeKind.Local).AddTicks(981) });
+
+            migrationBuilder.InsertData(
+                table: "UserRole",
+                columns: new[] { "Id", "Description", "Name" },
+                values: new object[] { new Guid("b5748bed-999c-477b-b401-efb6d03672bf"), null, "Admin" });
+
+            migrationBuilder.InsertData(
+                table: "UserRole_Permission",
+                columns: new[] { "Id", "PermissionId", "UserRoleId" },
+                values: new object[,]
+                {
+                    { new Guid("009e6ea6-210a-4ed6-9b25-05f966090c8e"), new Guid("77a78f12-7016-43d5-8d98-c28135fd3335"), new Guid("b5748bed-999c-477b-b401-efb6d03672bf") },
+                    { new Guid("1132623c-6631-4ef8-aebc-e858c6e65634"), new Guid("6807b0d3-e10d-47a3-b8ca-551f9acdf114"), new Guid("b5748bed-999c-477b-b401-efb6d03672bf") },
+                    { new Guid("856ce9b2-9ed1-4408-931e-0e5f577679c7"), new Guid("312471d4-9393-408a-9d71-b84c43e8dc42"), new Guid("b5748bed-999c-477b-b401-efb6d03672bf") },
+                    { new Guid("f395d588-76f2-4b45-9b54-2a9d48ea52cb"), new Guid("6c0e4ed2-bf6d-4abb-b3bf-9c9a5811fa88"), new Guid("b5748bed-999c-477b-b401-efb6d03672bf") }
+                });
+
+            migrationBuilder.InsertData(
+                table: "User_UserRole",
+                columns: new[] { "Id", "UserId", "UserRoleId" },
+                values: new object[] { new Guid("2efae994-ec3d-4fdf-84ea-ab10d9028406"), new Guid("adad13d5-2468-4f9c-9ddc-b0940569df8a"), new Guid("b5748bed-999c-477b-b401-efb6d03672bf") });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AuditLog_UserActivityTypeId",
                 table: "AuditLog",
@@ -686,12 +722,6 @@ namespace BnFurniture.Infrastructure.Migrations
                 name: "IX_CharacteristicValue_CharacteristicId",
                 table: "CharacteristicValue",
                 column: "CharacteristicId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_CharacteristicValue_Slug",
-                table: "CharacteristicValue",
-                column: "Slug",
-                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Order_StatusId",
@@ -738,12 +768,6 @@ namespace BnFurniture.Infrastructure.Migrations
                 name: "IX_ProductArticle_ProductId",
                 table: "ProductArticle",
                 column: "ProductId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ProductArticle_Slug",
-                table: "ProductArticle",
-                column: "Slug",
-                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_ProductArticle_OrderItem_ProductArticleId",
@@ -833,12 +857,6 @@ namespace BnFurniture.Infrastructure.Migrations
                 name: "IX_ProductType_CategoryId",
                 table: "ProductType",
                 column: "CategoryId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ProductType_Slug",
-                table: "ProductType",
-                column: "Slug",
-                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserRole_Permission_PermissionId",

@@ -1,7 +1,9 @@
 ﻿using BnFurniture.Application.Controllers.CategoryController.Queries;
+using BnFurniture.Application.Controllers.ProductController.Commands;
+using BnFurniture.Application.Controllers.ProductController.DTO;
 using Microsoft.AspNetCore.Mvc;
 
-namespace BnFurnitureAdmin.Server.Controllers;
+namespace BnFurniture.Server.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
@@ -15,4 +17,6 @@ public class ProductController : ControllerBase
         var apiResponse = await handler.Handle(query, HttpContext.RequestAborted);
         return new JsonResult(apiResponse) { StatusCode = apiResponse.StatusCode };
     }
+
+   
 }

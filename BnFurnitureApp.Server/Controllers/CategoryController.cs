@@ -1,11 +1,9 @@
-﻿using BnFurnitureAdmin.Server.Attributes;
-using BnFurniture.Domain.Constants;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using BnFurniture.Application.Controllers.CategoryController.Commands;
 using BnFurniture.Application.Controllers.CategoryController.DTO;
 using BnFurniture.Application.Controllers.CategoryController.Queries;
 
-namespace BnFurnitureAdmin.Server.Controllers;
+namespace BnFurniture.Server.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
