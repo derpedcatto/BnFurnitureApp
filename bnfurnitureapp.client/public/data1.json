@@ -1,0 +1,12 @@
+{
+    "isSuccess": true,
+    "statusCode": 200,
+    "message": "qwew",
+    "data": [
+        {  
+            "category": "назва набору", 
+            "url": "/img/carusel.jpg"
+        }
+    ],
+    "errors": null
+}

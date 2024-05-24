@@ -1,15 +1,17 @@
-.colmhomcard{
+.card-container {
     display: flex;
     flex-direction: row;
     margin-left: 10%;
 }
-.component15 {
+
+.card {
     position: relative;
     width: 200px;
     height: 250px;
-    margin-right: 20px;    
+    margin-right: 20px;
 }
-.Group58 {
+
+.card-content {
     position: absolute;
     width: 100%;
     height: 100%;
@@ -18,7 +20,8 @@
     justify-content: center;
     align-items: center;
 }
-.frame16 {
+
+.card-badge {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -29,7 +32,8 @@
     transform: translate(175%, 50%);
     z-index: 2;
 }
-.top {
+
+.badge-text {
     font-family: 'Montserrat', sans-serif;
     font-weight: 500;
     font-size: 11px;
@@ -37,37 +41,64 @@
     color: #FFFFFF;
 }
 
-.group2 {
+.card-image-container {
     width: 160px;
     height: 212px;
     position: relative;
 }
 
-.Rectangle26 {
+.card-image {
     width: 100%;
-    height: 115px;
-    background-image: url(/img/homep1.png);
+    height: 115px;   
     border-radius: 15px 15px 0 0;
-    justify-content: center;
-    align-items: flex-start;
-    background-size: cover; 
+    background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
 }
 
-.frame13 {
+.card-details {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
     padding: 10px;
     background: #FFFFFF;
     border-radius: 15px;
 }
 
-.bnText {
+.product-name {
     font-family: 'Montserrat', sans-serif;
     font-weight: 600;
     font-size: 14px;
     text-transform: uppercase;
     color: #000000;
+    margin-bottom: 5px;
+}
+
+.product-category {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 300;
+    font-size: 11px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+}
+
+.product-price {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    text-transform: uppercase;
+    color: #000000;
+}
+
+/* Адаптивність для планшетів */
+@media (max-width: 768px) {
+    .card-container {
+        padding: 10px;
+    }
+}
+/* Адаптивність для мобільних пристроїв */
+@media (max-width: 480px) {
+    .card-container {
+        padding: 10px;
+    }
 }

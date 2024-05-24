@@ -1,0 +1,28 @@
+{
+    "isSuccess": true,
+    "statusCode": 200,
+    "message": "qwew",
+    "data": [
+        {  
+            "product": "подушки", 
+            "category": "спальна кімната...", 
+            "price": "12$", 
+            "url": "/img/imgCardHome/1.png"
+        },
+        {  
+            "product": "ковдра", 
+            "category": "спальна кімната...", 
+            "price": "30$", 
+            "url": "/img/imgCardHome/2.png"
+        },
+        {  
+            "product": "ліжко", 
+            "category": "спальна кімната...", 
+            "price": "414$", 
+            "url": "/img/imgCardHome/3.png"
+        }
+    ],
+    "errors": null
+}
+  
+

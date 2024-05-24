@@ -1,0 +1,12 @@
+{
+    "isSuccess": true,
+    "statusCode": 200,
+    "message": "qwew",
+    "data": [
+        {  
+            "category": "назва набору", 
+            "url": "/img/imgcatalog/catalog1.png"
+        }
+    ],
+    "errors": null
+}

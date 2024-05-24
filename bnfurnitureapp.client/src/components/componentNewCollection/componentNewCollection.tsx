@@ -1,8 +1,6 @@
 import './componentNewCollection.css'
 
 
-
-
 const HomeCardRow = () => {
   const cards = [
     { text: 'наша нова коллекція'},
