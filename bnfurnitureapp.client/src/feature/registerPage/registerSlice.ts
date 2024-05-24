@@ -4,7 +4,7 @@ import axios from "axios";
 
 interface RegisterState {
   isLoading: boolean;
-  errors: { [key: string]: string[] } | null;
+  errors: Record<string, string[]> | null;
   isSuccess: boolean;
 }
 
@@ -14,7 +14,7 @@ const initialState: RegisterState = {
   isSuccess: false,
 };
 
-interface UserData {
+interface UserFormData {
   email: string;
   password: string;
   firstName: string;
@@ -24,11 +24,8 @@ interface UserData {
   agreeCheckbox: boolean;
 }
 
-export const registerUser = createAsyncThunk<
-  ApiCommandResponse,
-  UserData,
-  { rejectValue: { [key: string]: string[] } }
->("register/registerUser", async (userData, { rejectWithValue }) => {
+export const registerUser = createAsyncThunk<ApiCommandResponse, UserFormData, { rejectValue: Record<string, string[]> }>
+  ("auth/registerUser", async (userData, { rejectWithValue }) => {
   try {
     const response = await axios.post<ApiCommandResponse>(
       "api/user/signup",
@@ -40,11 +37,7 @@ export const registerUser = createAsyncThunk<
       }
     );
     console.log("Server Response:", response.data);
-    if (!response.data.isSuccess) {
-      console.log("Validation Errors:", response.data.errors);
-      return rejectWithValue(response.data.errors);
-    }
-    return response.data;
+    return response.data.isSuccess ? response.data : rejectWithValue(response.data.errors);
   } catch (error: any) {
     console.error("Server Error:", error.response.data);
     return rejectWithValue(error.response.data.errors);
@@ -66,21 +59,12 @@ const registerSlice = createSlice({
         state.isLoading = false;
         state.isSuccess = true;
       })
-      .addCase(
-        registerUser.rejected,
-        (
-          state,
-          action: PayloadAction<{ [key: string]: string[] } | undefined>
-        ) => {
-          state.isLoading = false;
-          if (action.payload) {
-            state.errors = action.payload;
-          } else {
-            state.errors = null;
-          }
-        }
-      );
+      .addCase(registerUser.rejected, (state, action) => {
+        state.isLoading = false;
+        state.errors = action.payload || null;
+      });
   },
 });
+
 
 export default registerSlice.reducer;

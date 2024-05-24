@@ -10,7 +10,9 @@ import WishlistIcon from "../../../icons/WishlistIcon";
 import SearchBar from "./SearchBar";
 
 const Nav = () => {
-  const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
+  const isLoggedIn = useSelector((state: RootState) => state.auth.isAuthenticated);
+  const userFirstName = useSelector((state: RootState) => state.auth.user?.firstName);
+  const userLastName = useSelector((state: RootState) => state.auth.user?.lastName);
 
   return (
     <>
@@ -33,7 +35,7 @@ const Nav = () => {
             <NavLink to={isLoggedIn ? '/user/cabinet' : '/auth/login'}>
               <div className={`${styles['svg-icon-container']} ${styles['user']}`}>
                 <UserIcon className={styles['user-icon']} />
-                <p>Привіт! Увійдіть в систему</p>
+                {isLoggedIn ? <p>{userFirstName}  {userLastName}</p> : <p>Привіт! Увійдіть в систему</p>} 
               </div>
             </NavLink>
             <NavLink to="/user/cart">

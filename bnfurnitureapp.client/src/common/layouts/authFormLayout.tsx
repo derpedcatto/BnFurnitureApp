@@ -8,6 +8,7 @@ interface FormLayoutProps {
   imageSrc: string;
   buttonClass: string;
   imageHeading?: string;
+  imageHeadingColor?: string;
   afterSubmitButtonSection?: React.ReactNode;
 }
 
@@ -19,12 +20,13 @@ const FormLayout: React.FC<FormLayoutProps> = ({
   imageSrc,
   buttonClass,
   imageHeading,
+  imageHeadingColor,
   afterSubmitButtonSection,
 }) => {
   return (
     <div className={styles.container}>
       <div className={styles["image-container"]}>
-        <div className={styles['image-heading']}>{imageHeading}</div>
+        <div className={`${styles['image-heading']} ${imageHeadingColor}`}>{imageHeading}</div>
         <img src={imageSrc} alt="Form" />
       </div>
       <form onSubmit={handleSubmit} className={styles["form-container"]}>

@@ -7,13 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Enums\**" />
     <Compile Remove="Exceptions\**" />
     <Compile Remove="Filters\**" />
-    <EmbeddedResource Remove="Enums\**" />
     <EmbeddedResource Remove="Exceptions\**" />
     <EmbeddedResource Remove="Filters\**" />
-    <None Remove="Enums\**" />
     <None Remove="Exceptions\**" />
     <None Remove="Filters\**" />
   </ItemGroup>

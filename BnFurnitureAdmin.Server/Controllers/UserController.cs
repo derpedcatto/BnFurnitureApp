@@ -19,10 +19,10 @@ public class UserController : ControllerBase
     }
 
     [HttpPost("login")]
-    public async Task<IActionResult> Login([FromServices] LoginHandler handler,
+    public async Task<IActionResult> Login([FromServices] UserLoginHandler handler,
         [FromBody] UserLoginDTO model)
     {
-        var command = new LoginCommand(model);
+        var command = new UserLoginCommand(model);
 
         var apiResponse = await handler.Handle(command, CancellationToken.None);
         return new JsonResult(apiResponse) { StatusCode = apiResponse.StatusCode };

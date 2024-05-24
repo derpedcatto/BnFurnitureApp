@@ -1,10 +1,10 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useFormik } from "formik";
+import { useNavigate } from "react-router-dom";
 import { RootState, AppDispatch } from "../../../app/store";
 import { registerUser } from "../registerSlice";
-import { useFormik } from "formik";
 import { validationSchema } from "../validationSchema";
-import { useNavigate } from "react-router-dom";
 import styles from "./RegisterPage.module.scss";
 import registerImage from "../assets/registerImage.png";
 import blackButton from "../../../common/components/buttons/BlackButton.module.scss";
@@ -14,9 +14,7 @@ import FormField from "../../../common/components/form/FormField";
 const RegisterPage = () => {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
-  const { errors, isLoading, isSuccess } = useSelector(
-    (state: RootState) => state.register
-  );
+  const { errors, isLoading, isSuccess } = useSelector((state: RootState) => state.register);
 
   const formik = useFormik({
     initialValues: {
@@ -33,8 +31,7 @@ const RegisterPage = () => {
     onSubmit: async (values) => {
       const sanitizedValues = {
         ...values,
-        mobileNumber:
-          values.mobileNumber.trim() === "" ? null : values.mobileNumber,
+        mobileNumber:values.mobileNumber.trim() === "" ? null : values.mobileNumber,
         address: values.address.trim() === "" ? null : values.address,
       };
       await dispatch(registerUser(sanitizedValues));

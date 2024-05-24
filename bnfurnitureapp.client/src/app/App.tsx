@@ -12,8 +12,8 @@ function App() {
     <>
       <Router>
         <Routes>
-          <Route path="*" element={<Navigate replace to="/" />} />
-          <Route path="/" element={<NavLayout />}>
+          <Route path="*" element={ <Navigate replace to="/" />} />
+          <Route path="/" element={ <NavLayout /> }>
             <Route path='/example' element={ <Counter /> } />
             <Route path='/user/*' element={ <UserRoutes /> } />
             <Route path='/products' />

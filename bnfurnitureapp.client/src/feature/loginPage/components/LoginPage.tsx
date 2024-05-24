@@ -1,10 +1,10 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useFormik } from "formik";
+import { useNavigate, NavLink } from "react-router-dom";
 import { RootState, AppDispatch } from "../../../app/store";
 import { loginUser } from "../loginSlice";
-import { useFormik } from "formik";
 import { validationSchema } from "../validationSchema";
-import { NavLink, useNavigate } from "react-router-dom";
 import styles from "./LoginPage.module.scss";
 import blackButton from "../../../common/components/buttons/BlackButton.module.scss";
 import whiteButton from "../../../common/components/buttons/WhiteButton.module.scss";
@@ -15,9 +15,7 @@ import FormField from "../../../common/components/form/FormField";
 const LoginPage = () => {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
-  const { errors, isLoading, isSuccess } = useSelector(
-    (state: RootState) => state.login
-  );
+  const { errors, isLoading, isSuccess } = useSelector((state: RootState) => state.login);
 
   const formik = useFormik({
     initialValues: {
@@ -47,6 +45,7 @@ const LoginPage = () => {
         imageSrc={loginImage}
         buttonClass={blackButton["black-button"]}
         imageHeading="ЗАПОВНІТЬ ВХІД ДО ОБЛІКОВОГО ЗАПИСУ"
+        imageHeadingColor={styles['image-heading-color']}
         afterSubmitButtonSection={<SignUpSection />}
       >
         <FormField
@@ -56,9 +55,6 @@ const LoginPage = () => {
           name="emailOrPhone"
           formik={{ handleChange, values, formikErrors, errors }}
         />
-        <NavLink to={"/auth/forgotpass"} className={styles["forgot-pass-link"]}>
-          Забули свій пароль?
-        </NavLink>
         <FormField
           label="* Пароль"
           id="password"
@@ -66,6 +62,9 @@ const LoginPage = () => {
           name="password"
           formik={{ handleChange, values, formikErrors, errors }}
         />
+        <NavLink to={"/auth/forgotpass"} className={styles["forgot-pass-link"]}>
+          Забули свій пароль?
+        </NavLink>
       </FormLayout>
     </>
   );

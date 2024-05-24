@@ -1,0 +1,54 @@
+@import '../global.scss';
+
+.container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  grid-gap: 1rem;
+  font-size: 1.5rem;
+}
+
+.card {
+  display: flex;
+  border-radius: $card-radius;
+  background-color: gray;
+  width: 100%;
+  overflow: hidden;
+}
+
+.card-horizontal {
+  flex-direction: column;
+}
+
+.card-vertical {
+  flex-direction: row;
+}
+
+.card-footer {
+  background-color: $primary-color;
+}
+
+.card-aside {
+  background-color: $primary-color;
+}
+
+.img-wrapper {
+  background-color: grey;
+  overflow: hidden;
+
+  img {
+    width: 100%;
+  }
+}
+
+.card1 {
+
+}
+
+.card2 {
+
+}
+
+.card3 {
+
+}
