@@ -1,12 +1,25 @@
 import {
   createSlice,
-  PayloadAction,
   createAsyncThunk,
-  isRejectedWithValue,
+  // PayloadAction,
+  // isRejectedWithValue,
 } from "@reduxjs/toolkit";
 import axios from "axios";
-import Cookies from "js-cookie";
 import { ApiCommandResponse, ApiQueryResponse } from "../common/types/ApiResponseTypes";
+import { AppDispatch, RootState } from "../app/store";
+
+interface AuthState {
+  isLoading: boolean;
+  errors: Record<string, string[]> | null;
+  isSuccess: boolean;
+  currentUser?: UserData;
+}
+
+const initialState: AuthState = {
+  isLoading: false,
+  errors: null,
+  isSuccess: false,
+};
 
 interface UserData {
   id: string;
@@ -19,30 +32,94 @@ interface UserData {
   lastLoginAt?: Date;
 }
 
-interface AuthState {
-  user: UserData | null;
-  isAuthenticated: boolean;
+interface UserRegisterData {
+  email: string;
+  password: string;
+  firstName: string;
+  lastName: string;
+  mobileNumber?: string;
+  address?: string;
+  agreeCheckbox: boolean;
 }
 
-const initialState: AuthState = {
-  user: null,
-  isAuthenticated: !!Cookies.get("AuthUserId"),
+interface UserLoginData {
+  emailOrPhone: string;
+  password: string;
 }
 
-export const fetchUser = createAsyncThunk<ApiQueryResponse<UserData>, { userId: string }, { rejectValue: Record<string, string[]> | null }>
-  ("auth/fetchUser", async ({ userId }, { rejectWithValue }) => {
+interface UserForgotPassData {
+  emailOrPhone: string;
+}
+
+export const registerUser = createAsyncThunk<ApiCommandResponse, UserRegisterData, { rejectValue: Record<string, string[]> }>(
+  "auth/registerUser",
+  async (userData, { rejectWithValue }) => {
+    try {
+      const response = await axios.post<ApiCommandResponse>("api/user/signup", userData);
+      console.log("registerUser Server Response:", response.data);
+      return response.data.isSuccess ? response.data : rejectWithValue(response.data.errors);
+    } catch (error: any) {
+      console.error("registerUser Server Error:", error.response.data);
+      return rejectWithValue(error.response.data.errors);
+    }
+  }
+);
+
+export const loginUser = createAsyncThunk<
+  ApiCommandResponse,
+  UserLoginData, 
+  { dispatch: AppDispatch; rejectValue: Record<string, string[]> }
+>(
+  "auth/loginUser",
+  async (userData, { dispatch, rejectWithValue }) => {
+    try {
+      const response = await axios.post<ApiCommandResponse>("api/user/login", userData);
+      console.log("loginUser Server Response:", response.data);
+      if (!response.data.isSuccess) {
+        console.log("loginUser Validation Errors:", response.data.errors);
+        return rejectWithValue(response.data.errors);
+      }
+      await dispatch(getCurrentUser());
+      return response.data;
+    } catch (error: any) {
+      console.error("loginUser Server Error:", error.response.data);
+      return rejectWithValue(error.response.data.errors);
+    }
+  }
+);
+
+export const requestResetPassword = createAsyncThunk<ApiCommandResponse, UserForgotPassData, { rejectValue: Record<string, string[]> }>(
+  "auth/requestResetPassword",
+  async (userData, { rejectWithValue }) => {
+    try {
+      const response = await axios.post<ApiCommandResponse>("api/user/passforgot", userData);
+      console.log("requestResetPassword Server Response:", response.data);
+      if (!response.data.isSuccess) {
+        console.log("requestResetPassword Validation Errors:", response.data.errors);
+        return rejectWithValue(response.data.errors);
+      }
+      return response.data;
+    } catch (error: any) {
+      console.error("requestResetPassword Server Error:", error.response.data);
+      return rejectWithValue(error.response.data.errors);
+    }
+  }
+);
+
+export const getCurrentUser = createAsyncThunk<ApiQueryResponse<UserData>, void, { rejectValue: Record<string, string[]> | null }>
+  ("auth/getCurrentUser", async (_, { rejectWithValue }) => {
   try {
     const response = await axios.get<ApiQueryResponse<UserData>>(
-      `api/user/${userId}`
+      `api/user/current-user`
     );
-    console.log("Server Response:", response.data);
+    console.log("getCurrentUser Server Response:", response.data);
     if (!response.data.isSuccess) {
-      console.log("Fetch Error:", response.data.errors);
+      console.log("getCurrentUser Fetch Error:", response.data.errors);
       return rejectWithValue(response.data.errors);
     }
     return response.data;
   } catch (error: any) {
-    console.error("Server Error: ", error.response.data);
+    console.error("getCurrentUser Server Error: ", error.response.data);
     return rejectWithValue(error.response.data.errors);
   }
 });
@@ -51,30 +128,69 @@ const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    login: (state, action: PayloadAction<UserData>) => {  // pass only id
-      state.user = action.payload;
-      state.isAuthenticated = true;
-      // Cookies.set("AuthUserId", action.payload.id);
-    },
-    logout: (state) => {
-      state.user = null;
-      state.isAuthenticated = false;
-      Cookies.remove("AuthUserId");
-    },
-    setUser: (state, action: PayloadAction<UserData | null>) => {
-      state.user = action.payload;
-      state.isAuthenticated = action.payload !== null;
+    resetAuthState(state) {
+      state.isLoading = false;
+      state.errors = null;
+      state.isSuccess = false;
+      state.currentUser = undefined;
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(fetchUser.fulfilled, (state, action) => {
-      state.user = action.payload.data;
-      state.isAuthenticated = true;
-      // Cookies.set("AuthUserId", action.payload.data.id);
+    // Register
+    builder.addCase(registerUser.pending, state => {
+      state.isLoading = true;
+      state.errors = null;
+      state.isSuccess = false;
+    }).addCase(registerUser.fulfilled, (state) => {
+      // console.log('registerUser.fulfilled', action.payload);
+      state.isLoading = false;
+      state.isSuccess = true;
+    }).addCase(registerUser.rejected, (state, action) => {
+      state.isLoading = false;
+      state.errors = action.payload || null;
+    });
+
+    // Login user
+    builder.addCase(loginUser.pending, state => {
+      state.isLoading = true;
+      state.errors = null;
+      state.isSuccess = false;
+    }).addCase(loginUser.fulfilled, (state) => {
+      state.isLoading = false;
+      state.isSuccess = true;
+    }).addCase(loginUser.rejected, (state, action) => {
+      state.isLoading = false;
+      state.errors = action.payload || null;
+    });
+
+    // Reset password
+    builder.addCase(requestResetPassword.pending, state => {
+      state.isLoading = true;
+      state.errors = null;
+      state.isSuccess = false;
+    }).addCase(requestResetPassword.fulfilled, (state) => {
+      state.isLoading = false;
+      state.isSuccess = true;
+    }).addCase(requestResetPassword.rejected, (state, action) => {
+      state.isLoading = false;
+      state.errors = action.payload || null;
+    });
+
+    // Get current user
+    builder.addCase(getCurrentUser.pending, (state) => {
+      state.isLoading = true;
+      state.errors = null;
+      state.isSuccess = false;
+    }).addCase(getCurrentUser.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.isSuccess = true;
+      state.currentUser = action.payload.data.user;
+    }).addCase(getCurrentUser.rejected, (state, action) => {
+      state.isLoading = false;
+      state.errors = action.payload || null;
+      state.currentUser = undefined;
     });
   }
 });
-
-export const { login, logout, setUser } = authSlice.actions;
 
 export default authSlice.reducer;

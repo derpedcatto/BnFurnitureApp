@@ -1,13 +1,22 @@
+import React, { useEffect } from 'react';
+import { AppDispatch } from './store';
+import { useDispatch } from 'react-redux';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import { AuthRoutes } from '../routes/AuthRoutes';
-
 import { NavLayout } from '../common/components/nav';
+import { getCurrentUser } from '../redux/authSlice';
 import { Counter } from '../feature/example';
 
 import './App.scss'
 import { UserRoutes } from '../routes/UserRoutes';
 
 function App() {
+  const dispatch = useDispatch<AppDispatch>();
+
+  useEffect(() => {
+    dispatch(getCurrentUser());
+  }, [dispatch]); 
+
   return (
     <>
       <Router>

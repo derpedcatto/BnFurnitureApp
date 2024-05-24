@@ -10,9 +10,9 @@ import WishlistIcon from "../../../icons/WishlistIcon";
 import SearchBar from "./SearchBar";
 
 const Nav = () => {
-  const isLoggedIn = useSelector((state: RootState) => state.auth.isAuthenticated);
-  const userFirstName = useSelector((state: RootState) => state.auth.user?.firstName);
-  const userLastName = useSelector((state: RootState) => state.auth.user?.lastName);
+  const user = useSelector((state: RootState) => state.auth.currentUser);
+  const userIsAuthenticated = user != null ? true : false;
+  const userNameField = `${user?.firstName} ${user?.lastName}`
 
   return (
     <>
@@ -32,10 +32,10 @@ const Nav = () => {
             <NavLink to="sets">Набори</NavLink>
           </div>
           <div className={styles['nav-rightside']}>
-            <NavLink to={isLoggedIn ? '/user/cabinet' : '/auth/login'}>
+            <NavLink to={userIsAuthenticated ? '/user/cabinet' : '/auth/login'}>
               <div className={`${styles['svg-icon-container']} ${styles['user']}`}>
                 <UserIcon className={styles['user-icon']} />
-                {isLoggedIn ? <p>{userFirstName}  {userLastName}</p> : <p>Привіт! Увійдіть в систему</p>} 
+                {userIsAuthenticated ? <p>{userNameField}</p> : <p>Привіт! Увійдіть в систему</p>} 
               </div>
             </NavLink>
             <NavLink to="/user/cart">
@@ -43,7 +43,7 @@ const Nav = () => {
                 <CartIcon />
               </div>
             </NavLink>
-            <NavLink to={isLoggedIn ? '/user/cabinet' : '/auth/login'}>
+            <NavLink to={userIsAuthenticated ? '/user/cabinet' : '/auth/login'}>
               <div className={`${styles['svg-icon-container']}`}>
                 <WishlistIcon />
               </div>

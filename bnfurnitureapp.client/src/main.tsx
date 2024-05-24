@@ -9,6 +9,7 @@ import './global.scss'
 import './reset.scss'
 
 axios.defaults.baseURL = 'https://localhost:7249';
+axios.defaults.withCredentials = true;
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>

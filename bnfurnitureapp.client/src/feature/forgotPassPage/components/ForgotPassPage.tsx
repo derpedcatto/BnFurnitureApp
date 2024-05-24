@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
 import { RootState, AppDispatch } from "../../../app/store";
-import { requestResetPassword } from "../forgotPassSlice";
+import { requestResetPassword } from "../../../redux/authSlice";
 import { validationSchema } from "../ValidationSchema";
 import styles from "./ForgotPassPage.module.scss";
 import FormLayout from "../../../common/layouts/authFormLayout";
@@ -14,7 +14,7 @@ import forgotPassImage from "../assets/forgotPassImage.png";
 const ForgotPassPage = () => {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
-  const { isLoading, isSuccess, errors } = useSelector((state: RootState) => state.forgotPass);
+  const { isLoading, isSuccess, errors } = useSelector((state: RootState) => state.auth);
 
   const formik = useFormik({
     initialValues: {

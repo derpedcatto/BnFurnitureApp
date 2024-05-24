@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
 import { RootState, AppDispatch } from "../../../app/store";
-import { registerUser } from "../registerSlice";
+import { registerUser } from "../../../redux/authSlice";
 import { validationSchema } from "../validationSchema";
 import styles from "./RegisterPage.module.scss";
 import registerImage from "../assets/registerImage.png";
@@ -14,7 +14,7 @@ import FormField from "../../../common/components/form/FormField";
 const RegisterPage = () => {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
-  const { errors, isLoading, isSuccess } = useSelector((state: RootState) => state.register);
+  const { errors, isLoading, isSuccess } = useSelector((state: RootState) => state.auth);
 
   const formik = useFormik({
     initialValues: {
