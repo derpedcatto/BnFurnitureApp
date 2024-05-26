@@ -1,4 +1,6 @@
-﻿namespace BnFurniture.Application.Controllers.ProductController.DTO;
+﻿using BnFurniture.Application.Controllers.ProductCharacteristicController.DTO;
+
+namespace BnFurniture.Application.Controllers.ProductController.DTO;
 
 public class ResponseProductDTO
 {
@@ -14,4 +16,6 @@ public class ResponseProductDTO
     public bool Active { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime? UpdatedAt { get; set; }
+
+    public List<ResponseCharacteristicWithValuesDTO> Characteristics { get; set; } = new List<ResponseCharacteristicWithValuesDTO>();
 }
