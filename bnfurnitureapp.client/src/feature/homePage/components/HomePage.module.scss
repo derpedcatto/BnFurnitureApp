@@ -1,0 +1,15 @@
+@import '../../../global.scss';
+
+.container {
+  max-width: $br-lg;
+  margin: 0 auto;
+}
+
+.home-body {
+  display: flex;
+  flex-direction: column;
+  gap: 5rem;
+  padding: $p-body;
+  margin-top: 15rem;
+  width: 100%;
+}

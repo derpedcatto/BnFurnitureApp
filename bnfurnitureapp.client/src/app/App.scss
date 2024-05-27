@@ -1,9 +1,15 @@
+@import '../global.scss';
+
 /* <NavLink> active class */
 .active {
 
 }
 
-body,
-html {
-  height: 100%;
+body {
+  background-color: $background-page-color;
 }
+
+// body,
+// html {
+//   height: 100%;
+// }

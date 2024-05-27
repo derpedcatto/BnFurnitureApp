@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { AppDispatch } from './store';
 import { useDispatch } from 'react-redux';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
@@ -6,6 +6,7 @@ import { AuthRoutes } from '../routes/AuthRoutes';
 import { NavLayout } from '../common/components/nav';
 import { getCurrentUser } from '../redux/authSlice';
 import { Counter } from '../feature/example';
+import HomePage from '../feature/homePage';
 
 import './App.scss'
 import { UserRoutes } from '../routes/UserRoutes';
@@ -23,6 +24,7 @@ function App() {
         <Routes>
           <Route path="*" element={ <Navigate replace to="/" />} />
           <Route path="/" element={ <NavLayout /> }>
+            <Route index element={ <HomePage /> } />
             <Route path='/example' element={ <Counter /> } />
             <Route path='/user/*' element={ <UserRoutes /> } />
             <Route path='/products' />

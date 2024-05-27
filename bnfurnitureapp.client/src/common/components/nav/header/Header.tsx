@@ -1,11 +1,11 @@
 import PromoBar from "./PromoBar";
 import Nav from "./Nav";
-import "./Header.module.scss";
+import styles from "./Header.module.scss";
 
 const Header = () => {
   return (
     <>
-      <header>
+      <header className={styles.header}>
         <PromoBar />
         <Nav />
       </header>

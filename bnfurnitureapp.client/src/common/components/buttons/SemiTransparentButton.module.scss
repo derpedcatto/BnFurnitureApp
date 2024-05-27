@@ -1,13 +1,13 @@
-@import "../../../global.scss";
+@import '../../../global.scss';
 
-.white-button {
+.semi-transparent-button {
   color: black;
-  background-color: white;
+  background-color: rgba(255,255,255,0.5);
   border-radius: $button-radius;
   padding: 1rem 1.2rem;
   border: 3px solid black;
   cursor: pointer;
-  font-weight: 500;
+  font-weight: 600;
 
   &:hover {
     transition: 0.3s;

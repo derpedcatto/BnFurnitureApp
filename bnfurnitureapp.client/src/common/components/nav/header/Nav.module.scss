@@ -5,8 +5,8 @@
   flex-direction: column;
   width: 100%;
   max-width: $br-lg;
-  margin: 0 auto;
-  padding: 35px 15px 0;
+  margin: 35px auto 0 auto;
+  padding: $p-body;
   gap: 2rem;
 
   a {
@@ -20,6 +20,16 @@
   a,
   a:visited {
     color: $text-gray-color;
+  }
+
+  /* Small screens */
+  @media screen and (min-width: $br-sm) and (max-width: calc($br-md - 1px)) {
+    padding: $p-body-sm;
+  }
+
+  /* Extra small screens */
+  @media screen and (max-width: calc($br-sm - 1px)) {
+    padding: $p-body-sm;
   }
 }
 

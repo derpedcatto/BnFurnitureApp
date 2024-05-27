@@ -4,9 +4,10 @@
   color: white;
   background-color: black;
   border-radius: $button-radius;
-  padding: 0.7rem;
+  padding: 1rem 1.2rem;
   border: 0;
   cursor: pointer;
+  font-weight: 500;
 
   &:hover {
     transition: 0.3s;

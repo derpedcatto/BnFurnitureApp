@@ -1,23 +1,56 @@
-@import '../global.scss';
+@import '../../../global.scss';
 
 .container {
   display: grid;
+  height: 800px;
   grid-template-columns: repeat(2, 1fr);
   grid-template-rows: repeat(2, 1fr);
   grid-gap: 1rem;
-  font-size: 1.5rem;
+
+  a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+  }
+  
+  p,
+  a,
+  a:visited {
+    color: $text-black-color;
+  }
+}
+
+.svg-logo-container {
+  overflow: auto;
+  height: 40px;
+  width: 40px;
+}
+
+.svg-icon-container {
+  overflow: auto;
+  height: 40px;
+  width: 40px;
+}
+
+svg {
+  width: 100%;
+  height: 100%;
 }
 
 .card {
   display: flex;
-  border-radius: $card-radius;
-  background-color: gray;
+  border-radius: $card-product-radius;
   width: 100%;
   overflow: hidden;
 }
 
 .card-horizontal {
   flex-direction: column;
+
+  .card-footer {
+    flex-direction: row;
+  }
 }
 
 .card-vertical {
@@ -25,30 +58,89 @@
 }
 
 .card-footer {
-  background-color: $primary-color;
-}
-
-.card-aside {
-  background-color: $primary-color;
-}
-
-.img-wrapper {
-  background-color: grey;
-  overflow: hidden;
-
-  img {
+  p {
     width: 100%;
   }
 }
 
-.card1 {
+.card-aside {
+  p {
+    height: 100%;
+  }
+}
 
+.card-footer,
+.card-aside {
+  display: flex;
+  background-color: $secondary-color;
+  text-align: center;
+  justify-content: center;
+  padding: 1rem 2rem;
+  font-weight: 500;
+  font-size: clamp(0.7rem, 1rem + 2vw, 1.5rem);
+  text-wrap: pretty;
+}
+
+.image-container {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.card1 {
+  grid-area: 1 / 1 / 2 / 2;
 }
 
 .card2 {
-
+  grid-area: 1 / 2 / 2 / 3;
 }
 
 .card3 {
+  grid-area: 2 / 1 / 3 / 3;
+}
 
+/* Small screens */
+@media screen and (min-width: $br-sm) and (max-width: calc($br-md - 1px)) {
+  .container {
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(3, 1fr);
+  }
+
+  .card1 {
+    grid-area: 1 / 1 / 2 / 2;
+  }
+
+  .card2 {
+    grid-area: 2 / 1 / 3 / 2;
+  }
+
+  .card3 {
+    grid-area: 3 / 1 / 4 / 2;
+  }
+}
+
+/* Extra small screens */
+@media screen and (max-width: calc($br-sm - 1px)) {
+  .container {
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(3, 1fr);
+  }
+
+  .card1 {
+    grid-area: 1 / 1 / 2 / 2;
+  }
+
+  .card2 {
+    grid-area: 2 / 1 / 3 / 2;
+  }
+
+  .card3 {
+    grid-area: 3 / 1 / 4 / 2;
+  }
 }

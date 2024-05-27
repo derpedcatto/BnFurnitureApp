@@ -1,0 +1,120 @@
+@import "../../../global.scss";
+
+.container {
+  display: flex;
+  flex-direction: column;
+
+  /* Medium screens */
+  @media screen and (min-width: $br-md) and (max-width: calc($br-lg - 1px)) {
+    padding: 0 4rem;
+  }
+}
+
+.hero-lead {
+  margin-top: 3rem;
+  text-align: center;
+  font-size: clamp(2rem, 1rem + 6vw, 5.5rem);
+  font-weight: 600;
+  // margin-bottom: 100rem;
+}
+
+.nav-button-container {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  margin-top: 7rem;
+  align-items: center;
+  padding: $p-body;
+
+  .nav-button {
+    text-decoration-line: none;
+    text-align: center;
+    text-wrap: pretty;
+  }
+
+  /* Small screens */
+  @media screen and (min-width: $br-sm) and (max-width: calc($br-md - 1px)) {
+    flex-direction: column;
+    align-items: inherit;
+    margin-top: 3rem;
+  }
+
+  /* Extra small screens */
+  @media screen and (max-width: calc($br-sm - 1px)) {
+    flex-direction: column;
+    align-items: inherit;
+    margin-top: 3rem;
+    padding: $p-body-sm;
+  }
+}
+
+.product-cards-promo {
+  margin-top: 2.5rem;
+  width: 100%;
+  height: 100%;
+
+  .product-cards-carousel {
+    overflow: hidden;
+    padding: $p-body;
+
+    .product-cards-container {
+      display: flex;
+      width: 100%;
+      height: 240px;
+      flex-wrap: nowrap;
+      align-items: end;
+
+      .embla-slide {
+        width: 160px;
+        height: 93%; // hack to align 'Top' sticker
+        min-width: 0;
+        margin-right: 4rem;
+
+        &:last-child {
+          margin-right: 0;
+        }
+
+        /* Medium screens */
+        @media screen and (min-width: $br-md) and (max-width: calc($br-lg - 1px)) {
+          margin-right: 2rem;
+        }
+
+        /* Small screens */
+        @media screen and (min-width: $br-sm) and (max-width: calc($br-md - 1px)) {
+          margin-right: 2rem;
+          flex: 0 0 auto;
+        }
+
+        /* Extra small screens */
+        @media screen and (max-width: calc($br-sm - 1px)) {
+          margin-right: 2rem;
+          flex: 0 0 auto;
+        }
+      }
+    }
+  }
+
+  .product-cards-promo-text {
+    padding: $p-body;
+    margin-top: 1rem;
+    text-wrap: pretty;
+
+    b {
+      font-weight: 600;
+    }
+
+    .bolder {
+      font-weight: 900;
+    }
+
+    /* Small screens */
+    @media screen and (min-width: $br-sm) and (max-width: calc($br-md - 1px)) {
+      text-align: center;
+    }
+
+    /* Extra small screens */
+    @media screen and (max-width: calc($br-sm - 1px)) {
+      text-align: center;
+    }
+  }
+}
