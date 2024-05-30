@@ -14,6 +14,16 @@ namespace BnFurniture.Application.Controllers.ProductCharacteristicController
     [ApiController]
     public class ProductCharacteristicController : ControllerBase
     {
+
+        //[HttpGet("characteristic")]
+        [HttpGet]
+        public async Task<IActionResult> GetAllCharacteristics([FromServices] GetAllCharacteristicsHandler handler)
+        {
+            var query = new GetAllCharacteristicsQuery();
+            var apiResponse = await handler.Handle(query, HttpContext.RequestAborted);
+            return new JsonResult(apiResponse) { StatusCode = apiResponse.StatusCode };
+        }
+
         [HttpGet("characteristic/{slug}")]
         public async Task<IActionResult> GetCharacteristic([FromServices] GetCharacteristicHandler handler, string slug)
         {
@@ -32,7 +42,26 @@ namespace BnFurniture.Application.Controllers.ProductCharacteristicController
         [HttpPost("characteristics")]
         public async Task<IActionResult> CreateCharacteristic([FromServices] CreateCharacteristicHandler handler, [FromBody] CreateCharacteristicDTO dto)
         {
+            //_logger.LogInformation("CreateCharacteristic called with DTO: {@dto}", dto); 
             var command = new CreateCharacteristicCommand(dto);
+            var apiResponse = await handler.Handle(command, HttpContext.RequestAborted);
+            return new JsonResult(apiResponse) { StatusCode = apiResponse.StatusCode };
+        }
+
+        [HttpPut("characteristics")]
+        public async Task<IActionResult> UpdateCharacteristic([FromServices] UpdateCharacteristicHandler handler, [FromBody] UpdateCharacteristicDTO dto)
+        {
+           // _logger.LogInformation("UpdateCharacteristic called with DTO: {@dto}", dto);
+            var command = new UpdateCharacteristicCommand(dto);
+            var apiResponse = await handler.Handle(command, HttpContext.RequestAborted);
+            return new JsonResult(apiResponse) { StatusCode = apiResponse.StatusCode };
+        }
+
+        [HttpDelete("characteristics/{id}")]
+        public async Task<IActionResult> DeleteCharacteristic([FromServices] DeleteCharacteristicHandler handler, Guid id)
+        {
+            //_logger.LogInformation("DeleteCharacteristic called with ID: {id}", id);
+            var command = new DeleteCharacteristicCommand(id);
             var apiResponse = await handler.Handle(command, HttpContext.RequestAborted);
             return new JsonResult(apiResponse) { StatusCode = apiResponse.StatusCode };
         }
