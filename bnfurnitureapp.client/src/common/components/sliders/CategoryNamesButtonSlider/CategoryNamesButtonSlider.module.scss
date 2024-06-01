@@ -1,0 +1,34 @@
+@use "../../../styles/Buttons.module.scss" as buttons;
+
+.container {
+  display: flex;
+  flex-direction: column;
+}
+
+.category-list {
+  .category-list-carousel {
+    overflow: hidden;
+    height: 100%;
+    padding: 0.6rem 0;
+
+    .category-list-container {
+      display: flex;
+
+      .embla-slide {
+        margin-right: 1rem;
+        flex: 0 0 auto;
+
+        // If infinite loop is false, use this
+        // &:last-child {
+        //   margin-right: 0;
+        // }
+ 
+        .category-button {
+          @include buttons.button-gray;
+          padding: 0.6rem 1rem;
+          text-decoration: none;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,25 @@
+.container {
+  max-width: $bp-w-lg;
+  margin: 0 auto;
+}
+
+.home-body {
+  display: flex;
+  flex-direction: column;
+  padding: $padding-base;
+  margin-top: 15rem;
+  margin-bottom: 5rem;
+  width: 100%;
+  gap: 1rem;
+}
+
+.category-section-name {
+  font-weight: 600;
+  font-size: 1.7rem;
+  margin-top: 4rem;
+
+  /* Small - Extra small screens */
+  @media screen and (max-width: calc($bp-w-md - 1px)) {
+    text-align: center;
+  }
+}

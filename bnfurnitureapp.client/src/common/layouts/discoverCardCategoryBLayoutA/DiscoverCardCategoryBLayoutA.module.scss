@@ -1,0 +1,12 @@
+.container {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-evenly;
+  row-gap: 3vh;
+  column-gap: 3vw;
+
+  &::after {
+    content: "";
+    flex: 1 1 100%;
+  }
+}

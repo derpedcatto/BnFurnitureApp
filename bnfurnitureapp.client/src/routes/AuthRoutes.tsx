@@ -1,7 +1,7 @@
 import { Route, Routes } from "react-router-dom";
-import RegisterPage from "../feature/registerPage";
-import LoginPage from "../feature/loginPage";
-import ForgotPassPage from "../feature/forgotPassPage";
+import RegisterPage from "../features/registerPage";
+import LoginPage from "../features/loginPage";
+import ForgotPassPage from "../features/forgotPassPage";
 
 export function AuthRoutes() {
   return (

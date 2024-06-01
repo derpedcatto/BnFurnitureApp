@@ -5,9 +5,7 @@ interface ApiBaseResponse {
   errors?: Record<string, string[]>;
 }
 
-interface ApiCommandResponse extends ApiBaseResponse {
-
-}
+interface ApiCommandResponse extends ApiBaseResponse {}
 
 interface ApiQueryResponse<T> extends ApiBaseResponse {
   data?: T;

@@ -1,0 +1,64 @@
+/* Colors */
+$color-primary: #839d9a;
+$color-secondary: #b8c2c2;
+$color-accent: #867ac0;
+
+$color-text-black: #060808;
+$color-text-white: #ffffff;
+$color-text-gray: #5F5F5F;
+
+$color-icon-black: #060808;
+$color-icon-white: #ffffff;
+$color-icon-gray: #5F5F5F;
+
+$color-bg-pagedefault: #ffffff;
+
+/* Breakpoints */
+$bp-w-lg: 1480px;
+$bp-w-md: 768px;
+$bp-w-sm: 480px;
+
+/* Paddings */
+$padding-base: 0 1rem;
+$padding-base-sm: 0 0.5rem;
+
+/* Radius */
+$radius-card-product: 15px;
+$radius-btn-default: 30px;
+
+/* Font Sizes */
+
+/* Fonts */
+
+@font-face {
+  font-family: "Montserrat";
+  src: url("../assets/fonts/Montserrat/Montserrat-VariableFont_wght.ttf") format("truetype-variations"),
+       url("../assets/fonts/Montserrat/Montserrat-Italic-VariableFont_wght.ttf") format("truetype-variations");
+  font-display: swap;
+}
+
+:root {
+  /* Colors */
+  --color-primary: #{$color-primary};
+  --color-secondary: #{$color-secondary};
+  --color-accent: #{$color-accent};
+
+  --color-text-black: #{$color-text-black};
+  --color-text-white: #{$color-text-white};
+  --color-text-gray: #{$color-text-gray};
+
+  --color-icon-black: #{$color-icon-black};
+  --color-icon-white: #{$color-icon-white};
+  --color-icon-gray: #{$color-icon-gray};
+
+  --color-bg-pagedefault: #{$color-bg-pagedefault};
+
+  /* Breakpoints */
+  --bp-w-lg: #{$bp-w-lg};
+  --bp-w-md: #{$bp-w-md};
+  --bp-w-sm: #{$bp-w-sm};
+
+  /* Radius */
+  --radius-card-product: #{$radius-card-product};
+  --radius-btn-default: #{$radius-btn-default};
+}

@@ -1,15 +1,7 @@
-@import '../global.scss';
-
-/* <NavLink> active class */
-.active {
-
+:root {
+  font-family: "Montserrat", sans-serif;
 }
 
-body {
-  background-color: $background-page-color;
+.error {
+  color: #cc0000;
 }
-
-// body,
-// html {
-//   height: 100%;
-// }
