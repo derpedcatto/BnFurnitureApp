@@ -5,10 +5,10 @@ import { Provider } from 'react-redux'
 import { store } from './app/store.ts'
 import axios from 'axios'
 
-import './global.scss'
-import './reset.scss'
+import './styles/reset.scss'
 
 axios.defaults.baseURL = 'https://localhost:7249';
+axios.defaults.withCredentials = true;
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>

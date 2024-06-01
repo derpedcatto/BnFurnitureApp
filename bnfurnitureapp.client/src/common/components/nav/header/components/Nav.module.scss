@@ -1,0 +1,172 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: $bp-w-lg;
+  margin: 35px auto 0 auto;
+  padding: $padding-base;
+  gap: 2rem;
+
+  a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+  }
+
+  p,
+  a,
+  a:visited {
+    color: $color-text-gray;
+  }
+
+  /* Small - Extra small screens */
+  @media screen and (max-width: calc($bp-w-md - 1px)) {
+    padding: $padding-base-sm;
+  }
+}
+
+nav {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  width: 100%;
+  height: 30px;
+}
+
+.svg-logo-container {
+  overflow: auto;
+  height: 50px;
+  cursor: pointer;
+  // border: 1px dashed #aaa;
+}
+
+.svg-icon-container {
+  overflow: auto;
+  height: 30px;
+  cursor: pointer;
+  // border: 1px dashed #aaa;
+}
+
+svg {
+  width: 100%;
+  height: 100%;
+}
+
+.nav-leftside {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-left: 100px;
+  gap: 2rem;
+
+  a {
+    /* Small - Extra small screens */
+    @media screen and (max-width: calc($bp-w-md - 1px)) {
+      font-size: 0px;
+    }
+  }
+
+  .hamburger {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 45px;
+  
+    p {
+      margin-top: -5px;
+      font-size: 1rem;
+    }
+  
+    /* Extra small screens */
+    @media screen and (max-width: calc($bp-w-sm - 1px)) {
+      p {
+        font-size: 0;
+      }
+    }
+  }
+
+  /* Medium screens */
+  @media screen and (min-width: $bp-w-md) and (max-width: calc($bp-w-lg - 1px)) {
+    padding-left: 50px;
+  }
+
+  /* Small screens */
+  @media screen and (min-width: $bp-w-sm) and (max-width: calc($bp-w-md - 1px)) {
+    padding-left: 20px;
+    gap: 1rem;
+  }
+
+  /* Extra small screens */
+  @media screen and (max-width: calc($bp-w-sm - 1px)) {
+    padding-left: 0;
+    gap: 1.2rem;
+  }
+}
+
+.nav-rightside {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-right: 100px;
+  gap: 2rem;
+
+  .user {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0;
+
+    .user-icon {
+      width: 30px;
+    }
+
+    p {
+      font-size: 0;
+      user-select: none;
+    }
+
+    /* Large screens */
+    @media screen and (min-width: $bp-w-lg) {
+      gap: 1rem;
+
+      p {
+        font-size: 0.9rem;
+        margin-right: 2rem;
+      }
+    }
+  }
+
+  /* Medium screens */
+  @media screen and (min-width: $bp-w-md) and (max-width: calc($bp-w-lg - 1px)) {
+    padding-right: 50px;
+  }
+
+  /* Small screens */
+  @media screen and (min-width: $bp-w-sm) and (max-width: calc($bp-w-md - 1px)) {
+    padding-right: 20px;
+    gap: 1rem;
+  }
+
+  /* Extra small screens */
+  @media screen and (max-width: calc($bp-w-sm - 1px)) {
+    padding-right: 0;
+    gap: 0.8rem;
+  }
+}
+
+.search-bar {
+  margin: 0 auto;
+  width: 75%;
+
+  /* Small screens */
+  @media screen and (min-width: $bp-w-sm) and (max-width: calc($bp-w-md - 1px)) {
+    width: 95%;
+  }
+
+  /* Extra small screens */
+  @media screen and (max-width: calc($bp-w-sm - 1px)) {
+    width: 100%;
+  }
+}

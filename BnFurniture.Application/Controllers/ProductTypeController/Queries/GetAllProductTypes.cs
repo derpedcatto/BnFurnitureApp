@@ -36,7 +36,9 @@ public sealed class GetAllProductTypesHandler : QueryHandler<GetAllProductTypesQ
                 Name = pt.Name,
                 Slug = pt.Slug,
                 Priority = pt.Priority
-            }).ToListAsync(cancellationToken);
+            })
+            .OrderBy(pt => pt.Name)
+            .ToListAsync(cancellationToken);
 
         return new ApiQueryResponse<GetAllProductTypesResponse>(true, (int)HttpStatusCode.OK)
         {

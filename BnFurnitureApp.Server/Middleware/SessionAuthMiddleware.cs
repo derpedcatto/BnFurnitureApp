@@ -12,8 +12,6 @@ public class SessionAuthMiddleware
         _next = next;
     }
 
-    // TODO: add security? (JWT)
-
     public async Task InvokeAsync(HttpContext context, ApplicationDbContext dbContext)
     {
         if (context.Session.Keys.Contains("AuthUserId"))
@@ -38,6 +36,11 @@ public class SessionAuthMiddleware
                                 new ClaimsIdentity(
                                     claims, "SessionAuth"));
                     }
+                    else
+                    {
+                        context.Session.Remove("AuthUserId");
+                        context.Response.Cookies.Delete("AuthUserId");
+                    }
                 }
                 else
                 {
@@ -57,9 +60,3 @@ public class SessionAuthMiddleware
         await _next(context);
     }
 }
-
-/* Claims usage (in controller)
-    var userId = user.FindFirstValue(ClaimTypes.Sid);
-    var userName = user.FindFirstValue(ClaimTypes.Name);
-    var userEmail = user.FindFirstValue(ClaimTypes.Email);
- */
