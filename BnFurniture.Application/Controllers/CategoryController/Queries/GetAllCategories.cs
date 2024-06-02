@@ -33,7 +33,8 @@ public sealed class GetAllCategoriesHandler : QueryHandler<GetAllCategoriesQuery
 
         var categories = await dbContext.ProductCategory
             .Include(c => c.ParentCategory)
-            .ToListAsync();
+            .OrderBy(c => c.Name)
+            .ToListAsync(cancellationToken);
 
         var categoryDTOList = MapCategoriesToDTOs(categories);
 

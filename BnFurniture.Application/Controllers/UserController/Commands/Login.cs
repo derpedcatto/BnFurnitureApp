@@ -8,19 +8,19 @@ using System.Net;
 
 namespace BnFurniture.Application.Controllers.UserController.Commands;
 
-public sealed record LoginCommand(UserLoginDTO entityForm);
+public sealed record UserLoginCommand(UserLoginDTO entityForm);
 
-public sealed class LoginHandler : CommandHandler<LoginCommand>
+public sealed class UserLoginHandler : CommandHandler<UserLoginCommand>
 {
     private readonly UserLoginDTOValidator _validator;
 
-    public LoginHandler(UserLoginDTOValidator validator,
+    public UserLoginHandler(UserLoginDTOValidator validator,
         IHandlerContext context) : base(context)
     {
         _validator = validator;
     }
 
-    public override async Task<ApiCommandResponse> Handle(LoginCommand request, CancellationToken cancellationToken = default)
+    public override async Task<ApiCommandResponse> Handle(UserLoginCommand request, CancellationToken cancellationToken = default)
     {
         var dto = request.entityForm;
         var httpContext = HandlerContext.HttpContextAccessor.HttpContext;

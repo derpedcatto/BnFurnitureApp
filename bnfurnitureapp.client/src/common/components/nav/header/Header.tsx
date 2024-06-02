@@ -1,15 +1,13 @@
-import PromoBar from "./PromoBar";
-import Nav from "./Nav";
-import "./Header.module.scss";
+import PromoBar from "./components/PromoBar";
+import Nav from "./components/Nav";
+import styles from "./Header.module.scss";
 
 const Header = () => {
   return (
-    <>
-      <header>
-        <PromoBar />
-        <Nav />
-      </header>
-    </>
+    <header className={styles.header}>
+      <PromoBar />
+      <Nav />
+    </header>
   );
 };
 

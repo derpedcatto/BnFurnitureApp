@@ -1,0 +1,91 @@
+.container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(7, 1fr);
+  gap: 1rem;
+  max-height: 1050px;
+
+  .svg-icon-container {
+    position: absolute;
+    overflow: auto;
+    height: 40px;
+    width: 40px;
+    margin-left: 15px;
+    margin-top: 15px;
+  }
+  
+  svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  .card {
+    height: 100%;
+    border-radius: $radius-card-product;
+    overflow: hidden;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  .card1 {
+    @extend .card;
+    grid-row: 1 / 5;
+    grid-column: 1 / 2;
+  }
+
+  .card2 {
+    @extend .card;
+    grid-row: 5 / 8;
+    grid-column: 1 / 2;
+  }
+
+  .card3 {
+    @extend .card;
+    grid-row: 1 / 4;
+    grid-column: 2 / 3;
+  }
+
+  .card4 {
+    @extend .card;
+    grid-row: 4 / 8;
+    grid-column: 2 / 3;
+  }
+
+  .card5 {
+    @extend .card;
+    grid-row: 1 / 5;
+    grid-column: 3 / 4;
+  }
+
+  .card6 {
+    @extend .card;
+    grid-row: 5 / 8;
+    grid-column: 3 / 4;
+  }
+
+  /* Small - Extra small screens */
+  @media screen and (max-width: calc($bp-w-md - 1px)) {
+    max-height: none;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+
+    img {
+      width: 100%;
+      height: auto;
+    }
+
+    .card1,
+    .card2,
+    .card3,
+    .card4,
+    .card5,
+    .card6 {
+      grid-column: auto;
+      grid-row: auto;
+    }
+  }
+}

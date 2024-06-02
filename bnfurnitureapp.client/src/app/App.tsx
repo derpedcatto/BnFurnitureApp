@@ -1,39 +1,50 @@
-import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
-import { AuthRoutes } from '../routes/AuthRoutes';
-
-import { NavLayout } from '../common/components/nav';
-import { Counter } from '../feature/example';
-
-import './App.scss'
-import { UserRoutes } from '../routes/UserRoutes';
+import { useEffect } from "react";
+import { AppDispatch } from "./store";
+import { useDispatch } from "react-redux";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  Navigate,
+} from "react-router-dom";
+import { AuthRoutes } from "../routes/AuthRoutes";
+import { UserRoutes } from "../routes/UserRoutes";
+import { NavLayout } from "../common/components/nav";
+import { getCurrentUser } from "../redux/userSlice";
+import HomePage from "../features/homePage";
+import "./App.scss";
 
 function App() {
+  const dispatch = useDispatch<AppDispatch>();
+
+  useEffect(() => {
+    dispatch(getCurrentUser());
+  }, [dispatch]);
+
   return (
     <>
       <Router>
         <Routes>
           <Route path="*" element={<Navigate replace to="/" />} />
           <Route path="/" element={<NavLayout />}>
-            <Route path='/example' element={ <Counter /> } />
-            <Route path='/user/*' element={ <UserRoutes /> } />
-            <Route path='/products' />
-            <Route path='/sets' />
+            <Route index element={<HomePage />} />
+            <Route path="/user/*" element={<UserRoutes />} />
+            <Route path="/products" />
+            <Route path="/sets" />
           </Route>
-          <Route path='/auth/*' element={ <AuthRoutes /> } />
+          <Route path="/auth/*" element={<AuthRoutes />} />
         </Routes>
       </Router>
     </>
-  )
+  );
 }
 
 export default App;
-
 
 // <Route index element= {<LandingPage />}/>
 
 // reactdev.ru/libs/redux/advanced/UsageWithReactRouter/#url_1
 // youtu.be/Ul3y1LXxzdU?si=1b26b7C_q6QbVuNl
-
 
 // <Link> properties - youtu.be/Ul3y1LXxzdU?si=1b26b7C_q6QbVuNl&t=1832
 // replace - when clicks back button - go to the page before the page that has this attribute
@@ -49,12 +60,10 @@ export default App;
 // Changing nav text - <NavLink>`{({ isActive }) return isActive ? "Active Home" : "Home"`</NavLink>
 // `end` property - only match style on specific NavLink and ignore its children
 
-
 //  <Route path='/parent'>  // element={ <ParentLayout /> } - Render parent layout in all child components, youtu.be/Ul3y1LXxzdU?si=7A1Wnh0vd_mzIxCn&t=1135
 //    <Route index element = { } />   - equals to '/parent'
 //    <Route path='/child1' />
 //  </Route>
-
 
 // TODO: Implement NAV components and put them in here (footer, header)
 // TODO: How to use route param with Redux? `<Route path='/login:id' />` - how to use `id`

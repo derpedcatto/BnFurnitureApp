@@ -1,0 +1,27 @@
+.forgot-pass-link {
+  margin-top: 0.2rem;
+  color: $color-text-gray;
+
+  &:visited {
+    color: inherit;
+  }
+}
+
+.container-signup {
+  display: flex;
+  flex-direction: column;
+  margin-top: 5rem;
+  width: 100%;
+  font-weight: 600;
+  gap: 1rem;
+  text-wrap: pretty;
+
+  .signup-button {
+    text-decoration-line: none;
+    text-align: center;
+  }
+}
+
+.image-heading-color {
+  color: $color-text-black;
+}

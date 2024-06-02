@@ -10,4 +10,11 @@ export default defineConfig({
   server: {
     port: 5173,
   },
+  css: {
+    preprocessorOptions: {
+      scss: {
+        additionalData: `@use "./src/styles/globals.scss" as *;`
+      }
+    }
+  }
 })
