@@ -25,4 +25,9 @@
     <ProjectReference Include="..\BnFurniture.Shared\BnFurniture.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Controllers\CharacteristicValueController\Queries\" />
+    <Folder Include="Controllers\ProductCharacteristicConfiguration\Queries\" />
+  </ItemGroup>
+
 </Project>
