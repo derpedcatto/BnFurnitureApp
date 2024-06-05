@@ -1,55 +1,51 @@
 ﻿using BnFurniture.Application.Abstractions;
 using BnFurniture.Application.Controllers.CharacteristicValueController.DTO;
-using BnFurniture.Domain.Entities;
 using BnFurniture.Domain.Responses;
-using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using BnFurniture.Application.Extensions;
+using System.Net;
 
-namespace BnFurniture.Application.Controllers.CharacteristicValueController.Commands
+namespace BnFurniture.Application.Controllers.CharacteristicValueController.Commands;
+
+public sealed record UpdateCharacteristicValueCommand(UpdateCharacteristicValueDTO Dto);
+
+public sealed class UpdateCharacteristicValueHandler : CommandHandler<UpdateCharacteristicValueCommand>
 {
-    public sealed record UpdateCharacteristicValueCommand(UpdateCharacteristicValueDTO Dto);
+    private readonly UpdateCharacteristicValueDTOValidator _validator;
 
-    public sealed class UpdateCharacteristicValueHandler : CommandHandler<UpdateCharacteristicValueCommand>
+    public UpdateCharacteristicValueHandler(IHandlerContext context) : base(context)
     {
-        private readonly UpdateCharacteristicValueDTOValidator _validator;
+        _validator = new UpdateCharacteristicValueDTOValidator(context.DbContext);
+    }
 
-        public UpdateCharacteristicValueHandler(IHandlerContext context) : base(context)
+    public override async Task<ApiCommandResponse> Handle(UpdateCharacteristicValueCommand request, CancellationToken cancellationToken)
+    {
+        var validationResult = await _validator.ValidateAsync(request.Dto, cancellationToken);
+
+        if (!validationResult.IsValid)
         {
-            _validator = new UpdateCharacteristicValueDTOValidator(context.DbContext);
+            return new ApiCommandResponse(false, (int)HttpStatusCode.UnprocessableEntity)
+            {
+                Message = "Валідація не пройшла перевірку",
+                Errors = validationResult.ToApiResponseErrors()
+            };
         }
 
-        public override async Task<ApiCommandResponse> Handle(UpdateCharacteristicValueCommand request, CancellationToken cancellationToken)
+        var characteristicValue = await HandlerContext.DbContext.CharacteristicValue
+            .FirstOrDefaultAsync(cv => cv.Id == request.Dto.Id, cancellationToken);
+
+        if (characteristicValue == null)
         {
-            var validationResult = await _validator.ValidateAsync(request.Dto, cancellationToken);
-
-            if (!validationResult.IsValid)
-            {
-                var errors = validationResult.Errors
-                     .GroupBy(e => e.PropertyName)
-                     .ToDictionary(
-                         g => g.Key,
-                         g => g.Select(e => e.ErrorMessage).ToList()
-                     );
-                return new ApiCommandResponse(false, 400) { Message = "Validation failed.", Errors = errors };
-            }
-
-            var characteristicValue = await HandlerContext.DbContext.CharacteristicValue
-                .FirstOrDefaultAsync(cv => cv.Id == request.Dto.Id, cancellationToken);
-
-            if (characteristicValue == null)
-            {
-                return new ApiCommandResponse(false, 404) { Message = "Characteristic value not found." };
-            }
-
-            characteristicValue.CharacteristicId = request.Dto.CharacteristicId;
-            characteristicValue.Value = request.Dto.Value;
-            characteristicValue.Slug = request.Dto.Slug;
-            characteristicValue.Priority = request.Dto.Priority;
-
-            await HandlerContext.DbContext.SaveChangesAsync(cancellationToken);
-
-            return new ApiCommandResponse(true, 200) { Message = "Characteristic value updated successfully." };
+            return new ApiCommandResponse(false, 404) { Message = "Characteristic value not found." };
         }
+
+        characteristicValue.CharacteristicId = request.Dto.CharacteristicId;
+        characteristicValue.Value = request.Dto.Value;
+        characteristicValue.Slug = request.Dto.Slug;
+        characteristicValue.Priority = request.Dto.Priority;
+
+        await HandlerContext.DbContext.SaveChangesAsync(cancellationToken);
+
+        return new ApiCommandResponse(true, 200) { Message = "Characteristic value updated successfully." };
     }
 }

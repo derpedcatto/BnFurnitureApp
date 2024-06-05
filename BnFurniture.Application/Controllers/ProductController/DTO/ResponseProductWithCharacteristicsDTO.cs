@@ -1,6 +1,6 @@
 ﻿namespace BnFurniture.Application.Controllers.ProductController.DTO;
 
-public class ResponseProductDTO
+public class ResponseProductWithCharacteristicsDTO
 {
     public Guid Id { get; set; }
     public Guid ProductTypeId { get; set; }
@@ -14,4 +14,6 @@ public class ResponseProductDTO
     public bool Active { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime? UpdatedAt { get; set; }
+
+    public List<ResponseCharacteristicWithValuesDTO> Characteristics { get; set; } = [];
 }

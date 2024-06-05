@@ -11,9 +11,9 @@ public sealed record GetAllProductArticlesQuery();
 
 public sealed class GetAllProductArticlesResponse
 {
-    public List<ProductArticleResponseDTO> ProductArticles { get; private set; }
+    public List<ResponseProductArticleDTO> ProductArticles { get; private set; }
 
-    public GetAllProductArticlesResponse(List<ProductArticleResponseDTO> productArticles)
+    public GetAllProductArticlesResponse(List<ResponseProductArticleDTO> productArticles)
     {
         ProductArticles = productArticles;
     }
@@ -45,9 +45,9 @@ public sealed class GetAllProductArticlesHandler : QueryHandler<GetAllProductArt
         };
     }
 
-    private List<ProductArticleResponseDTO> MapProductArticlesToDTOs(List<ProductArticle> productArticles)
+    private List<ResponseProductArticleDTO> MapProductArticlesToDTOs(List<ProductArticle> productArticles)
     {
-        return productArticles.Select(pa => new ProductArticleResponseDTO
+        return productArticles.Select(pa => new ResponseProductArticleDTO
         {
             Article = pa.Article,
             ProductId = pa.ProductId,
