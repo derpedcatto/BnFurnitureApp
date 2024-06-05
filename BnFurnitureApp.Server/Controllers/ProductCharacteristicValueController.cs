@@ -3,55 +3,47 @@ using BnFurniture.Application.Controllers.CharacteristicValueController.DTO;
 using BnFurniture.Application.Controllers.CharacteristicValueController.Queries;
 using BnFurniture.Application.Controllers.ProductCharacteristicController.Commands;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using System.Threading.Tasks;
 
-namespace BnFurnitureApp.Server.Controllers
+namespace BnFurnitureApp.Server.Controllers;
+
+[Route("api/[controller]")]
+[ApiController]
+public class ProductCharacteristicValueController : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class ProductCharacteristicValueController : ControllerBase
+    [HttpGet("{CharacteristicSlug}")]
+    public async Task<IActionResult> GetAllCharacteristicValues([FromServices] GetAllCharacteristicValuesHandler handler,
+    string CharacteristicSlug)
     {
-        private readonly ILogger<ProductCharacteristicValueController> _logger;
+        var query = new GetAllCharacteristicValuesQuery(CharacteristicSlug);
 
-        public ProductCharacteristicValueController(ILogger<ProductCharacteristicValueController> logger)
-        {
-            _logger = logger;
-        }
+        var apiResponse = await handler.Handle(query, HttpContext.RequestAborted);
+        return new JsonResult(apiResponse) { StatusCode = apiResponse.StatusCode };
+    }
 
-        [HttpPost("characteristic-values")]
-        public async Task<IActionResult> CreateCharacteristicValue([FromServices] CreateCharacteristicValueHandler handler, [FromBody] CreateCharacteristicValueDTO dto)
-        {
-            _logger.LogInformation("CreateCharacteristicValue called with DTO: {@dto}", dto);
-            var command = new CreateCharacteristicValueCommand(dto);
-            var apiResponse = await handler.Handle(command, HttpContext.RequestAborted);
-            return new JsonResult(apiResponse) { StatusCode = apiResponse.StatusCode };
-        }
+    [HttpPost]
+    public async Task<IActionResult> CreateCharacteristicValue([FromServices] CreateCharacteristicValueHandler handler, [FromBody] CreateCharacteristicValueDTO dto)
+    {
+        var command = new CreateCharacteristicValueCommand(dto);
 
-        [HttpPut("characteristic-values")]
-        public async Task<IActionResult> UpdateCharacteristicValue([FromServices] UpdateCharacteristicValueHandler handler, [FromBody] UpdateCharacteristicValueDTO dto)
-        {
-            _logger.LogInformation("UpdateCharacteristicValue called with DTO: {@dto}", dto);
-            var command = new UpdateCharacteristicValueCommand(dto);
-            var apiResponse = await handler.Handle(command, HttpContext.RequestAborted);
-            return new JsonResult(apiResponse) { StatusCode = apiResponse.StatusCode };
-        }
+        var apiResponse = await handler.Handle(command, HttpContext.RequestAborted);
+        return new JsonResult(apiResponse) { StatusCode = apiResponse.StatusCode };
+    }
 
-        [HttpGet("characteristic-values")]
-        public async Task<IActionResult> GetAllCharacteristicValues([FromServices] GetAllCharacteristicValuesHandler handler)
-        {
-            var query = new GetAllCharacteristicValuesQuery();
-            var apiResponse = await handler.Handle(query, HttpContext.RequestAborted);
-            return new JsonResult(apiResponse) { StatusCode = apiResponse.StatusCode };
-        }
+    [HttpPut]
+    public async Task<IActionResult> UpdateCharacteristicValue([FromServices] UpdateCharacteristicValueHandler handler, [FromBody] UpdateCharacteristicValueDTO dto)
+    {
+        var command = new UpdateCharacteristicValueCommand(dto);
 
-        [HttpDelete("characteristic-values/{id}")]
-        public async Task<IActionResult> DeleteCharacteristicValue([FromServices] DeleteCharacteristicValueHandler handler, Guid id)
-        {
-            _logger.LogInformation("DeleteCharacteristicValue called with ID: {id}", id);
-            var command = new DeleteCharacteristicValueCommand(id);
-            var apiResponse = await handler.Handle(command, HttpContext.RequestAborted);
-            return new JsonResult(apiResponse) { StatusCode = apiResponse.StatusCode };
-        }
+        var apiResponse = await handler.Handle(command, HttpContext.RequestAborted);
+        return new JsonResult(apiResponse) { StatusCode = apiResponse.StatusCode };
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteCharacteristicValue([FromServices] DeleteCharacteristicValueHandler handler, Guid id)
+    {
+        var command = new DeleteCharacteristicValueCommand(id);
+
+        var apiResponse = await handler.Handle(command, HttpContext.RequestAborted);
+        return new JsonResult(apiResponse) { StatusCode = apiResponse.StatusCode };
     }
 }

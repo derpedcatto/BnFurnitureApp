@@ -19,7 +19,7 @@ public class CategoryController : Controller
         return new JsonResult(apiResponse) { StatusCode = apiResponse.StatusCode };
     }
 
-    [HttpPost("create")]
+    [HttpPost]
     public async Task<IActionResult> CreateCategory([FromServices] CreateCategoryHandler handler,
         [FromBody] CreateCategoryDTO model)
     {

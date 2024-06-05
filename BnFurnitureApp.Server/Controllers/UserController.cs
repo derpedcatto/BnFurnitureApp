@@ -52,7 +52,7 @@ public class UserController : ControllerBase
         return new JsonResult(apiResponse) { StatusCode = apiResponse.StatusCode };
     }
 
-    [HttpGet("current-user")]
+    [HttpGet("current")]
     public async Task<IActionResult> GetCurrentUser([FromServices] GetUserByIdHandler handler)
     {
         var userIdClaim = HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Sid);
