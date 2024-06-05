@@ -42,7 +42,7 @@ public sealed class GetAllCharacteristicsHandler : QueryHandler<GetAllCharacteri
                 Priority = c.Priority
             },
             c.CharacteristicValues
-                .OrderBy(cv => cv.Value)
+                .OrderBy(cv => cv.Slug)
                 .Select(cv => new ResponseCharacteristicValueDTO
             {
                 Id = cv.Id,
@@ -50,7 +50,7 @@ public sealed class GetAllCharacteristicsHandler : QueryHandler<GetAllCharacteri
                 Value = cv.Value,
                 Slug = cv.Slug,
                 Priority = cv.Priority
-            }).ToList()
+            }).OrderBy(c => c.Slug).ToList()
         )).ToList();
 
         return new ApiQueryResponse<GetAllCharacteristicsResponse>(true, 200) { Data = new(responseList) };

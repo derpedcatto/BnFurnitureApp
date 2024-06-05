@@ -33,7 +33,6 @@ public sealed class GetCharacteristicHandler : QueryHandler<GetCharacteristicQue
         var characteristic = await HandlerContext.DbContext.Characteristic
             .Include(c => c.CharacteristicValues)
             .Where(c => c.Slug == request.Slug)
-            // .OrderBy(c => c.Slug) // Сортировка по Slug для Characteristics
             .FirstOrDefaultAsync(cancellationToken);
 
         if (characteristic == null)
@@ -46,22 +45,22 @@ public sealed class GetCharacteristicHandler : QueryHandler<GetCharacteristicQue
         }
 
         var response = new GetCharacteristicResponse(
-            new ResponseCharacteristicDTO
+             new ResponseCharacteristicDTO
+             {
+                 Id = characteristic.Id,
+                 Name = characteristic.Name,
+                 Slug = characteristic.Slug,
+                 Priority = characteristic.Priority,
+             },
+            characteristic.CharacteristicValues
+                 .Select(cv => new ResponseCharacteristicValueDTO
             {
-                Id = characteristic.Id,
-                Name = characteristic.Name,
-                Slug = characteristic.Slug,
-                Priority = characteristic.Priority,
-            },
-           characteristic.CharacteristicValues.OrderBy(cv => cv.Value) // Сортировка по Value для CharacteristicValues.
-           .Select(cv => new ResponseCharacteristicValueDTO
-           {
-                Id = cv.Id,
-                CharacteristicId = cv.CharacteristicId,
-                Value = cv.Value,
-                Slug = cv.Slug,
-                Priority = cv.Priority
-            }).ToList()
+                 Id = cv.Id,
+                 CharacteristicId = cv.CharacteristicId,
+                 Value = cv.Value,
+                 Slug = cv.Slug,
+                 Priority = cv.Priority
+             }).OrderBy(c => c.Slug).ToList()
         );
 
         return new ApiQueryResponse<GetCharacteristicResponse>(true, 200) { Data = response };

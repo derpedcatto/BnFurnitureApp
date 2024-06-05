@@ -50,7 +50,7 @@ public sealed class GetAllCharacteristicValuesHandler : QueryHandler<GetAllChara
                 Slug = cv.Slug,
                 Priority = cv.Priority
             })
-            .OrderBy(cv => cv.Value)
+            .OrderBy(cv => cv.Slug)
             .ToList();
 
         return new ApiQueryResponse<GetAllCharacteristicValuesResponse>(true, 200) { Data = new(characteristicValues) };
