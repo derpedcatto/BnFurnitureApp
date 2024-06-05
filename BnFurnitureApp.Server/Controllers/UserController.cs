@@ -6,7 +6,7 @@ using System.Security.Claims;
 using BnFurniture.Domain.Responses;
 using System.Net;
 
-namespace BnFurnitureAdmin.Server.Controllers;
+namespace BnFurnitureApp.Server.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]

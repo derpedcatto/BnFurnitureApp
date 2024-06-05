@@ -1,6 +1,4 @@
-﻿using BnFurnitureAdmin.Server.Attributes;
-using BnFurniture.Domain.Constants;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using BnFurniture.Application.Controllers.CategoryController.Commands;
 using BnFurniture.Application.Controllers.CategoryController.DTO;
 using BnFurniture.Application.Controllers.CategoryController.Queries;
@@ -21,7 +19,7 @@ public class CategoryController : Controller
         return new JsonResult(apiResponse) { StatusCode = apiResponse.StatusCode };
     }
 
-    [HttpPost("create")]
+    [HttpPost]
     public async Task<IActionResult> CreateCategory([FromServices] CreateCategoryHandler handler,
         [FromBody] CreateCategoryDTO model)
     {

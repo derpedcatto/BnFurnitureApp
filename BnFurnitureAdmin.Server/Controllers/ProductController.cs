@@ -21,11 +21,21 @@ public class ProductController : Controller
         return new JsonResult(apiResponse) { StatusCode = apiResponse.StatusCode };
     }
 
+    [HttpGet("{productSlug}-{characteristicValueSlugs}")]
+    public async Task<IActionResult> GetProductArticleByCharacteristics([FromServices] GetProductArticleByCharacteristicsHandler handler, string productSlug, string characteristicValueSlugs)
+    {
+        var query = new GetProductArticleByCharacteristicsQuery($"{productSlug}-{characteristicValueSlugs}");
+
+        var apiResponse = await handler.Handle(query, HttpContext.RequestAborted);
+        return new JsonResult(apiResponse) { StatusCode = apiResponse.StatusCode };
+    }
+
     [HttpPost]
     public async Task<IActionResult> CreateProduct([FromServices] CreateProductHandler handler,
         [FromBody] CreateProductDTO model)
     {
         var command = new CreateProductCommand(model);
+
         var apiResponse = await handler.Handle(command, CancellationToken.None);
         return new JsonResult(apiResponse) { StatusCode = apiResponse.StatusCode };
     }
@@ -35,6 +45,7 @@ public class ProductController : Controller
         [FromBody] UpdateProductDTO model)
     {
         var command = new UpdateProductCommand(model);
+
         var apiResponse = await handler.Handle(command, CancellationToken.None);
         return new JsonResult(apiResponse) { StatusCode = apiResponse.StatusCode };
     }
@@ -44,16 +55,8 @@ public class ProductController : Controller
         Guid productId)
     {
         var command = new DeleteProductCommand(productId);
+
         var apiResponse = await handler.Handle(command, CancellationToken.None);
         return new JsonResult(apiResponse) { StatusCode = apiResponse.StatusCode };
     }
-
-    [HttpGet("{productSlug}/{characteristicValueSlugs}")]
-    public async Task<IActionResult> GetProductArticleByCharacteristics([FromServices] GetProductArticleByCharacteristicsHandler handler, string productSlug, string characteristicValueSlugs)
-    {
-        var combinedSlug = $"{productSlug}-{characteristicValueSlugs}";
-        var query = new GetProductArticleByCharacteristicsQuery(combinedSlug);
-        var apiResponse = await handler.Handle(query, HttpContext.RequestAborted);
-        return new JsonResult(apiResponse) { StatusCode = apiResponse.StatusCode };
-    }   
 }
