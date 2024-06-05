@@ -19,6 +19,15 @@ public class CategoryController : Controller
         return new JsonResult(apiResponse) { StatusCode = apiResponse.StatusCode };
     }
 
+    [HttpGet("all-with-types")]
+    public async Task<IActionResult> GetAllCategoriesWithProductTypes([FromServices] GetAllCategoriesWithProductTypesHandler handler)
+    {
+        var query = new GetAllCategoriesWithProductTypesQuery();
+
+        var apiResponse = await handler.Handle(query, HttpContext.RequestAborted);
+        return new JsonResult(apiResponse) { StatusCode = apiResponse.StatusCode };
+    }
+
     [HttpPost]
     public async Task<IActionResult> CreateCategory([FromServices] CreateCategoryHandler handler,
         [FromBody] CreateCategoryDTO model)

@@ -66,7 +66,7 @@ public sealed class GetAllCategoriesHandler : QueryHandler<GetAllCategoriesQuery
 
                 if (dtoDictionary[category.ParentId.Value].SubCategories == null)
                 {
-                    dtoDictionary[category.ParentId.Value].SubCategories = new List<ResponseProductCategoryDTO>();
+                    dtoDictionary[category.ParentId.Value].SubCategories = [];
                 }
 
                 dtoDictionary[category.ParentId.Value].SubCategories.Add(dtoDictionary[category.Id]);
