@@ -16,14 +16,13 @@ builder.Services.AddControllers().AddJsonOptions(o =>
     o.JsonSerializerOptions.WriteIndented = true;
     o.JsonSerializerOptions.Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping;
 });
-
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options => { options.CustomSchemaIds(s => s.FullName?.Replace("+", ".")); });
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("CorsPolicy",
-        builder => builder.WithOrigins("http://localhost:5173")
+        builder => builder.WithOrigins("http://localhost:5173", "http://localhost:5027")
                           .AllowAnyHeader()
                           .AllowAnyMethod()
                           .AllowCredentials());
@@ -31,7 +30,8 @@ builder.Services.AddCors(options =>
 
 
 // Suppress default error response model
-builder.Services.Configure<ApiBehaviorOptions>(apiBehaviorOptions => {
+builder.Services.Configure<ApiBehaviorOptions>(apiBehaviorOptions => 
+{
     apiBehaviorOptions.SuppressModelStateInvalidFilter = true;
 });
 
