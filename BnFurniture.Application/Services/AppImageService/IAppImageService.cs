@@ -6,13 +6,7 @@ namespace BnFurniture.Application.Services.AppImageService;
 
 public interface IAppImageService
 {
-    StatusResponse<string> GetImageAsync(
-        AppEntityType entityType,
-        Guid entityId,
-        AppEntityImageType imageType,
-        CancellationToken cancellationToken);
-
-    StatusResponse<string[]> GetImagesAsync(
+    Task<StatusResponse<IEnumerable<string>>> GetImagesAsync(
         AppEntityType entityType,
         Guid entityId,
         AppEntityImageType imageType,
@@ -39,13 +33,7 @@ public interface IAppImageService
         int imageIndex,
         CancellationToken cancellationToken);
 
-    Task<StatusResponse> UpdateImageAsync(
-        AppEntityType entityType,
-        Guid entityId,
-        AppEntityImageType imageType,
-        int imageIndex,
-        IFormFile file,
-        CancellationToken cancellationToken);
+
 
     Task<StatusResponse> SwapImageOrderAsync(
         AppEntityType entityType,
@@ -55,3 +43,19 @@ public interface IAppImageService
         int secondImageIndex,
         CancellationToken cancellationToken);
 }
+
+/*
+    Task<StatusResponse<string>> GetImageAsync(
+        AppEntityType entityType,
+        Guid entityId,
+        AppEntityImageType imageType,
+        CancellationToken cancellationToken);
+
+    Task<StatusResponse> UpdateImageAsync(
+        AppEntityType entityType,
+        Guid entityId,
+        AppEntityImageType imageType,
+        int imageIndex,
+        IFormFile file,
+        CancellationToken cancellationToken);
+*/

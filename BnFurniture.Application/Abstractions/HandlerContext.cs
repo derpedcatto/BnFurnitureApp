@@ -8,12 +8,12 @@ public interface IHandlerContext
 {
     ApplicationDbContext DbContext { get; }
     ILogger Logger { get; }
-    IHttpContextAccessor HttpContextAccessor { get; }
+    IHttpContextAccessor HttpContext { get; }
 }
 
 public class HandlerContext(ApplicationDbContext dbContext, ILogger<HandlerContext> logger, IHttpContextAccessor httpContextAccessor) : IHandlerContext
 {
     public ApplicationDbContext DbContext { get; private set; } = dbContext;
     public ILogger Logger { get; private set;} = logger;
-    public IHttpContextAccessor HttpContextAccessor { get; private set; } = httpContextAccessor;
+    public IHttpContextAccessor HttpContext { get; private set; } = httpContextAccessor;
 }

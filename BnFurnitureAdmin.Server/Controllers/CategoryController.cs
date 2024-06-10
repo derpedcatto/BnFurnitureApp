@@ -30,7 +30,7 @@ public class CategoryController : Controller
 
     [HttpPost]
     public async Task<IActionResult> CreateCategory([FromServices] CreateCategoryHandler handler,
-        [FromBody] CreateCategoryDTO model)
+        [FromForm] CreateCategoryDTO model)
     {
         var command = new CreateCategoryCommand(model);
 
@@ -43,6 +43,16 @@ public class CategoryController : Controller
         [FromBody] UpdateCategoryDTO model)
     {
         var command = new UpdateCategoryCommand(model);
+
+        var apiResponse = await handler.Handle(command, CancellationToken.None);
+        return new JsonResult(apiResponse) { StatusCode = apiResponse.StatusCode };
+    }
+
+    [HttpPut("image")]
+    public async Task<IActionResult> SetCategoryImage([FromServices] SetCategoryImageHandler handler,
+        [FromForm] SetCategoryImageDTO model)
+    {
+        var command = new SetCategoryImageCommand(model);
 
         var apiResponse = await handler.Handle(command, CancellationToken.None);
         return new JsonResult(apiResponse) { StatusCode = apiResponse.StatusCode };

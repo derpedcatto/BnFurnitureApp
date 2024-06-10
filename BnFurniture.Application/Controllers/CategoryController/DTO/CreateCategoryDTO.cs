@@ -1,6 +1,7 @@
 ﻿using BnFurniture.Application.Extensions;
 using BnFurniture.Infrastructure.Persistence;
 using FluentValidation;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 
@@ -19,6 +20,9 @@ public class CreateCategoryDTO
 
     [JsonPropertyName("parentId")]
     public Guid? ParentId { get; set; }
+
+    [JsonPropertyName("promoCardThumbnailImage")]
+    public IFormFile? PromoCardThumbnailImage { get; set; }
 }
 
 public class CreateCategoryDTOValidator : AbstractValidator<CreateCategoryDTO>

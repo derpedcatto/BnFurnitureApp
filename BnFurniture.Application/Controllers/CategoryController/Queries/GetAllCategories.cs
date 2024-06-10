@@ -1,6 +1,8 @@
 ﻿using BnFurniture.Application.Abstractions;
 using BnFurniture.Application.Controllers.CategoryController.DTO;
+using BnFurniture.Application.Services.AppImageService;
 using BnFurniture.Domain.Entities;
+using BnFurniture.Domain.Enums;
 using BnFurniture.Domain.Responses;
 using Microsoft.EntityFrameworkCore;
 using System.Net;
@@ -21,10 +23,12 @@ public sealed class GetAllCategoriesResponse
 
 public sealed class GetAllCategoriesHandler : QueryHandler<GetAllCategoriesQuery, GetAllCategoriesResponse>
 {
-    public GetAllCategoriesHandler(
+    private readonly IAppImageService _appImageService;
+
+    public GetAllCategoriesHandler(IAppImageService appImageService,
         IHandlerContext context) : base(context)
     {
-
+        _appImageService = appImageService;
     }
 
     public override async Task<ApiQueryResponse<GetAllCategoriesResponse>> Handle(GetAllCategoriesQuery request, CancellationToken cancellationToken)
@@ -36,7 +40,7 @@ public sealed class GetAllCategoriesHandler : QueryHandler<GetAllCategoriesQuery
             .OrderBy(c => c.Name)
             .ToListAsync(cancellationToken);
 
-        var categoryDTOList = MapCategoriesToDTOs(categories);
+        var categoryDTOList = await MapCategoriesToDTOs(categories, cancellationToken);
 
         var responseData = new GetAllCategoriesResponse(categoryDTOList);
         return new ApiQueryResponse<GetAllCategoriesResponse>(true, (int)HttpStatusCode.OK)
@@ -45,7 +49,7 @@ public sealed class GetAllCategoriesHandler : QueryHandler<GetAllCategoriesQuery
         };
     }
 
-    private List<ResponseProductCategoryDTO> MapCategoriesToDTOs(List<ProductCategory> categories)
+    private async Task<List<ResponseProductCategoryDTO>> MapCategoriesToDTOs(List<ProductCategory> categories, CancellationToken cancellationToken)
     {
         var categoryDictionary = categories.ToDictionary(c => c.Id);
         var dtoDictionary = new Dictionary<Guid, ResponseProductCategoryDTO>();
@@ -54,14 +58,14 @@ public sealed class GetAllCategoriesHandler : QueryHandler<GetAllCategoriesQuery
         {
             if (!dtoDictionary.ContainsKey(category.Id))
             {
-                dtoDictionary[category.Id] = MapCategoryToDTO(category);
+                dtoDictionary[category.Id] = await MapCategoryToDTOAsync(category, cancellationToken);
             }
 
             if (category.ParentId.HasValue)
             {
                 if (!dtoDictionary.ContainsKey(category.ParentId.Value))
                 {
-                    dtoDictionary[category.ParentId.Value] = MapCategoryToDTO(categoryDictionary[category.ParentId.Value]);
+                    dtoDictionary[category.ParentId.Value] = await MapCategoryToDTOAsync(categoryDictionary[category.ParentId.Value], cancellationToken);
                 }
 
                 if (dtoDictionary[category.ParentId.Value].SubCategories == null)
@@ -73,17 +77,29 @@ public sealed class GetAllCategoriesHandler : QueryHandler<GetAllCategoriesQuery
             }
         }
 
-        return dtoDictionary.Values.Where(dto => dto.SubCategories != null).ToList();
+        return dtoDictionary.Values
+            .Where(dto => !categories
+                .Any(c => c.Id == dto.Id && c.ParentId.HasValue))
+            .ToList();
     }
 
-    private ResponseProductCategoryDTO MapCategoryToDTO(ProductCategory category)
+    private async Task<ResponseProductCategoryDTO> MapCategoryToDTOAsync(ProductCategory category, CancellationToken cancellationToken)
     {
+        var imageResponse = await _appImageService.GetImagesAsync(
+            AppEntityType.ProductCategory,
+            category.Id,
+            AppEntityImageType.PromoCardThumbnail,
+            cancellationToken);
+
+        var imageUri = imageResponse.Data?.LastOrDefault() ?? string.Empty;
+
         return new ResponseProductCategoryDTO
         {
             Id = category.Id,
             Name = category.Name,
             Slug = category.Slug,
             Priority = category.Priority,
+            CardImageUri = imageUri,
             SubCategories = null
         };
     }

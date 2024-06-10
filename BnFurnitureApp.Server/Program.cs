@@ -1,11 +1,15 @@
-﻿using BnFurniture.Application.Abstractions;
+﻿using Azure.Storage.Blobs;
+using BnFurniture.Application.Abstractions;
+using BnFurniture.Application.Services.AppImageService;
 using BnFurniture.Infrastructure.Persistence;
+using BnFurniture.Shared.Utilities.AzureBlob;
 using BnFurniture.Shared.Utilities.Email;
 using BnFurniture.Shared.Utilities.Hash;
 using BnFurnitureAdmin.Middleware;
 using BnFurnitureAdmin.Server.Middleware;
 using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.HttpLogging;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -52,21 +56,23 @@ Console.OutputEncoding = System.Text.Encoding.UTF8;
 builder.Services.AddLogging();
 builder.Services.AddHttpLogging(logging =>
 {
-    logging.LoggingFields =
-        // Microsoft.AspNetCore.HttpLogging.HttpLoggingFields.RequestPath |
-        // Microsoft.AspNetCore.HttpLogging.HttpLoggingFields.RequestMethod |
-        // Microsoft.AspNetCore.HttpLogging.HttpLoggingFields.RequestQuery |
-        Microsoft.AspNetCore.HttpLogging.HttpLoggingFields.RequestBody |
-        Microsoft.AspNetCore.HttpLogging.HttpLoggingFields.ResponseStatusCode |
-        Microsoft.AspNetCore.HttpLogging.HttpLoggingFields.ResponseBody;
+    logging.LoggingFields = HttpLoggingFields.RequestPath |
+                            HttpLoggingFields.RequestMethod |
+                            HttpLoggingFields.RequestQuery |
+                            HttpLoggingFields.ResponseStatusCode |
+                            HttpLoggingFields.ResponseBody;
 
-    logging.MediaTypeOptions.AddText("multipart/form-data");
-    logging.MediaTypeOptions.AddText("application/x-www-form-urlencoded");
+    logging.MediaTypeOptions.AddText("application/json");
+    logging.MediaTypeOptions.AddText("application/xml");
+    logging.MediaTypeOptions.AddText("text/plain");
+
+    logging.RequestBodyLogLimit = 1024;
+    logging.ResponseBodyLogLimit = 1024;
 });
 
 
 // Db Service registration
-var connectionString = builder.Configuration.GetConnectionString("DerpeLocalConnection");
+var connectionString = builder.Configuration.GetConnectionString("RealDBConnection");
 var serverVersion = new MySqlServerVersion(new Version(8, 0, 30));
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
@@ -98,8 +104,11 @@ builder.Services.AddScoped<IHandlerContext, HandlerContext>();
 
 
 // Other Services registration
+builder.Services.AddSingleton(x => new BlobServiceClient(builder.Configuration.GetConnectionString("AzureBlobStorageConnection")));
+builder.Services.AddSingleton<IAzureImageBlobService, AzureImageBlobService>();
 builder.Services.AddSingleton<IHashService, Sha256HashService>();
 builder.Services.AddSingleton<IEmailService, EmailService>();
+builder.Services.AddSingleton<IAppImageService, AzureAppImageService>();
 
 
 
@@ -116,9 +125,23 @@ app.UseMiddleware<LogAndExceptionHandlerMiddleware>();
 var logger = app.Services.GetRequiredService<ILogger<Program>>();
 await CheckDatabaseConnectionAsync(app, logger);
 
+/*
+var imagesPath = Path.Combine(builder.Environment.ContentRootPath, "Images");
+if (!Directory.Exists(imagesPath))
+{
+    Directory.CreateDirectory(imagesPath);
+}
+*/
 
 app.UseDefaultFiles();
-app.UseStaticFiles();
+app.UseStaticFiles(); // for wwwroot
+/*
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(imagesPath),
+    RequestPath = "Images"
+});
+*/
 
 
 if (app.Environment.IsDevelopment())
@@ -174,3 +197,16 @@ static async Task CheckDatabaseConnectionAsync(WebApplication app, ILogger logge
         logger.LogError($"Database connection failed - {ex.Message}");
     }
 }
+
+/*
+logging.LoggingFields =
+    // Microsoft.AspNetCore.HttpLogging.HttpLoggingFields.RequestPath |
+    // Microsoft.AspNetCore.HttpLogging.HttpLoggingFields.RequestMethod |
+    // Microsoft.AspNetCore.HttpLogging.HttpLoggingFields.RequestQuery |
+    Microsoft.AspNetCore.HttpLogging.HttpLoggingFields.RequestBody |
+    Microsoft.AspNetCore.HttpLogging.HttpLoggingFields.ResponseStatusCode |
+    Microsoft.AspNetCore.HttpLogging.HttpLoggingFields.ResponseBody;
+
+logging.MediaTypeOptions.AddText("multipart/form-data");
+logging.MediaTypeOptions.AddText("application/x-www-form-urlencoded");
+*/

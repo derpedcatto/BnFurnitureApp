@@ -11,6 +11,10 @@ public enum AppEntityType
 public enum AppEntityImageType
 {
     Thumbnail,
-    PromoCardThumbnail, // main page slider images for categories and types
+    PromoCardThumbnail,
     Gallery,
 }
+
+/*
+https://{AzureApi}/{AppEntityType}/{Entity Id}/{AppEntityImageType}/image.jpg
+*/

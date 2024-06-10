@@ -23,7 +23,7 @@ public sealed class UserLoginHandler : CommandHandler<UserLoginCommand>
     public override async Task<ApiCommandResponse> Handle(UserLoginCommand request, CancellationToken cancellationToken = default)
     {
         var dto = request.entityForm;
-        var httpContext = HandlerContext.HttpContextAccessor.HttpContext;
+        var httpContext = HandlerContext.HttpContext.HttpContext;
 
         var validationResult = await _validator.ValidateAsync(dto, cancellationToken);
         if (!validationResult.IsValid)

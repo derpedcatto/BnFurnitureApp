@@ -1,12 +1,121 @@
 ﻿using BnFurniture.Domain.Enums;
 using BnFurniture.Domain.Responses;
-using BnFurniture.Infrastructure.Configuration;
+using BnFurniture.Shared.Utilities.AzureBlob;
 using Microsoft.AspNetCore.Http;
 
 namespace BnFurniture.Application.Services.AppImageService;
 
-public class AppImageService : IAppImageService
+public class AzureAppImageService : IAppImageService
 {
+    private readonly IAzureImageBlobService _azureBlobService;
+
+    public AzureAppImageService(IAzureImageBlobService azureBlobService)
+    {
+        _azureBlobService = azureBlobService;
+    }
+
+    public async Task<StatusResponse<IEnumerable<string>>> GetImagesAsync(
+        AppEntityType entityType,
+        Guid entityId,
+        AppEntityImageType imageType,
+        CancellationToken cancellationToken)
+    {
+        var prefixPath = GetImageFolderPath(entityType, entityId, imageType);
+
+        var uriList = await _azureBlobService.GetBlobsAsync(
+            includeURLs: true,
+            pathPrefix: prefixPath,
+            cancellationToken: cancellationToken);
+
+        return new StatusResponse<IEnumerable<string>>(true, 200, "Images fetch success", uriList);
+    }
+
+    public async Task<StatusResponse> AddImageAsync(
+        AppEntityType entityType,
+        Guid entityId,
+        AppEntityImageType imageType,
+        IFormFile file,
+        CancellationToken cancellationToken)
+    {
+        var prefixPath = GetImageFolderPath(entityType, entityId, imageType);
+
+        await _azureBlobService.UploadFileBlobAsync(
+            file: file,
+            pathPrefix: prefixPath,
+            cancellationToken: cancellationToken);
+
+        return new StatusResponse(true, 201, "Image added successfully");
+    }
+
+    public async Task<StatusResponse> AddImagesAsync(
+        AppEntityType entityType,
+        Guid entityId,
+        AppEntityImageType imageType,
+        IEnumerable<IFormFile> files,
+        CancellationToken cancellationToken)
+    {
+        var prefixPath = GetImageFolderPath(entityType, entityId, imageType);
+
+        await _azureBlobService.UploadFilesBlobAsync(
+            files: files,
+            pathPrefix: prefixPath,
+            cancellationToken: cancellationToken);
+
+        return new StatusResponse(true, 201, "Images added successfully");
+    }
+
+    public async Task<StatusResponse> DeleteImageAsync(
+        AppEntityType entityType,
+        Guid entityId,
+        AppEntityImageType imageType,
+        int imageIndex,
+        CancellationToken cancellationToken)
+    {
+        var prefixPath = GetImageFolderPath(entityType, entityId, imageType);
+
+        await _azureBlobService.DeleteBlobAsync(prefixPath, cancellationToken);
+
+        return new StatusResponse(true, 200, "Image deleted successfully");
+    }
+
+    public async Task<StatusResponse> SwapImageOrderAsync(
+        AppEntityType entityType,
+        Guid entityId,
+        AppEntityImageType imageType,
+        int firstImageIndex,
+        int secondImageIndex,
+        CancellationToken cancellationToken)
+    {
+        var prefixPath = GetImageFolderPath(entityType, entityId, imageType);
+
+        await _azureBlobService.SwapBlobNamesAsync(firstImageIndex, secondImageIndex, prefixPath, cancellationToken);
+
+        return new StatusResponse(true, 200, "Image order swapped successfully");
+    }
+
+    private static string GetImageFolderPath(AppEntityType entityType, Guid entityId, AppEntityImageType imageType)
+    {
+        return $"{entityType.ToString()}/{entityId.ToString()}/{imageType.ToString()}";
+    }
+}
+
+
+
+/*
+public async Task<StatusResponse<string>> GetImageAsync(
+    AppEntityType entityType,
+    Guid entityId,
+    AppEntityImageType imageType,
+    CancellationToken cancellationToken)
+{
+    var blobPath = GetImageFolderPath(entityType, entityId, imageType);
+    var imageUri = await _azureBlobService.GetBlobURLAsync(blobPath, cancellationToken);
+
+    return new StatusResponse<string>(true, 200, "Image fetch success", imageUri);
+}
+*/
+
+/*
     public StatusResponse<string> GetImageAsync(
         AppEntityType entityType,
         Guid entityId,
@@ -24,7 +133,9 @@ public class AppImageService : IAppImageService
         {
             return new StatusResponse<string>(false, 404, "Directory is empty");
         }
-        return new StatusResponse<string>(true, 200, "Image fetch success", file);
+
+        var url = new Uri(new Uri(_baseUri), file);
+        return new StatusResponse<string>(true, 200, "Image fetch success", url.ToString());
     }
 
     public StatusResponse<string[]> GetImagesAsync(
@@ -211,4 +322,4 @@ public class AppImageService : IAppImageService
     {
         return Directory.GetFiles(directoryPath).Length;
     }
-}
+*/

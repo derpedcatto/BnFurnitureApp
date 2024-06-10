@@ -1,6 +1,8 @@
 ﻿using BnFurniture.Application.Abstractions;
 using BnFurniture.Application.Controllers.CategoryController.DTO;
 using BnFurniture.Application.Controllers.ProductTypeController.DTO;
+using BnFurniture.Application.Services.AppImageService;
+using BnFurniture.Domain.Enums;
 using BnFurniture.Domain.Responses;
 using Microsoft.EntityFrameworkCore;
 
@@ -21,11 +23,14 @@ public sealed class GetAllCategoriesWithProductTypesResponse
 public sealed class GetAllCategoriesWithProductTypesHandler : QueryHandler<GetAllCategoriesWithProductTypesQuery, GetAllCategoriesWithProductTypesResponse>
 {
     private readonly GetAllCategoriesHandler _getAllCategoriesHandler;
+    private readonly IAppImageService _appImageService;
 
     public GetAllCategoriesWithProductTypesHandler(GetAllCategoriesHandler getAllCategoriesHandler,
+        IAppImageService appImageService,
         IHandlerContext context) : base(context)
     {
         _getAllCategoriesHandler = getAllCategoriesHandler;
+        _appImageService = appImageService;
     }
 
     public override async Task<ApiQueryResponse<GetAllCategoriesWithProductTypesResponse>> Handle(GetAllCategoriesWithProductTypesQuery request, CancellationToken cancellationToken)
@@ -63,10 +68,11 @@ public sealed class GetAllCategoriesWithProductTypesHandler : QueryHandler<GetAl
                 Name = category.Name,
                 Slug = category.Slug,
                 Priority = category.Priority,
-                ProductTypes = await GetProductTypesForCategory(category.Id, cancellationToken)
+                CardImageUri = category.CardImageUri,
+                ProductTypes = await GetProductTypesForCategory(category.Id, cancellationToken),
             };
 
-            if (category.SubCategories != null && category.SubCategories.Any())
+            if (category.SubCategories != null && category.SubCategories.Count != 0)
             {
                 populatedCategory.SubCategories = await PopulateCategoriesWithProductTypes(category.SubCategories, cancellationToken);
             }
@@ -87,10 +93,22 @@ public sealed class GetAllCategoriesWithProductTypesHandler : QueryHandler<GetAl
                 CategoryId = pt.CategoryId,
                 Name = pt.Name,
                 Slug = pt.Slug,
-                Priority = pt.Priority
+                Priority = pt.Priority,
+                CardImageUri = string.Empty
             })
             .OrderBy(pt => pt.Name)
             .ToListAsync(cancellationToken);
+
+        foreach (var productType in productTypes)
+        {
+            var imageResponse = await _appImageService.GetImagesAsync(
+                AppEntityType.ProductType,
+                productType.Id,
+                AppEntityImageType.PromoCardThumbnail,
+                cancellationToken);
+
+            productType.CardImageUri = imageResponse.Data?.LastOrDefault() ?? string.Empty;
+        }
 
         return productTypes;
     }
