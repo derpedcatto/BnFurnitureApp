@@ -58,18 +58,7 @@ public sealed class GetAllProductArticlesHandler : QueryHandler<GetAllProductArt
             Price = pa.Price,
             Discount = pa.Discount,
             Active = pa.Active,
-            //Product = new ProductResponseDTO
-            //{
-            //    Id = pa.Product.Id,
-            //    Name = pa.Product.Name,
-            //    Slug = pa.Product.Slug
-            //},
-            //Author = new UserResponseDTO
-            //{
-            //    Id = pa.Author.Id,
-            //    UserName = pa.Author.UserName,
-            //    Email = pa.Author.Email
-            //}
+            
         }).ToList();
     }
 }

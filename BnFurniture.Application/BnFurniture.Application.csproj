@@ -27,6 +27,7 @@
 
   <ItemGroup>
     <Folder Include="Controllers\ProductCharacteristicConfiguration\Queries\" />
+    <Folder Include="Controllers\UserWishlistController\Queries\" />
   </ItemGroup>
 
 </Project>

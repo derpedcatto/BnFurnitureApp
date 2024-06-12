@@ -12,7 +12,7 @@ public class ProductArticle
     public string Name { get; set; } = string.Empty;
     public DateTime CreatedAt { get; set; }
     public DateTime? UpdatedAt { get; set; }
-    public decimal Price { get; set; } // Precision must be (19, 2)
+    public decimal Price { get; set; } 
     public int Discount { get; set; }
     public bool Active { get; set; }
 

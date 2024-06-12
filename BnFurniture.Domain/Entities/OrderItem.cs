@@ -18,5 +18,6 @@ public class OrderItem
     public Order Order { get; set; } = null!;
 
     [ForeignKey(nameof(ArticleId))]
-    public virtual ICollection<ProductArticle_OrderItem> ProductArticles { get; set; } = null!;
+    public virtual ICollection<ProductArticle_OrderItem> ProductArticle { get; set; } = null!;
+
 }

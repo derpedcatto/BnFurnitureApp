@@ -32,7 +32,8 @@ public class ApplicationDbContext(DbContextOptions options) : DbContext(options)
     public DbSet<UserRole_Permission> UserRole_Permission { get; set; }
     public DbSet<UserWishlist> UserWishlist { get; set; }
     public DbSet<UserWishlistItem> UserWishlistItem { get; set; }
-    public DbSet<OrderItem> ProductArticleOrderItem { get; set; }
+   // public DbSet<OrderItem> ProductArticleOrderItem { get; set; }
+    public DbSet<ProductArticle_OrderItem> ProductArticle_OrderItem { get; set; } = null!;
 
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -101,6 +102,16 @@ public class ApplicationDbContext(DbContextOptions options) : DbContext(options)
                 UserId = adminId,
                 UserRoleId = adminRoleId
             });
+
+        modelBuilder.Entity<OrderStatus>().HasData(
+           new OrderStatus { Id = 1, Name = "Обрабатывается" },
+           new OrderStatus { Id = 2, Name = "Комплектуется" },
+           new OrderStatus { Id = 3, Name = "Передан в службу доставки" },
+           new OrderStatus { Id = 4, Name = "Доставляется" },
+           new OrderStatus { Id = 5, Name = "Ожидает клиента в пунтке самовывоза" },
+           new OrderStatus { Id = 6, Name = "Выполнен" },
+           new OrderStatus { Id = 7, Name = "Отменён" }
+       );
     }
 
     private void ConfigureProperties(ModelBuilder modelBuilder)
@@ -206,18 +217,13 @@ public class ApplicationDbContext(DbContextOptions options) : DbContext(options)
 
         // Order - * OrderItem
         modelBuilder.Entity<Order>()
-            .HasMany(a => a.OrderItems)
+            .HasMany(a => a.OrderItem)
             .WithOne(b => b.Order)
             .HasForeignKey(c => c.OrderId)
             .OnDelete(DeleteBehavior.Cascade);  // +
 
-
-
-        // OrderItem - * ProductArticle_OrderItem
-        // (for ProductArticle * * OrderItem)
-        // TODO: make sure this is correct behavior
         modelBuilder.Entity<OrderItem>()
-            .HasMany(a => a.ProductArticles)
+            .HasMany(a => a.ProductArticle)
             .WithOne(b => b.OrderItem)
             .HasForeignKey(c => c.OrderItemId)
             .OnDelete(DeleteBehavior.ClientSetNull);    // ?
