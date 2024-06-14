@@ -4,7 +4,7 @@ using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 
-namespace BnFurniture.Application.Controllers.ProductTypeController.DTO;
+namespace BnFurniture.Application.Controllers.ProductTypeController.DTO.Request;
 
 public class CreateProductTypeDTO
 {
@@ -15,7 +15,7 @@ public class CreateProductTypeDTO
     public string Name { get; set; } = string.Empty;
 
     [JsonPropertyName("slug")]
-    public string Slug {  get; set; } = string.Empty;
+    public string Slug { get; set; } = string.Empty;
 
     [JsonPropertyName("priority")]
     public int? Priority { get; set; }
@@ -42,7 +42,7 @@ public class CreateProductTypeDTOValidator : AbstractValidator<CreateProductType
             .NotNull().WithMessage("Slug is null.")
             .NotEmpty().WithMessage("Slug is empty.")
             .UrlSlug()
-            .MustAsync((dto, slug, ct) => { return IsCategorySlugUnique(dto.CategoryId, dto.Slug, ct); } ).WithMessage("Linked category already contains the exact slug string.");
+            .MustAsync((dto, slug, ct) => { return IsCategorySlugUnique(dto.CategoryId, dto.Slug, ct); }).WithMessage("Linked category already contains the exact slug string.");
 
         RuleFor(x => x.Priority)
             .GreaterThanOrEqualTo(0).WithMessage("Priority must be a positive integer or zero.")
@@ -51,7 +51,7 @@ public class CreateProductTypeDTOValidator : AbstractValidator<CreateProductType
 
     private async Task<bool> IsCategorySlugUnique(Guid categoryId, string slug, CancellationToken ct)
     {
-        return ! await _dbContext.ProductCategory
+        return !await _dbContext.ProductCategory
             .AnyAsync(pc => pc.Id == categoryId && pc.Slug == slug, ct);
     }
 

@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 
-namespace BnFurniture.Application.Controllers.CategoryController.DTO;
+namespace BnFurniture.Application.Controllers.CategoryController.DTO.Request;
 
 public class CreateCategoryDTO
 {
@@ -50,7 +50,7 @@ public class CreateCategoryDTOValidator : AbstractValidator<CreateCategoryDTO>
 
     private async Task<bool> IsSlugUnique(string slug, CancellationToken ct)
     {
-        return ! await _dbContext.ProductCategory.AnyAsync(c => c.Slug == slug, ct);
+        return !await _dbContext.ProductCategory.AnyAsync(c => c.Slug == slug, ct);
     }
 
     private async Task<bool> IsParentIdValid(Guid parentId, CancellationToken ct)

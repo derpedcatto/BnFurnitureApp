@@ -32,6 +32,20 @@ builder.Services.AddCors(options =>
                           .AllowCredentials());
 });
 
+builder.WebHost.ConfigureKestrel(options =>
+{
+    options.ListenLocalhost(5027, listenOptions =>
+    {
+        listenOptions.Protocols = Microsoft.AspNetCore.Server.Kestrel.Core.HttpProtocols.Http1;
+    });
+
+    options.ListenLocalhost(7247, listenOptions =>
+    {
+        listenOptions.UseHttps();
+        listenOptions.Protocols = Microsoft.AspNetCore.Server.Kestrel.Core.HttpProtocols.Http1AndHttp2;
+    });
+});
+
 
 // Suppress default error response model
 builder.Services.Configure<ApiBehaviorOptions>(apiBehaviorOptions => 
@@ -47,7 +61,7 @@ builder.Services.AddSession(options =>
     options.IdleTimeout = TimeSpan.FromMinutes(30);
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
-    options.Cookie.SameSite = SameSiteMode.None;
+    options.Cookie.SameSite = SameSiteMode.Lax;
     options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
 });
 builder.Services.Configure<CookiePolicyOptions>(options =>
@@ -73,8 +87,8 @@ builder.Services.AddHttpLogging(logging =>
     logging.MediaTypeOptions.AddText("application/xml");
     logging.MediaTypeOptions.AddText("text/plain");
 
-    logging.RequestBodyLogLimit = 1024;
-    logging.ResponseBodyLogLimit = 1024;
+    // logging.RequestBodyLogLimit = 1024;
+    // logging.ResponseBodyLogLimit = 1024;
 });
 
 
@@ -105,6 +119,14 @@ foreach (var type in typeof(BnFurniture.Application.AssemblyClass).Assembly.GetT
 {
     builder.Services.AddTransient(type);
     Console.WriteLine($"Added handler - {type.Name}");
+}
+
+// Shared Service registration
+foreach (var type in typeof(BnFurniture.Application.AssemblyClass).Assembly.GetTypes()
+    .Where(x => x.Name.EndsWith("SharedLogic") && !x.IsAbstract && !x.IsInterface))
+{
+    builder.Services.AddScoped(type);
+    Console.WriteLine($"Added shared logic class - {type.Name}");
 }
 
 builder.Services.AddScoped<IHandlerContext, HandlerContext>();

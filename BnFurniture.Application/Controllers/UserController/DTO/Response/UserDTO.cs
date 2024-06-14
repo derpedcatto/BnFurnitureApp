@@ -1,6 +1,6 @@
-﻿namespace BnFurniture.Application.Controllers.UserController.DTO;
+﻿namespace BnFurniture.Application.Controllers.UserController.DTO.Response;
 
-public class ResponseUserDTO
+public class UserDTO
 {
     public Guid Id { get; set; }
     public string Email { get; set; } = string.Empty;

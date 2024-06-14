@@ -4,7 +4,7 @@ using BnFurniture.Application.Extensions;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 
-namespace BnFurniture.Application.Controllers.UserController.DTO;
+namespace BnFurniture.Application.Controllers.UserController.DTO.Request;
 
 public class UserSignUpDTO
 {
@@ -30,7 +30,7 @@ public class UserSignUpDTO
     public string? Address { get; set; }
 
     [JsonPropertyName("agreeCheckbox")]
-    public bool Agree { get; set; } 
+    public bool Agree { get; set; }
 }
 
 public class UserSignUpDTOValidator : AbstractValidator<UserSignUpDTO>
@@ -61,7 +61,7 @@ public class UserSignUpDTOValidator : AbstractValidator<UserSignUpDTO>
         RuleFor(x => x.LastName)
             .NotEmpty().WithMessage("Прізвище не може бути порожнім.");
 
-        When(x => ! string.IsNullOrEmpty(x.MobileNumber), () =>
+        When(x => !string.IsNullOrEmpty(x.MobileNumber), () =>
         {
             RuleFor(x => x.MobileNumber)!
                 .PhoneNumber().WithMessage("Номер телефона не є валідним. Приклад валідного номеру = '380XXXXXXXXX'")
@@ -70,7 +70,7 @@ public class UserSignUpDTOValidator : AbstractValidator<UserSignUpDTO>
 
         RuleFor(x => x.Address)
             .NotEmpty()
-                .When(x => ! string.IsNullOrEmpty(x.Address));
+                .When(x => !string.IsNullOrEmpty(x.Address));
 
         RuleFor(x => x.Agree)
             .Equal(true).WithMessage("Погодьтесь з Політикою Конфіденційності.");

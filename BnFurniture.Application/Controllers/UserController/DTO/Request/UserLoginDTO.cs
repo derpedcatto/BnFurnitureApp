@@ -4,7 +4,7 @@ using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 
-namespace BnFurniture.Application.Controllers.UserController.DTO;
+namespace BnFurniture.Application.Controllers.UserController.DTO.Request;
 
 public class UserLoginDTO
 {

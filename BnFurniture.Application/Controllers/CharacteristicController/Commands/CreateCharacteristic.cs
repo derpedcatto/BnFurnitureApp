@@ -13,13 +13,15 @@ public sealed class CreateCharacteristicHandler : CommandHandler<CreateCharacter
 {
     private readonly CreateCharacteristicDTOValidator _validator;
 
-    public CreateCharacteristicHandler(CreateCharacteristicDTOValidator validator,
+    public CreateCharacteristicHandler(
+        CreateCharacteristicDTOValidator validator,
         IHandlerContext context) : base(context) 
     {
         _validator = validator;
     }
 
-    public override async Task<ApiCommandResponse> Handle(CreateCharacteristicCommand request, CancellationToken cancellationToken)
+    public override async Task<ApiCommandResponse> Handle(
+        CreateCharacteristicCommand request, CancellationToken cancellationToken)
     {
         var validationResult = await _validator.ValidateAsync(request.Dto, cancellationToken);
         if (!validationResult.IsValid)
@@ -42,6 +44,9 @@ public sealed class CreateCharacteristicHandler : CommandHandler<CreateCharacter
         await HandlerContext.DbContext.Characteristic.AddAsync(characteristic, cancellationToken);
         await HandlerContext.DbContext.SaveChangesAsync(cancellationToken);
 
-        return new ApiCommandResponse(true, 201) { Message = "Characteristic created successfully." };
+        return new ApiCommandResponse(true, (int)HttpStatusCode.Created)
+        {
+            Message = "Characteristic created successfully." }
+        ;
     }
 }

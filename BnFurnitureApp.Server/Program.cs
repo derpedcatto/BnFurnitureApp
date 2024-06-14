@@ -33,6 +33,22 @@ builder.Services.AddCors(options =>
                           .AllowCredentials());
 });
 
+/*
+builder.WebHost.ConfigureKestrel(options =>
+{
+    options.ListenLocalhost(5028, listenOptions =>
+    {
+        listenOptions.Protocols = Microsoft.AspNetCore.Server.Kestrel.Core.HttpProtocols.Http1;
+    });
+
+    options.ListenLocalhost(7248, listenOptions =>
+    {
+        listenOptions.UseHttps();
+        listenOptions.Protocols = Microsoft.AspNetCore.Server.Kestrel.Core.HttpProtocols.Http1AndHttp2;
+    });
+});
+*/
+
 
 // Suppress default error response model
 builder.Services.Configure<ApiBehaviorOptions>(apiBehaviorOptions =>
@@ -48,6 +64,14 @@ builder.Services.AddSession(options =>
     options.IdleTimeout = TimeSpan.FromMinutes(30);
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
+    options.Cookie.SameSite = SameSiteMode.Lax;
+    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+});
+builder.Services.Configure<CookiePolicyOptions>(options =>
+{
+    options.MinimumSameSitePolicy = SameSiteMode.None;
+    options.HttpOnly = Microsoft.AspNetCore.CookiePolicy.HttpOnlyPolicy.Always;
+    options.Secure = CookieSecurePolicy.Always;
 });
 
 
@@ -66,8 +90,8 @@ builder.Services.AddHttpLogging(logging =>
     logging.MediaTypeOptions.AddText("application/xml");
     logging.MediaTypeOptions.AddText("text/plain");
 
-    logging.RequestBodyLogLimit = 1024;
-    logging.ResponseBodyLogLimit = 1024;
+    // logging.RequestBodyLogLimit = 1024;
+    // logging.ResponseBodyLogLimit = 1024;
 });
 
 
@@ -100,6 +124,14 @@ foreach (var type in typeof(BnFurniture.Application.AssemblyClass).Assembly.GetT
     Console.WriteLine($"Added handler - {type.Name}");
 }
 
+// Shared Service registration
+foreach (var type in typeof(BnFurniture.Application.AssemblyClass).Assembly.GetTypes()
+    .Where(x => x.Name.EndsWith("SharedLogic") && !x.IsAbstract && !x.IsInterface))
+{
+    builder.Services.AddScoped(type);
+    Console.WriteLine($"Added shared logic class - {type.Name}");
+}
+
 builder.Services.AddScoped<IHandlerContext, HandlerContext>();
 
 
@@ -125,23 +157,8 @@ app.UseMiddleware<LogAndExceptionHandlerMiddleware>();
 var logger = app.Services.GetRequiredService<ILogger<Program>>();
 await CheckDatabaseConnectionAsync(app, logger);
 
-/*
-var imagesPath = Path.Combine(builder.Environment.ContentRootPath, "Images");
-if (!Directory.Exists(imagesPath))
-{
-    Directory.CreateDirectory(imagesPath);
-}
-*/
-
 app.UseDefaultFiles();
 app.UseStaticFiles(); // for wwwroot
-/*
-app.UseStaticFiles(new StaticFileOptions
-{
-    FileProvider = new PhysicalFileProvider(imagesPath),
-    RequestPath = "Images"
-});
-*/
 
 
 if (app.Environment.IsDevelopment())
@@ -197,6 +214,20 @@ static async Task CheckDatabaseConnectionAsync(WebApplication app, ILogger logge
         logger.LogError($"Database connection failed - {ex.Message}");
     }
 }
+
+/*
+var imagesPath = Path.Combine(builder.Environment.ContentRootPath, "Images");
+if (!Directory.Exists(imagesPath))
+{
+    Directory.CreateDirectory(imagesPath);
+}
+
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(imagesPath),
+    RequestPath = "Images"
+});
+*/
 
 /*
 logging.LoggingFields =

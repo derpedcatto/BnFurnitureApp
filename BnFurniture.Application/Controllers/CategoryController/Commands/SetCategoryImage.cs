@@ -1,5 +1,5 @@
 ﻿using BnFurniture.Application.Abstractions;
-using BnFurniture.Application.Controllers.CategoryController.DTO;
+using BnFurniture.Application.Controllers.CategoryController.DTO.Request;
 using BnFurniture.Application.Extensions;
 using BnFurniture.Application.Services.AppImageService;
 using BnFurniture.Domain.Enums;
@@ -12,22 +12,27 @@ public sealed record SetCategoryImageCommand(SetCategoryImageDTO Dto);
 
 public sealed class SetCategoryImageHandler : CommandHandler<SetCategoryImageCommand>
 {
-    private readonly IAppImageService _appImageService;
     private readonly SetCategoryImageDTOValidator _validator;
+    private readonly IAppImageService _appImageService;
 
-    public SetCategoryImageHandler(IAppImageService appImageService, SetCategoryImageDTOValidator validator,
+    public SetCategoryImageHandler(
+        SetCategoryImageDTOValidator validator,
+        IAppImageService appImageService,
         IHandlerContext context) : base(context)
     {
-        _appImageService = appImageService;
         _validator = validator;
+        _appImageService = appImageService;
     }
 
-    public override async Task<ApiCommandResponse> Handle(SetCategoryImageCommand command, CancellationToken cancellationToken)
+    public override async Task<ApiCommandResponse> Handle(
+        SetCategoryImageCommand request,
+        CancellationToken cancellationToken)
     {
-        var validationResult = await _validator.ValidateAsync(command.Dto, cancellationToken);
+        var validationResult = await _validator.ValidateAsync(request.Dto, cancellationToken);
         if (!validationResult.IsValid)
         {
-            return new ApiCommandResponse(false, (int)HttpStatusCode.UnprocessableEntity)
+            return new ApiCommandResponse
+                (false, (int)HttpStatusCode.UnprocessableEntity)
             {
                 Message = "Валідація не пройшла перевірку",
                 Errors = validationResult.ToApiResponseErrors()
@@ -36,12 +41,13 @@ public sealed class SetCategoryImageHandler : CommandHandler<SetCategoryImageCom
 
         var result = await _appImageService.AddImageAsync(
             AppEntityType.ProductCategory,
-            command.Dto.Id,
+            request.Dto.Id,
             AppEntityImageType.PromoCardThumbnail,
-            command.Dto.Image,
+            request.Dto.Image,
             cancellationToken);
 
-        return new ApiCommandResponse(result.IsSuccess, result.StatusCode)
+        return new ApiCommandResponse
+            (result.IsSuccess, result.StatusCode)
         {
             Message = result.Message
         };

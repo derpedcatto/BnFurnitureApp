@@ -1,20 +1,21 @@
 ﻿using BnFurniture.Application.Abstractions;
-using BnFurniture.Application.Controllers.CategoryController.DTO;
-using BnFurniture.Application.Controllers.ProductTypeController.DTO;
-using BnFurniture.Application.Services.AppImageService;
-using BnFurniture.Domain.Enums;
+using BnFurniture.Application.Controllers.CategoryController.DTO.Response;
+using BnFurniture.Application.Controllers.CategoryController.Shared;
 using BnFurniture.Domain.Responses;
-using Microsoft.EntityFrameworkCore;
+using System.Net;
 
 namespace BnFurniture.Application.Controllers.CategoryController.Queries;
 
-public sealed record GetAllCategoriesWithProductTypesQuery();
+public sealed record GetAllCategoriesWithProductTypesQuery(
+    bool IncludeImages = true,
+    bool RandomOrder = false);
 
 public sealed class GetAllCategoriesWithProductTypesResponse 
 {
-    public List<ResponseProductCategoryWithProductTypesDTO> Categories { get; set; }
+    public List<ProductCategoryWithProductTypesDTO> Categories { get; set; }
 
-    public GetAllCategoriesWithProductTypesResponse(List<ResponseProductCategoryWithProductTypesDTO> categories)
+    public GetAllCategoriesWithProductTypesResponse(
+        List<ProductCategoryWithProductTypesDTO> categories)
     {
         Categories = categories;
     }
@@ -23,22 +24,33 @@ public sealed class GetAllCategoriesWithProductTypesResponse
 public sealed class GetAllCategoriesWithProductTypesHandler : QueryHandler<GetAllCategoriesWithProductTypesQuery, GetAllCategoriesWithProductTypesResponse>
 {
     private readonly GetAllCategoriesHandler _getAllCategoriesHandler;
-    private readonly IAppImageService _appImageService;
+    private readonly CategoryControllerSharedLogic _sharedLogic;
 
-    public GetAllCategoriesWithProductTypesHandler(GetAllCategoriesHandler getAllCategoriesHandler,
-        IAppImageService appImageService,
+    public GetAllCategoriesWithProductTypesHandler(
+        GetAllCategoriesHandler getAllCategoriesHandler,
+        CategoryControllerSharedLogic sharedLogic,
         IHandlerContext context) : base(context)
     {
         _getAllCategoriesHandler = getAllCategoriesHandler;
-        _appImageService = appImageService;
+        _sharedLogic = sharedLogic;
     }
 
-    public override async Task<ApiQueryResponse<GetAllCategoriesWithProductTypesResponse>> Handle(GetAllCategoriesWithProductTypesQuery request, CancellationToken cancellationToken)
+    public override async Task<ApiQueryResponse<GetAllCategoriesWithProductTypesResponse>> Handle(
+        GetAllCategoriesWithProductTypesQuery request,
+        CancellationToken cancellationToken)
     {
-        var categoriesResponse = await _getAllCategoriesHandler.Handle(new(), cancellationToken);
+        var categoriesQuery = new GetAllCategoriesQuery(
+                IncludeImages: request.IncludeImages,
+                RandomOrder: request.RandomOrder,
+                FlatList: false);
+
+        var categoriesResponse = await _getAllCategoriesHandler.Handle(
+            categoriesQuery, cancellationToken);
+
         if (!categoriesResponse.IsSuccess)
         {
-            return new ApiQueryResponse<GetAllCategoriesWithProductTypesResponse>(false, categoriesResponse.StatusCode)
+            return new ApiQueryResponse<GetAllCategoriesWithProductTypesResponse>
+                (false, categoriesResponse.StatusCode)
             {
                 Message = categoriesResponse.Message,
                 Errors = categoriesResponse.Errors,
@@ -48,68 +60,54 @@ public sealed class GetAllCategoriesWithProductTypesHandler : QueryHandler<GetAl
 
         var categories = categoriesResponse.Data!.Categories;
 
-        var categoriesWithProductTypes = await PopulateCategoriesWithProductTypes(categories, cancellationToken);
+        var categoriesWithProductTypes = await PopulateCategoriesWithProductTypes(
+            categories,
+            request.IncludeImages,
+            request.RandomOrder,
+            cancellationToken);
 
-        return new ApiQueryResponse<GetAllCategoriesWithProductTypesResponse>(true, 200)
+        return new ApiQueryResponse<GetAllCategoriesWithProductTypesResponse>
+            (true, (int)HttpStatusCode.OK)
         {
             Data = new(categoriesWithProductTypes)
         };
     }
 
-    private async Task<List<ResponseProductCategoryWithProductTypesDTO>> PopulateCategoriesWithProductTypes(List<ResponseProductCategoryDTO> categories, CancellationToken cancellationToken)
+    private async Task<List<ProductCategoryWithProductTypesDTO>> PopulateCategoriesWithProductTypes(
+        List<ProductCategoryDTO> categories, 
+        bool includeImages,
+        bool randomOrder,
+        CancellationToken cancellationToken)
     {
-        var populatedCategories = new List<ResponseProductCategoryWithProductTypesDTO>();
+        var populatedCategories = new List<ProductCategoryWithProductTypesDTO>();
 
         foreach (var category in categories)
         {
-            var populatedCategory = new ResponseProductCategoryWithProductTypesDTO
+            var populatedCategory = new ProductCategoryWithProductTypesDTO
             {
                 Id = category.Id,
                 Name = category.Name,
                 Slug = category.Slug,
                 Priority = category.Priority,
                 CardImageUri = category.CardImageUri,
-                ProductTypes = await GetProductTypesForCategory(category.Id, cancellationToken),
+                ProductTypes = await _sharedLogic.GetProductTypesForCategory(
+                    category.Id, includeImages, cancellationToken),
             };
 
             if (category.SubCategories != null && category.SubCategories.Count != 0)
             {
-                populatedCategory.SubCategories = await PopulateCategoriesWithProductTypes(category.SubCategories, cancellationToken);
+                populatedCategory.SubCategories = await PopulateCategoriesWithProductTypes(
+                    category.SubCategories, includeImages, randomOrder, cancellationToken);
             }
 
             populatedCategories.Add(populatedCategory);
         }
 
-        return populatedCategories;
-    }
-
-    private async Task<List<ResponseProductTypeDTO>> GetProductTypesForCategory(Guid categoryId, CancellationToken cancellationToken)
-    {
-        var productTypes = await HandlerContext.DbContext.ProductType
-            .Where(pt => pt.CategoryId == categoryId)
-            .Select(pt => new ResponseProductTypeDTO
-            {
-                Id = pt.Id,
-                CategoryId = pt.CategoryId,
-                Name = pt.Name,
-                Slug = pt.Slug,
-                Priority = pt.Priority,
-                CardImageUri = string.Empty
-            })
-            .OrderBy(pt => pt.Name)
-            .ToListAsync(cancellationToken);
-
-        foreach (var productType in productTypes)
+        if (randomOrder)
         {
-            var imageResponse = await _appImageService.GetImagesAsync(
-                AppEntityType.ProductType,
-                productType.Id,
-                AppEntityImageType.PromoCardThumbnail,
-                cancellationToken);
-
-            productType.CardImageUri = imageResponse.Data?.LastOrDefault() ?? string.Empty;
+            populatedCategories = populatedCategories.OrderBy(_ => Guid.NewGuid()).ToList();
         }
 
-        return productTypes;
+        return populatedCategories;
     }
 }

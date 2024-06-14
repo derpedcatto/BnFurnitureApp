@@ -1,7 +1,6 @@
 ﻿using BnFurniture.Domain.Constants;
 using BnFurniture.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
-using System.Reflection;
 
 namespace BnFurniture.Infrastructure.Persistence;
 
@@ -153,28 +152,12 @@ public class ApplicationDbContext(DbContextOptions options) : DbContext(options)
         modelBuilder.Entity<ProductSetCategory>()
             .HasIndex(e => e.Slug)
             .IsUnique(true);
-
-        //устанавливаем уникальность для поля Slug в таблицах Characteristic и CharacteristicValue.
-        modelBuilder.Entity<Characteristic>()
-       .HasIndex(c => c.Slug)
-       .IsUnique();
-
-        modelBuilder.Entity<CharacteristicValue>()
-            .HasIndex(cv => cv.Slug)
-            .IsUnique();
     }
 
     private void ConfigureKeys(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<ProductArticle_OrderItem>()
             .HasKey(a => new { a.OrderItemId, a.ProductArticleId });
-
-        // первичные ключи для Characteristic и CharacteristicValue
-        modelBuilder.Entity<Characteristic>()
-      .HasKey(c => c.Id);
-
-        modelBuilder.Entity<CharacteristicValue>()
-            .HasKey(cv => cv.Id);
     }
 
     private void ConfigureRelationship(ModelBuilder modelBuilder)

@@ -4,7 +4,7 @@ using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 
-namespace BnFurniture.Application.Controllers.CategoryController.DTO;
+namespace BnFurniture.Application.Controllers.CategoryController.DTO.Request;
 
 public class UpdateCategoryDTO
 {

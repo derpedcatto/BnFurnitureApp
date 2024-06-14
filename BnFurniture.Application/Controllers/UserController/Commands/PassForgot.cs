@@ -1,5 +1,5 @@
 ﻿using BnFurniture.Application.Abstractions;
-using BnFurniture.Application.Controllers.UserController.DTO;
+using BnFurniture.Application.Controllers.UserController.DTO.Request;
 using BnFurniture.Application.Extensions;
 using BnFurniture.Domain.Responses;
 using BnFurniture.Shared.Utilities.Email;
@@ -10,7 +10,7 @@ using System.Text;
 
 namespace BnFurniture.Application.Controllers.UserController.Commands;
 
-public sealed record PassForgotCommand(UserPassForgotDTO entityForm);
+public sealed record PassForgotCommand(UserPassForgotDTO Dto);
 
 public sealed class PassForgotHandler : CommandHandler<PassForgotCommand>
 {
@@ -18,7 +18,10 @@ public sealed class PassForgotHandler : CommandHandler<PassForgotCommand>
     private readonly IHashService _hashService;
     private readonly IEmailService _emailService;
 
-    public PassForgotHandler(PassForgotDTOValidator validator, IHashService hashService, IEmailService emailService,
+    public PassForgotHandler(
+        PassForgotDTOValidator validator,
+        IHashService hashService,
+        IEmailService emailService,
         IHandlerContext context) : base(context)
     {
         _validator = validator;
@@ -27,14 +30,14 @@ public sealed class PassForgotHandler : CommandHandler<PassForgotCommand>
     }
 
 
-    public override async Task<ApiCommandResponse> Handle(PassForgotCommand request, CancellationToken cancellationToken = default)
+    public override async Task<ApiCommandResponse> Handle(
+        PassForgotCommand request, CancellationToken cancellationToken = default)
     {
-        var dto = request.entityForm;
-
-        var validationResult = await _validator.ValidateAsync(dto, cancellationToken);
+        var validationResult = await _validator.ValidateAsync(request.Dto, cancellationToken);
         if (!validationResult.IsValid)
         {
-            return new ApiCommandResponse(false, (int)HttpStatusCode.UnprocessableEntity)
+            return new ApiCommandResponse
+                (false, (int)HttpStatusCode.UnprocessableEntity)
             {
                 Message = "Валідація не пройшла перевірку",
                 Errors = validationResult.ToApiResponseErrors()
@@ -43,7 +46,7 @@ public sealed class PassForgotHandler : CommandHandler<PassForgotCommand>
 
         var newPass = GeneratePassword();
         var user = await HandlerContext.DbContext.User.FirstOrDefaultAsync(
-            u => u.Email == dto.EmailOrPhone || u.PhoneNumber == dto.EmailOrPhone,
+            u => u.Email == request.Dto.EmailOrPhone || u.PhoneNumber == request.Dto.EmailOrPhone,
             cancellationToken);
 
         var result = await _emailService.SendNewPasswordEmailAsync(
@@ -54,7 +57,8 @@ public sealed class PassForgotHandler : CommandHandler<PassForgotCommand>
 
         if (!result.IsSuccess)
         {
-            return new ApiCommandResponse(false, result.StatusCode)
+            return new ApiCommandResponse
+                (false, result.StatusCode)
             {
                 Message = result.Message,
             };
@@ -63,7 +67,8 @@ public sealed class PassForgotHandler : CommandHandler<PassForgotCommand>
         user.Password = _hashService.HashString(newPass);
         await HandlerContext.DbContext.SaveChangesAsync(cancellationToken);
 
-        return new ApiCommandResponse(true, (int)HttpStatusCode.OK)
+        return new ApiCommandResponse
+            (true, (int)HttpStatusCode.OK)
         {
             Message = "Новий пароль успішно сгенеровано, і лист з новим паролем відправлен на пошту користувача."
         };
@@ -84,28 +89,3 @@ public sealed class PassForgotHandler : CommandHandler<PassForgotCommand>
         return sb.ToString();
     }
 }
-
-/*
-    [HttpPost("passforgot")]
-    public async Task<IActionResult> PassForgot([FromForm] UserPassForgotDTO model)
-    {
-        //var validationResult = await _validator.ValidateAsync(model);
-        //if (!validationResult.IsValid)
-        //{
-        //    return BadRequest(validationResult.Errors); // Использование BadRequest для невалидных данных
-        //}
-
-        var user = await _dbContext.User.FirstOrDefaultAsync(u => u.Email == model.Email);
-        if (user == null)
-        {
-            return NotFound(new { status = "NO", message = "Пользователь с указанным логином не найден." });
-        }
-
-        var newPassword = GeneratePassword();
-        user.Password = _hashService.HashString(newPassword);
-        await _dbContext.SaveChangesAsync();
-        _mailServices.SendMess(newPassword, user.Email);
-
-        return Ok(new { status = "OK", newPassword = newPassword, mail = "Send message" });
-    }
-*/

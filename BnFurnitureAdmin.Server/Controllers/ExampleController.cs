@@ -10,7 +10,8 @@ namespace BnFurnitureAdmin.Server.Controllers;
 public class ExampleController : ControllerBase
 {
     [HttpGet]
-    public async Task<IActionResult> GetExampleEntity([FromServices] GetEntityHandler handler,
+    public async Task<IActionResult> GetExampleEntity(
+        [FromServices] GetEntityHandler handler,
         int days)
     {
         var query = new GetEntityQuery(days);
@@ -20,7 +21,8 @@ public class ExampleController : ControllerBase
     }
 
     [HttpGet("list")]
-    public async Task<IActionResult> GetExampleEntityList([FromServices] GetEntityListHandler handler)
+    public async Task<IActionResult> GetExampleEntityList(
+        [FromServices] GetEntityListHandler handler)
     {
         var query = new GetEntityListQuery();
 
@@ -29,7 +31,8 @@ public class ExampleController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateExampleEntity([FromServices] CreateEntityHandler handler,
+    public async Task<IActionResult> CreateExampleEntity(
+        [FromServices] CreateEntityHandler handler,
         [FromBody] ExampleEntityFormDTO model)
     {
         var command = new CreateEntityCommand(model);

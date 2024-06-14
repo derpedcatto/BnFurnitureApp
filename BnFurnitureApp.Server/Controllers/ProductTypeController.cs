@@ -8,13 +8,20 @@ namespace BnFurnitureApp.Server.Controllers;
 public class ProductTypeController : Controller
 {
     [HttpGet("all")]
-    public async Task<IActionResult> GetAllProductTypes([FromServices] GetAllProductTypesHandler handler)
+    public async Task<IActionResult> GetAllProductTypes(
+        [FromServices] GetAllProductTypesHandler handler,
+        [FromQuery] bool includeImages = true,
+        [FromQuery] bool randomOrder = false,
+        [FromQuery] int? pageSize = null,
+        [FromQuery] int? pageNumber = null)
     {
-        var query = new GetAllProductTypesQuery();
+        var query = new GetAllProductTypesQuery(
+            randomOrder,
+            includeImages,
+            pageSize,
+            pageNumber);
 
         var apiResponse = await handler.Handle(query, HttpContext.RequestAborted);
         return new JsonResult(apiResponse) { StatusCode = apiResponse.StatusCode };
     }
-
-    // TODO: Get all product types of a category
 }

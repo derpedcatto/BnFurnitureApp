@@ -4,7 +4,7 @@ using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 
-namespace BnFurniture.Application.Controllers.ProductTypeController.DTO;
+namespace BnFurniture.Application.Controllers.ProductTypeController.DTO.Request;
 
 public class UpdateProductTypeDTO
 {
@@ -58,7 +58,7 @@ public class UpdateProductTypeDTOValidator : AbstractValidator<UpdateProductType
     }
     private async Task<bool> IsCategorySlugUnique(Guid categoryId, string slug, CancellationToken ct)
     {
-        return ! await _dbContext.ProductCategory
+        return !await _dbContext.ProductCategory
             .AnyAsync(pc => pc.Id == categoryId && pc.Slug == slug, ct);
     }
 

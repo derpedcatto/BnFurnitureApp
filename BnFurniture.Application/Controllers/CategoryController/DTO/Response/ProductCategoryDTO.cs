@@ -1,6 +1,6 @@
-﻿namespace BnFurniture.Application.Controllers.CategoryController.DTO;
+﻿namespace BnFurniture.Application.Controllers.CategoryController.DTO.Response;
 
-public class ResponseProductCategoryDTO
+public class ProductCategoryDTO
 {
     public Guid Id { get; set; }
     public string Name { get; set; } = string.Empty;
@@ -9,5 +9,5 @@ public class ResponseProductCategoryDTO
 
     public string CardImageUri { get; set; } = string.Empty;
 
-    public List<ResponseProductCategoryDTO>? SubCategories { get; set; }
+    public List<ProductCategoryDTO>? SubCategories { get; set; }
 }
