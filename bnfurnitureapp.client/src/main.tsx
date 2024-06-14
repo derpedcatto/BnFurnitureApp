@@ -7,7 +7,7 @@ import axios from 'axios'
 
 import './styles/reset.scss'
 
-axios.defaults.baseURL = 'https://localhost:7249';
+axios.defaults.baseURL = 'https://localhost:7248/api/';
 axios.defaults.withCredentials = true;
 
 ReactDOM.createRoot(document.getElementById('root')!).render(

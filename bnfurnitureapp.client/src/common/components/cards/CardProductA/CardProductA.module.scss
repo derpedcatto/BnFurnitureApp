@@ -19,17 +19,23 @@
   border: 1px solid gray;
 }
 
-.top-sticker {
-  position: absolute;
-  top: -$radius-card-product;
-  right: -$radius-card-product;
-  border-radius: 50%;
-  background-color: $color-primary;
-  color: white;
-  padding: 0.8rem 0.6rem;
-  font-size: 0.8rem;
-  z-index: 2;
+.sticker-wrapper {
+  position: relative;
+
+  .top-sticker {
+    position: absolute;
+    top: -$radius-card-product;
+    right: -$radius-card-product;
+    border-radius: 50%;
+    background-color: $color-primary;
+    color: white;
+    padding: 0.8rem 0.6rem;
+    font-size: 0.8rem;
+    z-index: 2;
+  }
 }
+
+
 
 .image-container {
   flex: 6.5;

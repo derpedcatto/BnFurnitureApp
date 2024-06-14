@@ -11,4 +11,6 @@ interface ApiQueryResponse<T> extends ApiBaseResponse {
   data?: T;
 }
 
-export type { ApiCommandResponse, ApiQueryResponse };
+interface ApiErrorResponse extends ApiBaseResponse {}
+
+export type { ApiCommandResponse, ApiQueryResponse, ApiErrorResponse };

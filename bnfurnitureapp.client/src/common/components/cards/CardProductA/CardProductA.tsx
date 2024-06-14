@@ -20,7 +20,9 @@ const CardProductA: React.FC<CardProductAProps> = ({
 }) => {
   return (
     <NavLink to={redirectTo} className={styles.container}>
-      {top == true ? <div className={styles["top-sticker"]}>TOP</div> : <></>}
+      <div className={styles["sticker-wrapper"]}>
+        {top && <div className={styles["top-sticker"]}>TOP</div>}
+      </div>
       <div className={styles["hide-overflow-container"]}>
         <div className={styles["image-container"]}>
           <img src={imageSrc} />

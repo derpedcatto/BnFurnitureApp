@@ -1,7 +1,7 @@
 import { NavLink } from "react-router-dom";
 import styles from "./CardCategoryA.module.scss";
 
-interface CardCategoryAProps {
+export type CardCategoryAProps = {
   categoryName: string;
   imageSrc: string;
   redirectTo: string;

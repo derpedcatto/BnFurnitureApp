@@ -1,4 +1,22 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
+import { ApiErrorResponse } from "../types/ApiResponseTypes";
+import { SliceRejectResponse } from "../types/SliceRejectResponse";
+import log from "loglevel";
+
+export const handleApiError = (error: unknown, actionName: string) => {
+  const errorMessage = getErrorMessage(error);
+  let errorResponse: SliceRejectResponse = { message: errorMessage };
+  logError(actionName, errorMessage, error);
+
+  if (error instanceof AxiosError && error.response?.data) {
+    const responseData = error.response.data as ApiErrorResponse;
+    errorResponse = {
+      message: `${responseData.statusCode}: ${responseData.message}`,
+      errors: responseData.errors,
+    };
+  }
+  return errorResponse;
+};
 
 export const getErrorMessage = (error: unknown): string => {
   if (axios.isAxiosError(error)) {
@@ -28,7 +46,7 @@ export const getErrorMessage = (error: unknown): string => {
 };
 
 export const logError = (prefix: string, message: string, error: unknown) => {
-  console.error(`'${prefix}' Server Error: ${message}`, error);
+  log.error(`'${prefix}' Server Error: ${message}`, error);
 };
 
 /*
