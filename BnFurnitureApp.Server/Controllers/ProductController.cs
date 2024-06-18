@@ -11,6 +11,13 @@ namespace BnFurnitureAdmin.Server.Controllers;
 // [AuthorizePermissions(Permissions.DashboardAccess)]
 public class ProductController : Controller
 {
+    private readonly GetFilteredProductsHandler _getFilteredProductsHandler;
+
+    public ProductController(GetFilteredProductsHandler getFilteredProductsHandler)
+    {
+        _getFilteredProductsHandler = getFilteredProductsHandler;
+    }
+
     [HttpGet("{productId:guid}")]
     public async Task<IActionResult> GetProduct([FromServices] GetProductHandler handler,
         Guid productId)
@@ -56,4 +63,19 @@ public class ProductController : Controller
         var apiResponse = await handler.Handle(query, HttpContext.RequestAborted);
         return new JsonResult(apiResponse) { StatusCode = apiResponse.StatusCode };
     }
+
+    [HttpGet("filtered")]
+    public async Task<IActionResult> GetFilteredProducts([FromQuery] ProductsFilteredSearchRequestDTO request)
+    {
+        var query = new GetFilteredProductsQuery(request);
+        var apiResponse = await _getFilteredProductsHandler.Handle(query, HttpContext.RequestAborted);
+
+        if (apiResponse.IsSuccess)
+        {
+            return Ok(apiResponse.Data);
+        }
+
+        return StatusCode(apiResponse.StatusCode, apiResponse.Message);
+    }
+
 }
