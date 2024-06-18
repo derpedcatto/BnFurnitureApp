@@ -36,8 +36,10 @@ namespace BnFurniture.Application.Controllers.ProductController.Queries
         // Фильтрация по тексту
         if (!string.IsNullOrWhiteSpace(dto.Text))
         {
-            query = query.Where(p => p.Name.Contains(dto.Text, StringComparison.OrdinalIgnoreCase));
-        }
+                var lowerText = dto.Text.ToLower();
+                // query = query.Where(p => p.Name.Contains(dto.Text, StringComparison.OrdinalIgnoreCase));
+                query = query.Where(p => p.Name.ToLower().Contains(lowerText));
+            }
 
         // Фильтрация по диапазону цен
         if (!string.IsNullOrWhiteSpace(dto.PriceRange))
@@ -85,7 +87,7 @@ namespace BnFurniture.Application.Controllers.ProductController.Queries
                         Priority = pc.Characteristic.Priority,
                         Values = HandlerContext.DbContext.CharacteristicValue
                        .Where(v => v.CharacteristicId == pc.Characteristic.Id)
-                       .Select(v => new CharacteristicValueDTO // Используйте правильный тип здесь
+                       .Select(v => new CharacteristicValueDTO 
                        {
                             Id = v.Id,
                             CharacteristicId = v.CharacteristicId,
