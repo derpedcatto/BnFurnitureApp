@@ -1,8 +1,10 @@
 import { NavLink } from "react-router-dom";
 import { ArrowUpRightIcon } from "../../../icons";
 import styles from "./DiscoverCardSectionB.module.scss";
+import { LoadingSpinner } from "../../ui";
 
-interface DiscoverCardSectionBProps {
+export interface DiscoverCardSectionBProps {
+  isLoading: boolean;
   items: [
     { imageSrc: string; link: string },
     { imageSrc: string; link: string },
@@ -14,9 +16,14 @@ interface DiscoverCardSectionBProps {
 }
 
 const DiscoverCardSectionB: React.FC<DiscoverCardSectionBProps> = ({
+  isLoading,
   items,
 }) => {
-  return (
+  return isLoading ? (
+    <div className={styles.loadingSpinnerContainer}>
+      <LoadingSpinner />
+    </div>
+  ) : (
     <div className={styles.container}>
       {items.map((item, index) => (
         <NavLink

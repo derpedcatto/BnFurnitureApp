@@ -1,42 +1,74 @@
+import React from "react";
+import styles from "./HomePage.module.scss";
+import HeroSection from "./HeroSection";
 import CardGroupDiscover from "./CardGroupDiscover";
 import {
   CardCategoryASlider,
   CategoryNamesButtonSlider,
 } from "../../../common/components/sliders";
 import {
-  DiscoverCardSectionA,
   DiscoverCardSectionB,
+  DiscoverCardCategoryBSectionA,
 } from "../../../common/components/discoverSections";
+import { ImportantInfoSectionLayout } from "../../../common/layouts";
+import imageImportantInfo from "../assets/imageImportantInfo.png";
+
+import { useFetchSliderProductCategories } from "../hooks/useFetchSliderProductCategories";
+import { useFetchSliderProductTypes } from "../hooks/useFetchSliderProductTypes";
+import { useFetchCatalogProductTypes } from "../hooks/useFetchCatalogProductTypes";
+import { useFetchDiscoverCategories } from "../hooks/useFetchDiscoverCategories";
+import { useFetchButtonSliderCategories } from "../hooks/useFetchButtonSliderCategories"
+import { useFetchDiscoverProductTypes } from '../hooks/useFetchDiscoverProductTypes';
+import { useFetchButtonSliderProductTypes } from "../hooks/useFetchButtonSliderProductTypes";
+/*
 import {
-  DiscoverCardCategoryBLayoutA,
-  ImportantInfoSectionLayout,
-} from "../../../common/layouts";
-import { CardCategoryB } from "../../../common/components/cards";
-import {
-  dummyCategories,
   dummyDiscoverCardSectionA1,
+  dummyCategories,
   dummyDiscoverCardCategoryBLayoutA,
   dummyDiscoverCardSectionB1,
   dummyDiscoverCardSectionB2,
 } from "../dummyData";
-import imageImportantInfo from "../assets/imageImportantInfo.png";
+ */
 
-import React from "react";
-import styles from "./HomePage.module.scss";
-import HeroSection from "./HeroSection";
-import { useFetchSliderProductCategories } from "../hooks/useFetchSliderProductCategories";
-import { useFetchSliderProductTypes } from "../hooks/useFetchSliderProductTypes";
+function SliderCategoryComponent() {
+  const { categories, isLoading: isCategoriesLoading } =
+    useFetchSliderProductCategories();
 
-const HomePage: React.FC = () => {
-  const {
-    categories,
-    isLoading: isCategoriesLoading
-  } = useFetchSliderProductCategories();
-  const {
-    productTypes,
-    isLoading: isProductTypesLoading
-  } = useFetchSliderProductTypes();
+  return (
+    <CardCategoryASlider
+      key="category-slider"
+      isLoading={isCategoriesLoading}
+      categories={categories}
+    />
+  );
+}
 
+function SliderProductTypeComponent() {
+  const { productTypes, isLoading: isProductTypesLoading } =
+    useFetchSliderProductTypes();
+
+  return (
+    <CardCategoryASlider
+      key="product-type-slider"
+      isLoading={isProductTypesLoading}
+      categories={productTypes}
+    />
+  );
+}
+
+function CatalogProductTypeComponent() {
+  const { catalogProductTypes, isLoading: isCatalogLoading } =
+    useFetchCatalogProductTypes();
+
+  return (
+    <DiscoverCardCategoryBSectionA
+      key="discover-product-types"
+      isLoading={isCatalogLoading}
+      categories={catalogProductTypes}
+    />
+  );
+
+  /* dummy
   const discoverCards = dummyDiscoverCardCategoryBLayoutA.map((data, index) => (
     <CardCategoryB
       key={index}
@@ -45,6 +77,69 @@ const HomePage: React.FC = () => {
       redirectTo={data.redirectTo}
     />
   ));
+  */
+}
+
+function DiscoverCardSectionCategoriesComponent() {
+  const { categories, isLoading } = useFetchDiscoverCategories();
+
+  return (
+    <DiscoverCardSectionB items={categories.items} isLoading={isLoading} />
+  );
+
+  /* dummy
+    <DiscoverCardSectionB items={dummyDiscoverCardSectionB1} />
+  */
+}
+
+function DiscoverCardSectionProductTypeComponentA() {
+  const { productTypes, isLoading } = useFetchDiscoverProductTypes({
+    pageNumber: 2,
+    pageSize: 6
+  });
+
+  return (
+    <DiscoverCardSectionB items={productTypes.items} isLoading={isLoading} />
+  );
+}
+
+function DiscoverCardSectionProductTypeComponentB() {
+  const { productTypes, isLoading } = useFetchDiscoverProductTypes({
+    pageNumber: 3,
+    pageSize: 6
+  });
+
+  return (
+    <DiscoverCardSectionB items={productTypes.items} isLoading={isLoading} />
+  );
+}
+
+function ButtonSliderCategoriesComponent() {
+  const { categories } = useFetchButtonSliderCategories();
+
+  return (
+    <CategoryNamesButtonSlider categories={categories} />
+  );
+
+  /* dummy
+    <CategoryNamesButtonSlider categories={dummyCategories} />
+  */
+}
+
+function ButtonSliderProductTypesComponent() {
+  const { productTypes } = useFetchButtonSliderProductTypes();
+
+  return (
+    <CategoryNamesButtonSlider categories={productTypes} />
+  );
+
+  /* dummy
+    <CategoryNamesButtonSlider categories={dummyCategories} />
+  */
+}
+
+const HomePage: React.FC = () => {
+  console.log("HomePage render");
 
   return (
     <div className={styles.container}>
@@ -54,29 +149,33 @@ const HomePage: React.FC = () => {
           ЗНАЙДИ ТЕ, ЩО ШУКАЄШ!
         </div>
         <CardGroupDiscover />
+
         <div className={styles["category-section-name"]}>РЕКОМЕНДАЦІЇ</div>
-        <CardCategoryASlider
-          isLoading={isCategoriesLoading}
-          categories={categories}
-        />
+        <SliderCategoryComponent />
+
         <div className={styles["category-section-name"]}>
           НАКРАЩІ ПРОПОЗИЦІЇ
         </div>
-        <CardCategoryASlider isLoading={isProductTypesLoading} categories={productTypes} />
-        <div className={styles["category-section-name"]}>ТЕМАТИЧНІ НАБОРИ</div>
-        <DiscoverCardSectionA items={dummyDiscoverCardSectionA1} />
+        <SliderProductTypeComponent />
+
+        <div className={styles["category-section-name"]}>НОВИНКИ</div>
+        <DiscoverCardSectionProductTypeComponentA />
+
         <div className={styles["category-section-name"]}>КАТАЛОГ</div>
-        <DiscoverCardCategoryBLayoutA children={discoverCards} />
+        <CatalogProductTypeComponent />
+
         <div className={styles["category-section-name"]}>
           ІДЕЇ ДЛЯ ОФОРМЛЕННЯ
         </div>
-        <DiscoverCardSectionB items={dummyDiscoverCardSectionB1} />
+        <DiscoverCardSectionCategoriesComponent />
+
         <div className={styles["category-section-name"]}>
           ДОДАТКОВІ РЕКОМЕНДАЦІЇ
         </div>
-        <CategoryNamesButtonSlider categories={dummyCategories} />
-        <DiscoverCardSectionB items={dummyDiscoverCardSectionB2} />
-        <CategoryNamesButtonSlider categories={dummyCategories} />
+        <ButtonSliderCategoriesComponent />
+        <DiscoverCardSectionProductTypeComponentB  />
+        <ButtonSliderProductTypesComponent />
+
         <div className={styles["category-section-name"]}>
           ВАЖЛИВА ІНФОРМАЦІЯ
         </div>

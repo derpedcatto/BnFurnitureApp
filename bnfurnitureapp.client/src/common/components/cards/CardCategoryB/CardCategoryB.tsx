@@ -1,7 +1,7 @@
-import { NavLink } from 'react-router-dom';
-import styles from './CardCategoryB.module.scss';
+import { NavLink } from "react-router-dom";
+import styles from "./CardCategoryB.module.scss";
 
-interface CardCategoryBProps {
+export interface CardCategoryBProps {
   categoryName: string;
   imageSrc: string;
   redirectTo: string;
@@ -13,11 +13,13 @@ const CardCategoryB: React.FC<CardCategoryBProps> = ({
   redirectTo,
 }) => {
   return (
-    <NavLink to={redirectTo} className={styles.container}>
-      <div className={styles['image-container']}>
-        <img src={imageSrc} />
+    <NavLink to={redirectTo} className={styles.cardContainer}>
+      <div className={styles.imageContainer}>
+        <img src={imageSrc} alt={categoryName} />
       </div>
-      <div className={styles['category-name']}>{categoryName}</div>
+      <div className={styles.categoryNameContainer}>
+        <div className={styles.categoryName}>{categoryName}</div>
+      </div>
     </NavLink>
   );
 };

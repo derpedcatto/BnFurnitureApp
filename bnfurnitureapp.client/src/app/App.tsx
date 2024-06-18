@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { AppDispatch } from "./store";
 import { useDispatch } from "react-redux";
 import {
@@ -16,9 +16,13 @@ import "./App.scss";
 
 function App() {
   const dispatch = useDispatch<AppDispatch>();
+  const hasFetchedUser = useRef(false);
 
   useEffect(() => {
-    dispatch(getCurrentUser());
+    if (!hasFetchedUser.current) {
+      dispatch(getCurrentUser());
+      hasFetchedUser.current = true;
+    }
   }, [dispatch]);
 
   return (

@@ -7,7 +7,7 @@ import {
   getCurrentUser,
 } from "./authThunks";
 import { SliceRejectResponse } from "../../common/types/SliceRejectResponse";
-import { ApiQueryResponse } from "../../common/types/ApiResponseTypes";
+import { ApiQueryResponse } from "../../common/types/api/ApiResponseTypes";
 
 const initialAuthState: AuthState = {
   isLoading: false,

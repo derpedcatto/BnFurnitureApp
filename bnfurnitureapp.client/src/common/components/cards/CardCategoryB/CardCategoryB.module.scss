@@ -1,40 +1,88 @@
-.container {
+.cardContainer {
   display: flex;
   flex-direction: column;
-  width: 180px;
-  height: 200px;
-  color: $color-text-black;
+  justify-content: flex-start;
+  align-items: center;
+  width: 250px;
+  height: 300px;
   text-decoration: none;
-  
+  color: $color-text-black;
+  box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.2) 0px 0px 0px 1px;
+  border-radius: 8px;
+  overflow: hidden;
+
   &:visited {
-    color: black;
+    color: $color-text-black;
+  }
+
+  > *:not(:last-child) {
+    border-bottom: 1px solid rgba(99, 99, 99, 0.2);
+  }
+
+  /* Small  screens */
+  @media screen and (max-width: calc($bp-w-md - 1px)) {
+    width: 180px;
+    max-height: 200px;
+  }
+
+  /* Extra small screens */
+  @media screen and (max-width: calc($bp-w-sm - 1px)) {
+    width: 160px;
+    max-height: 200px;
+  }
+}
+
+.imageContainer {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  flex-grow: 1;
+  flex-shrink: 1;
+  padding: 0 .5em;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
   }
 
   /* Small - Extra small screens */
   @media screen and (max-width: calc($bp-w-md - 1px)) {
-    width: 160px;
-    height: 160px;
+    padding: 0 .2em;
+  }
+}
+
+.categoryNameContainer {
+  display: flex;
+  height: 4em;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: 0 1em;
+
+  /* Small - Extra small screens */
+  @media screen and (max-width: calc($bp-w-md - 1px)) {
+    height: 3em;
   }
 
-  .image-container {
-    width: 100%;
+  .categoryName {
     height: 100%;
-    overflow: hidden;
-
-    img {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-    }
-  }
-
-  .category-name {
-    font-size: 1rem;
+    max-width: 100%;
+    font-size: 1.1em;
     font-weight: 500;
     text-align: center;
-    margin-top: 0.2rem;
+    text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
-    text-overflow: ellipsis;
+    transform: translateY(25%);
+  
+    /* Small - Extra small screens */
+    @media screen and (max-width: calc($bp-w-md - 1px)) {
+      font-size: .9em;
+    }
   }
 }

@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { RootState } from "../../../../../app/store";
 import { useSelector } from "react-redux";
@@ -10,11 +11,27 @@ import {
   CartIcon,
   WishlistIcon,
 } from "../../../../icons";
+import HamburgerMenu from "./HamburgerMenu";
+import { dummyData } from "../dummyData";
+import { useFetchCategoriesWithTypes } from "../hooks/useFetchCategoriesWithTypes";
+import { LoadingSpinner } from "../../../ui";
 
 const Nav = () => {
-  const currentUser = useSelector((state: RootState) => state.user.auth.currentUser);
+  const currentUser = useSelector(
+    (state: RootState) => state.user.auth.currentUser
+  );
   const userIsAuthenticated = currentUser !== null;
   const userNameField = `${currentUser?.firstName} ${currentUser?.lastName}`;
+
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const toggleMenu = () => { setIsMenuOpen(!isMenuOpen) };
+
+  /*
+  const {
+    categoriesWithTypes,
+    isLoading: isCategoriesWithTypesLoading
+  } = useFetchCategoriesWithTypes();
+   */
 
   return (
     <div className={styles.container}>
@@ -25,12 +42,24 @@ const Nav = () => {
               <BnLogo />
             </div>
           </NavLink>
+          {
+          /*
+          {isCategoriesWithTypesLoading ? (
+            <div className={styles['loading-icon-container']}>
+              <LoadingSpinner />
+            </div>
+          ) : (
+           
+          )}*/
+          }
           <div
             className={`${styles["svg-icon-container"]} ${styles["hamburger"]}`}
+            onClick={toggleMenu}
           >
             <HamburgerIcon />
-            <p>Меню</p>
+            <span>Меню</span>
           </div>
+          {isMenuOpen && <HamburgerMenu list={dummyData} />}
           <NavLink to="products">Товари</NavLink>
           <NavLink to="sets">Набори</NavLink>
         </div>

@@ -2,7 +2,7 @@ import { NavLink } from 'react-router-dom';
 import useEmblaCarousel from "embla-carousel-react";
 import styles from './CategoryNamesButtonSlider.module.scss';
 
-type CategoryNamesButtonSliderProps = {
+export type CategoryNamesButtonSliderProps = {
   categories: Array<{
     categoryName: string;
     redirectTo: string;

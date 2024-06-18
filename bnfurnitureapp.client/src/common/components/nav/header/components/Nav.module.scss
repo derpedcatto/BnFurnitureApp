@@ -35,25 +35,6 @@ nav {
   height: 30px;
 }
 
-.svg-logo-container {
-  overflow: auto;
-  height: 50px;
-  cursor: pointer;
-  // border: 1px dashed #aaa;
-}
-
-.svg-icon-container {
-  overflow: auto;
-  height: 30px;
-  cursor: pointer;
-  // border: 1px dashed #aaa;
-}
-
-svg {
-  width: 100%;
-  height: 100%;
-}
-
 .nav-leftside {
   display: flex;
   justify-content: center;
@@ -69,19 +50,21 @@ svg {
   }
 
   .hamburger {
+    cursor: pointer;
     display: flex;
     flex-direction: column;
     align-items: center;
     height: 45px;
-  
-    p {
+
+    span {
       margin-top: -5px;
       font-size: 1rem;
+      color: $color-text-gray;
     }
-  
+
     /* Extra small screens */
     @media screen and (max-width: calc($bp-w-sm - 1px)) {
-      p {
+      span {
         font-size: 0;
       }
     }
@@ -156,6 +139,42 @@ svg {
   }
 }
 
+.svg-logo-container {
+  overflow: auto;
+  height: 50px;
+  cursor: pointer;
+  // border: 1px dashed #aaa;
+}
+
+.svg-icon-container {
+  overflow: auto;
+  height: 30px;
+  cursor: pointer;
+  // border: 1px dashed #aaa;
+}
+
+.loading-icon-container {
+  width: 30px;
+  height: 30px;
+}
+
+.hamburger-menu-container {
+  position: absolute;
+  top: 50px;
+  left: 0;
+  width: 250px;
+  background: #ffffff;
+  border: 1px solid #ddd;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+
+  // @media screen and (min-width: 768px) {
+  //   .hamburger-menu-container {
+  //     display: none;
+  //   }
+  // }
+}
+
 .search-bar {
   margin: 0 auto;
   width: 75%;
@@ -169,4 +188,9 @@ svg {
   @media screen and (max-width: calc($bp-w-sm - 1px)) {
     width: 100%;
   }
+}
+
+svg {
+  width: 100%;
+  height: 100%;
 }

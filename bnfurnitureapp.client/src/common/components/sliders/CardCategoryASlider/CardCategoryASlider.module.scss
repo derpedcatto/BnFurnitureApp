@@ -5,10 +5,11 @@
 
 .loading-icon-container {
   display: flex;
-  align-items: center;
   justify-content: center;
-  font-size: 0.8rem;
-  padding: 7rem;
+  align-items: center;
+  margin: 3rem auto 1rem auto;
+  width: 100px;
+  height: 100px;
 }
 
 .category-cards {

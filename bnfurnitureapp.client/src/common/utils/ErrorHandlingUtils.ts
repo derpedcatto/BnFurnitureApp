@@ -1,5 +1,5 @@
 import axios, { AxiosError } from "axios";
-import { ApiErrorResponse } from "../types/ApiResponseTypes";
+import { ApiErrorResponse } from "../types/api/ApiResponseTypes";
 import { SliceRejectResponse } from "../types/SliceRejectResponse";
 import log from "loglevel";
 

@@ -4,7 +4,7 @@ import { AppDispatch } from "../../app/store";
 import {
   ApiCommandResponse,
   ApiQueryResponse,
-} from "../../common/types/ApiResponseTypes";
+} from "../../common/types/api/ApiResponseTypes";
 import { SliceRejectResponse } from "../../common/types/SliceRejectResponse";
 import { handleApiError } from "../../common/utils/ErrorHandlingUtils";
 import {
