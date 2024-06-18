@@ -24,71 +24,63 @@ const Nav = () => {
   const userNameField = `${currentUser?.firstName} ${currentUser?.lastName}`;
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const toggleMenu = () => { setIsMenuOpen(!isMenuOpen) };
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
 
-  /*
-  const {
-    categoriesWithTypes,
-    isLoading: isCategoriesWithTypesLoading
-  } = useFetchCategoriesWithTypes();
-   */
+  // const {
+  //   categoriesWithTypes,
+  //   isLoading: isCategoriesWithTypesLoading
+  // } = useFetchCategoriesWithTypes();
 
   return (
     <div className={styles.container}>
-      <nav>
-        <div className={styles["nav-leftside"]}>
-          <NavLink to="/">
-            <div className={`${styles["svg-logo-container"]}`}>
-              <BnLogo />
-            </div>
+      <nav className={styles.navbar}>
+        <div className={styles.navLeft}>
+          <NavLink to="/" className={styles.logoContainer}>
+            <BnLogo />
           </NavLink>
-          {
-          /*
-          {isCategoriesWithTypesLoading ? (
-            <div className={styles['loading-icon-container']}>
-              <LoadingSpinner />
-            </div>
-          ) : (
-           
-          )}*/
-          }
-          <div
-            className={`${styles["svg-icon-container"]} ${styles["hamburger"]}`}
-            onClick={toggleMenu}
-          >
-            <HamburgerIcon />
-            <span>Меню</span>
-          </div>
-          {isMenuOpen && <HamburgerMenu list={dummyData} />}
-          <NavLink to="products">Товари</NavLink>
-          <NavLink to="sets">Набори</NavLink>
-        </div>
-        <div className={styles["nav-rightside"]}>
-          <NavLink to={userIsAuthenticated ? "/user/cabinet" : "/auth/login"}>
+          <div className={styles.hamburgerContainer}>
             <div
-              className={`${styles["svg-icon-container"]} ${styles["user"]}`}
+              className={`${styles.iconContainer} ${styles.hamburger}`}
+              onClick={toggleMenu}
             >
-              <UserIcon className={styles["user-icon"]} />
+              <HamburgerIcon />
+              <span>Меню</span>
+            </div>
+            {isMenuOpen && <HamburgerMenu list={dummyData} />}
+          </div>
+          <NavLink className={styles.navElementLabel} to="products">
+            Товари
+          </NavLink>
+          <NavLink className={styles.navElementLabel} to="sets">
+            Набори
+          </NavLink>
+        </div>
+        <div className={styles.navRight}>
+          <NavLink to={userIsAuthenticated ? "/user/cabinet" : "/auth/login"}>
+            <div className={`${styles.iconContainer} ${styles.user}`}>
+              <UserIcon className={styles.userIcon} />
               {userIsAuthenticated ? (
-                <p>{userNameField}</p>
+                <span>{userNameField}</span>
               ) : (
-                <p>Привіт! Увійдіть в систему</p>
+                <span>Привіт! Увійдіть в систему</span>
               )}
             </div>
           </NavLink>
           <NavLink to="/user/cart">
-            <div className={`${styles["svg-icon-container"]}`}>
+            <div className={styles.iconContainer}>
               <CartIcon />
             </div>
           </NavLink>
           <NavLink to={userIsAuthenticated ? "/user/cabinet" : "/auth/login"}>
-            <div className={`${styles["svg-icon-container"]}`}>
+            <div className={styles.iconContainer}>
               <WishlistIcon />
             </div>
           </NavLink>
         </div>
       </nav>
-      <div className={styles["search-bar"]}>
+      <div className={styles.searchBar}>
         <SearchBar />
       </div>
     </div>
