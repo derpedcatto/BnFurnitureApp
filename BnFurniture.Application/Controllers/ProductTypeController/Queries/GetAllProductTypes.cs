@@ -1,5 +1,7 @@
 ﻿using BnFurniture.Application.Abstractions;
 using BnFurniture.Application.Controllers.ProductTypeController.DTO.Response;
+using BnFurniture.Application.Services.AppImageService;
+using BnFurniture.Domain.Enums;
 using BnFurniture.Domain.Responses;
 using Microsoft.EntityFrameworkCore;
 using System.Net;
@@ -7,10 +9,10 @@ using System.Net;
 namespace BnFurniture.Application.Controllers.ProductTypeController.Queries;
 
 public sealed record GetAllProductTypesQuery(
-    bool IncludeImages = true,
-    bool RandomOrder = false,
-    int? PageSize = null,
-    int? PageNumber = null);
+    bool IncludeImages,
+    bool RandomOrder,
+    int? PageSize,
+    int? PageNumber);
 
 public sealed class GetAllProductTypesResponse
 {
@@ -24,14 +26,17 @@ public sealed class GetAllProductTypesResponse
 
 public sealed class GetAllProductTypesHandler : QueryHandler<GetAllProductTypesQuery, GetAllProductTypesResponse>
 {
+    private readonly IAppImageService _appImageService;
+
     public GetAllProductTypesHandler(
+        IAppImageService appImageService,
         IHandlerContext context) : base(context)
     {
-
+        _appImageService = appImageService;
     }
 
     public async override Task<ApiQueryResponse<GetAllProductTypesResponse>> Handle(
-        GetAllProductTypesQuery query, CancellationToken cancellationToken)
+        GetAllProductTypesQuery request, CancellationToken cancellationToken)
     {
         IQueryable<ProductTypeDTO> productTypesQuery = 
             HandlerContext.DbContext.ProductType
@@ -41,10 +46,11 @@ public sealed class GetAllProductTypesHandler : QueryHandler<GetAllProductTypesQ
                     CategoryId = pt.CategoryId,
                     Name = pt.Name,
                     Slug = pt.Slug,
-                    Priority = pt.Priority
+                    Priority = pt.Priority,
+                    CategorySlug = pt.ProductCategory.Slug
                 });
 
-        if (query.RandomOrder)
+        if (request.RandomOrder)
         {
             productTypesQuery = productTypesQuery.OrderBy(pt => Guid.NewGuid());
         }
@@ -53,13 +59,34 @@ public sealed class GetAllProductTypesHandler : QueryHandler<GetAllProductTypesQ
             productTypesQuery = productTypesQuery.OrderBy(pt => pt.Name);
         }
 
-        if (query.PageSize.HasValue && query.PageNumber.HasValue)
+        if (request.PageSize.HasValue && request.PageNumber.HasValue)
         {
-            var skip = (query.PageNumber.Value - 1) * query.PageSize.Value;
-            productTypesQuery = productTypesQuery.Skip(skip).Take(query.PageSize.Value);
+            var skip = (request.PageNumber.Value - 1) * request.PageSize.Value;
+            productTypesQuery = productTypesQuery.Skip(skip).Take(request.PageSize.Value);
         }
 
         var productTypes = await productTypesQuery.ToListAsync(cancellationToken);
+
+        if (request.IncludeImages)
+        {
+            foreach (var item in productTypes)
+            {
+                var cardImageResult = await _appImageService.GetImagesAsync(
+                    AppEntityType.ProductType,
+                    item.Id,
+                    AppEntityImageType.PromoCardThumbnail,
+                    cancellationToken);
+
+                var thumbImageResult = await _appImageService.GetImagesAsync(
+                    AppEntityType.ProductType,
+                    item.Id,
+                    AppEntityImageType.Thumbnail,
+                    cancellationToken);
+
+                item.CardImageUri = cardImageResult.Data?.FirstOrDefault() ?? string.Empty;
+                item.ThumbnailImageUri = thumbImageResult?.Data?.FirstOrDefault() ?? string.Empty;
+            }
+        }
 
         return new ApiQueryResponse<GetAllProductTypesResponse>(true, (int)HttpStatusCode.OK)
         {

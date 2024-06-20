@@ -16,10 +16,10 @@ public class ProductTypeController : Controller
         [FromQuery] int? pageNumber = null)
     {
         var query = new GetAllProductTypesQuery(
-            randomOrder,
-            includeImages,
-            pageSize,
-            pageNumber);
+            RandomOrder: randomOrder,
+            IncludeImages: includeImages,
+            PageSize: pageSize,
+            PageNumber: pageNumber);
 
         var apiResponse = await handler.Handle(query, HttpContext.RequestAborted);
         return new JsonResult(apiResponse) { StatusCode = apiResponse.StatusCode };

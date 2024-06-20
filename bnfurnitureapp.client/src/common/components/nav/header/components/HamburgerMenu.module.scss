@@ -2,68 +2,122 @@ $speed: 300ms;
 
 .hamburgerMenu {
   position: absolute;
-  width: auto;
+  z-index: 999;
+  width: max-content;
+  min-width: 260px;
+  max-width: 500px;
   overflow: hidden;
   border-radius: 10px;
   background-color: $color-bg-pagedefault;
-  box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px,
+    rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
   font-weight: 500;
   color: $color-text-black;
-  font-size: 0.85rem;
+  font-size: 1rem;
+  transition: height 200ms ease-in-out;
+  color: $color-text-gray;
 
-  .menuPrimary {
+  /* Small screens */
+  @media screen and (min-width: $bp-w-sm) and (max-width: calc($bp-w-md - 1px)) {
+    max-width: 250px;
+  }
+
+  /* Small - Extra small screens */
+  @media screen and (max-width: calc($bp-w-sm - 1px)) {
+    position: fixed;
     width: 100%;
+    max-width: 100%;
+    height: 100% !important;
+    top: 8.5rem;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: hidden;
   }
 
-  .menuPrimaryEnter {
-    position: absolute;
-    transform: translateX(-110%);
-  }
+  .menuContainer {
+    overflow-y: auto;
+    overflow-x: hidden;
+    max-height: calc(100vh - 8.5rem);
 
-  .menuPrimaryEnterActive {
-    transform: translateX(0%);
-    transition: all $speed ease;
-  }
+    & > *  {
+      padding: 0.6rem;
+      transition: background-color 300ms, color 50ms;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.16);
 
-  .menuPrimaryExit {
-    position: absolute;
-  }
-
-  .menuPrimaryExitActive {
-    transform: translateX(-110%);
-    transition: all $speed ease;
-  }
-
-  .menuItem {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 0.4rem;
-    padding: .4rem;
-    transition: background-color 300ms, color 50ms;
-    width: 100%;
-
-
-    &:hover {
-      background-color: $color-primary;
-      color: white;
-    }
-
-    .menuItemIconContainer {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 15px;
-      height: 15px;
-
-      svg {
-        width: 100%;
-        height: 100%;
+      &:hover {
+        background-color: $color-primary;
+        color: $color-text-white;
       }
     }
 
-    .menuItemLabel {
+    .menuBackButton {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+
+      span {
+        color: inherit;
+        font-weight: 650;
+        font-size: 1.1em;
+      }
+    }
+
+    .menuItem {
+      display: flex;
+      align-items: center;
+      justify-content: center;
       text-align: center;
+      text-decoration: none;
+      transition: background-color 300ms, color 50ms;
     }
   }
+}
+
+/* CSSTransitions */
+
+/* Left-to-right transition when entering */
+.menuSlideEnterLeft {
+  transform: translateX(100%);
+  width: 100%;
+}
+
+.menuSlideEnterActiveLeft {
+  transform: translateX(0);
+  transition: transform 300ms ease-in-out;
+}
+
+/* Left-to-right transition when exiting */
+.menuSlideExitLeft {
+  transform: translateX(0);
+  position: absolute;
+  width: 100%;
+}
+
+.menuSlideExitActiveLeft {
+  transform: translateX(-100%);
+  transition: transform 300ms ease-in-out;
+}
+
+/* Right-to-left transition when entering */
+.menuSlideEnterRight {
+  transform: translateX(-100%);
+  width: 100%;
+}
+
+.menuSlideEnterActiveRight {
+  transform: translateX(0);
+  transition: transform 300ms ease-in-out;
+}
+
+/* Right-to-left transition when exiting */
+.menuSlideExitRight {
+  transform: translateX(0);
+  position: absolute;
+  width: 100%;
+}
+
+.menuSlideExitActiveRight {
+  transform: translateX(100%);
+  transition: transform 300ms ease-in-out;
 }

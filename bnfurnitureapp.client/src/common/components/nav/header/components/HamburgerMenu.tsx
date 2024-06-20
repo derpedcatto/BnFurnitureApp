@@ -1,236 +1,168 @@
-import React, { useState, FC, ReactNode } from "react";
+import React, { useState, useCallback, FC, useRef, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import { CSSTransition } from "react-transition-group";
-import { ArrowRightIcon, ArrowLeftIcon } from "../../../../icons";
 import {
   CategoryWithProductTypes,
   ProductType,
 } from "../../../../types/api/responseDataModels";
 import styles from "./HamburgerMenu.module.scss";
 
-interface HamburgerMenuProps {
+export interface HamburgerMenuProps {
   list: CategoryWithProductTypes[];
 }
 
-interface MenuItemCategoryProps {
-  category: CategoryWithProductTypes;
+interface MenuItemsProps {
+  subCategoryList?: CategoryWithProductTypes[] | null;
+  productTypes?: ProductType[] | null;
+  parentSlug: string;
+  onClick: (item: CategoryWithProductTypes | ProductType) => void;
 }
 
-const HamburgerMenu: FC<HamburgerMenuProps> = ({ list }) => {
-  const [activeMenu, setActiveMenu] = useState(styles.menuPrimary);
+const isCategoryWithProductTypes = (
+  item: CategoryWithProductTypes | ProductType
+): item is CategoryWithProductTypes => {
+  return (item as CategoryWithProductTypes).subCategories !== undefined;
+};
 
-  const MenuItemCategory: FC<MenuItemCategoryProps> = ({
-    category
-  }) => {
-    return (
-      <a href="#" className={styles.menuItem}>
-        <div className={styles.menuItemLabel}>{category.name}</div>
-        <div className={styles.menuItemIconContainer}>
-          <ArrowRightIcon />
-        </div>
-      </a>
-    );
-  };
+const HamburgerMenu: FC<HamburgerMenuProps> = ({ list }) => {
+  const [menuStack, setMenuStack] = useState<CategoryWithProductTypes[]>([]);
+  const [currentMenuIndex, setCurrentMenuIndex] = useState(0);
+  const [menuHeight, setMenuHeight] = useState<number | undefined>(0);
+  const [transitionDirection, setTransitionDirection] = useState<
+    "Left" | "Right" | "None"
+  >("None");
+
+  // Using a ref to store references to the menu elements
+  const menuRefs = useRef<React.RefObject<HTMLDivElement>[]>([]);
+  const menuContainerRef = useRef<HTMLDivElement>(null);
+
+  const calculateHeight = useCallback(() => {
+    if (menuContainerRef.current) {
+      const activeMenu = menuRefs.current[currentMenuIndex]?.current;
+      if (activeMenu) {
+        setMenuHeight(activeMenu.scrollHeight);
+      }
+    }
+  }, [currentMenuIndex, menuContainerRef]);
+
+  useEffect(() => {
+    calculateHeight();
+  }, [menuStack, currentMenuIndex, calculateHeight]);
+
+  // Initialize menuStack with the initial list on component mount or when list changes
+  useEffect(() => {
+    setMenuStack([
+      {
+        id: "",
+        name: "",
+        slug: "",
+        priority: null,
+        cardImageUri: "",
+        thumbnailImageUri: "",
+        subCategories: list ?? null,
+        productTypes: null,
+      },
+    ]);
+  }, [list]);
+
+  // Update refs array whenever the menuStack changes
+  useEffect(() => {
+    menuRefs.current = menuStack.map(() => React.createRef<HTMLDivElement>());
+    setCurrentMenuIndex(menuStack.length - 1);
+  }, [menuStack]);
+
+  const handleMenuItemClick = useCallback(
+    (item: CategoryWithProductTypes | ProductType) => {
+      if (isCategoryWithProductTypes(item)) {
+        setTransitionDirection("Left");
+        setMenuStack((prev) => [...prev, item]);
+      } else {
+        // ProductType click
+      }
+    },
+    []
+  );
+
+  const handleBackClick = useCallback(() => {
+    setTransitionDirection("Right");
+    setMenuStack((prev) => prev.slice(0, -1));
+  }, []);
 
   return (
-    <div className={styles.hamburgerMenu}>
-      <CSSTransition
-        in={activeMenu === styles.menuPrimary}
-        unmountOnExit
-        timeout={500}
-        classNames={{
-          enter: styles.menuPrimaryEnter,
-          enterActive: styles.menuPrimaryEnterActive,
-          exit: styles.menuPrimaryExit,
-          exitActive: styles.menuPrimaryExitActive
-        }}
-      >
-        <div className={styles.menuPrimary}>
-          {list
-            .filter((category) => category.subCategoryList != null)
-            .map((item, index) => (
-              <MenuItemCategory
-                key={index}
-                category={item}
-              />
-            ))}
-        </div>
-      </CSSTransition>
+    <div
+      className={styles.hamburgerMenu}
+      ref={menuContainerRef}
+      style={{ height: `${menuHeight}px` }}
+    >
+      {menuStack.map((menu, index) => (
+        <CSSTransition
+          key={index}
+          in={index === currentMenuIndex}
+          timeout={300}
+          classNames={{
+            enter: styles[`menuSlideEnter${transitionDirection}`],
+            enterActive: styles[`menuSlideEnterActive${transitionDirection}`],
+            exit: styles[`menuSlideExit${transitionDirection}`],
+            exitActive: styles[`menuSlideExitActive${transitionDirection}`],
+          }}
+          nodeRef={menuRefs.current[index]}
+          unmountOnExit
+          onExited={() => setCurrentMenuIndex(menuStack.length - 1)}
+        >
+          <div ref={menuRefs.current[index]} className={styles.menuContainer}>
+            {index > 0 && (
+              <a
+                href="#"
+                className={styles.menuBackButton}
+                onClick={handleBackClick}
+              >
+                <span>Назад</span>
+              </a>
+            )}
+            <MenuItems
+              subCategoryList={menu.subCategories}
+              productTypes={menu.productTypes}
+              parentSlug={menu.slug}
+              onClick={handleMenuItemClick}
+            />
+          </div>
+        </CSSTransition>
+      ))}
     </div>
   );
 };
+
+const MenuItems: FC<MenuItemsProps> = ({
+  subCategoryList,
+  productTypes,
+  parentSlug,
+  onClick,
+}) => (
+  <>
+    <NavLink to={`products/${parentSlug}`} className={styles.menuItem}>
+      Переглянути усі
+    </NavLink>
+    {subCategoryList?.map((subCategory, idx) => (
+      <NavLink
+        to={`#`} // products/${subCategory.slug}
+        key={`subcategory-${subCategory.slug}-${idx}`}
+        className={styles.menuItem}
+        onClick={() => onClick(subCategory)}
+      >
+        {subCategory.name}
+      </NavLink>
+    ))}
+    {productTypes?.map((productType, idx) => (
+      <NavLink
+        to={`products/${parentSlug}/${productType.slug}`}
+        key={`productType-${productType.categorySlug}-${productType.slug}-${idx}`}
+        className={styles.menuItem}
+        onClick={() => onClick(productType)}
+      >
+        {productType.name}
+      </NavLink>
+    ))}
+  </>
+);
 
 export default HamburgerMenu;
-
-/* Draft 3
-const HamburgerMenu: FC<HamburgerMenuProps> = ({ list }) => {
-  const [activeMenu, setActiveMenu] = useState<string>('menuPrimary');
-
-  const MenuItemCategory: FC<MenuItemCategoryProps> = ({ category }) => {
-    const hasSubCategories = category.subCategoryList && category.subCategoryList.length > 0;
-    const handleClick = () => {
-      setActiveMenu(category.id); // Toggles the active sub-menu
-    };
-
-    return (
-      <div>
-        <a href="#" className={styles.menuItem} onClick={handleClick}>
-          {category.name}
-        </a>
-        {activeMenu === category.id && (
-          <CSSTransition
-            in={true}
-            unmountOnExit
-            timeout={500}
-            classNames={{
-              enter: styles.menuPrimaryEnter,
-              enterActive: styles.menuPrimaryEnterActive,
-              exit: styles.menuPrimaryExit,
-              exitActive: styles.menuPrimaryExitActive
-            }}
-          >
-            <div>
-              {hasSubCategories ? (
-                category.subCategoryList.map((subCategory) => (
-                  <MenuItemCategory key={subCategory.id} category={subCategory} />
-                ))
-              ) : (
-                category.productTypes && category.productTypes.map((productType) => (
-                  <div key={productType.id} className={styles.menuItem}>
-                    {productType.name}
-                  </div>
-                ))
-              )}
-            </div>
-          </CSSTransition>
-        )}
-      </div>
-    );
-  };
-
-  return (
-    <div className={styles.hamburgerMenu}>
-      <CSSTransition
-        in={activeMenu === 'menuPrimary'}
-        unmountOnExit
-        timeout={500}
-        classNames={{
-          enter: styles.menuPrimaryEnter,
-          enterActive: styles.menuPrimaryEnterActive,
-          exit: styles.menuPrimaryExit,
-          exitActive: styles.menuPrimaryExitActive
-        }}
-      >
-        <div className={styles.menuPrimary}>
-          {list.map((category) => (
-            <MenuItemCategory key={category.id} category={category} />
-          ))}
-        </div>
-      </CSSTransition>
-    </div>
-  );
-};
-*/
-
-/* Draft 2 ---
-const MenuItemCategory: FC<MenuItemCategoryProps> = ({ category }) => {
-  const [isActive, setIsActive] = useState(false);
-
-  const toggleSubMenu = () => setIsActive(!isActive);
-
-  return (
-    <div>
-      <a href="#" className={styles.menuItem} onClick={toggleSubMenu}>
-        {category.name}
-      </a>
-      {isActive && category.subCategoryList && (
-        <div className={styles.subMenu}>
-          {category.subCategoryList.map((subCategory, index) => (
-            <MenuItemCategory key={index} category={subCategory} />
-          ))}
-        </div>
-      )}
-    </div>
-  );
-};
-
-const HamburgerMenu: FC<HamburgerMenuProps> = ({ list }) => {
-  return (
-    <div className={styles.hamburgerMenu}>
-      <CSSTransition
-        in={true}
-        unmountOnExit
-        timeout={500}
-        classNames={{
-          enter: styles.menuPrimaryEnter,
-          enterActive: styles.menuPrimaryEnterActive,
-          exit: styles.menuPrimaryExit,
-          exitActive: styles.menuPrimaryExitActive
-        }}
-      >
-        <div className={styles.menuPrimary}>
-          {list.map((category, index) => (
-            <MenuItemCategory key={index} category={category} />
-          ))}
-        </div>
-      </CSSTransition>
-    </div>
-  );
-};
-
-export default HamburgerMenu;
-*/
-
-/* Draft 1
-import React, { useState, FC, ReactNode } from 'react';
-import { NavLink } from 'react-router-dom';
-import { CategoryWithProductTypes, ProductType } from '../../../../types/api/responseDataModels';
-import styles from './HamburgerMenu.module.scss';
-import ArrowRightIcon from '../../../../icons/navigation/ArrowRightIcon';
-
-interface HamburgerMenuProps {
-  list: CategoryWithProductTypes[];
-}
-
-const HamburgerMenu: FC<HamburgerMenuProps> = ({ list }) => {
-  const renderCategories = (categories: CategoryWithProductTypes[]) => {
-    console.log(categories);
-
-    return categories.map(category => (
-      <li key={category.id}>
-        <a href="#" onClick={e => {
-          e.preventDefault();
-          setActiveMenu(category.slug);
-        }}>
-          {category.name}
-        </a>
-        {activeMenu === category.slug && (
-          <ul>
-            {category.subCategoryList ? renderCategories(category.subCategoryList) : null}
-            {category.productTypes ? renderProductTypes(category.productTypes) : null}
-          </ul>
-        )}
-      </li>
-    ));
-  };
-
-  const renderProductTypes = (productTypes: ProductType[]) => {
-    return productTypes.map(productType => (
-      <li key={productType.id}>
-        <NavLink to={`/products/${productType.slug}`}>{productType.name}</NavLink>
-      </li>
-    ));
-  };
-
-  const [activeMenu, setActiveMenu] = useState<string>('');
-
-  return (
-    <nav className={styles.navbar}>
-      <ul className={styles['navbar-nav']}>{renderCategories(list)}</ul>
-    </nav>
-  );
-};
-
-export default HamburgerMenu;
-
-*/

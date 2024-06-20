@@ -1,5 +1,5 @@
 ﻿using BnFurniture.Application.Abstractions;
-using BnFurniture.Application.Controllers.CharacteristicValueController.DTO;
+using BnFurniture.Application.Controllers.CharacteristicValueController.DTO.Request;
 using BnFurniture.Application.Extensions;
 using BnFurniture.Domain.Entities;
 using BnFurniture.Domain.Responses;

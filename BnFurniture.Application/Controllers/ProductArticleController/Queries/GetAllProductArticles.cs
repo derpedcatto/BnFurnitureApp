@@ -1,5 +1,5 @@
 ﻿using BnFurniture.Application.Abstractions;
-using BnFurniture.Application.Controllers.ProductArticleController.DTO;
+using BnFurniture.Application.Controllers.ProductArticleController.DTO.Response;
 using BnFurniture.Domain.Entities;
 using BnFurniture.Domain.Responses;
 using Microsoft.EntityFrameworkCore;
@@ -11,9 +11,9 @@ public sealed record GetAllProductArticlesQuery();
 
 public sealed class GetAllProductArticlesResponse
 {
-    public List<ResponseProductArticleDTO> ProductArticles { get; private set; }
+    public List<ProductArticleDTO> ProductArticles { get; private set; }
 
-    public GetAllProductArticlesResponse(List<ResponseProductArticleDTO> productArticles)
+    public GetAllProductArticlesResponse(List<ProductArticleDTO> productArticles)
     {
         ProductArticles = productArticles;
     }
@@ -45,9 +45,9 @@ public sealed class GetAllProductArticlesHandler : QueryHandler<GetAllProductArt
         };
     }
 
-    private List<ResponseProductArticleDTO> MapProductArticlesToDTOs(List<ProductArticle> productArticles)
+    private List<ProductArticleDTO> MapProductArticlesToDTOs(List<ProductArticle> productArticles)
     {
-        return productArticles.Select(pa => new ResponseProductArticleDTO
+        return productArticles.Select(pa => new ProductArticleDTO
         {
             Article = pa.Article,
             ProductId = pa.ProductId,

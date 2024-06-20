@@ -14,7 +14,7 @@ export const useFetchDiscoverProductTypes = ({
 }: FetchDiscoverProductTypesParams) => {
   const fetchOptions = React.useMemo(
     () => ({
-      includeImages: true,
+      includeImages: false,  // true
       randomOrder: false,
       pageNumber,
       pageSize,

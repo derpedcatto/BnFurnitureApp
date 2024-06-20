@@ -1,5 +1,5 @@
 ﻿using BnFurniture.Application.Abstractions;
-using BnFurniture.Application.Controllers.CharacteristicValueController.DTO;
+using BnFurniture.Application.Controllers.CharacteristicValueController.DTO.Response;
 using BnFurniture.Domain.Responses;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,9 +9,9 @@ public sealed record GetAllCharacteristicValuesQuery(string CharacteristicSlug);
 
 public sealed class GetAllCharacteristicValuesResponse
 {
-    public List<ResponseCharacteristicValueDTO> CharacteristicValuesList { get; set; }
+    public List<CharacteristicValueDTO> CharacteristicValuesList { get; set; }
 
-    public GetAllCharacteristicValuesResponse(List<ResponseCharacteristicValueDTO> characteristicValuesList)
+    public GetAllCharacteristicValuesResponse(List<CharacteristicValueDTO> characteristicValuesList)
     {
         CharacteristicValuesList = characteristicValuesList;
     }
@@ -42,7 +42,7 @@ public sealed class GetAllCharacteristicValuesHandler : QueryHandler<GetAllChara
         }
 
         var characteristicValues = characteristic.CharacteristicValues
-            .Select(cv => new ResponseCharacteristicValueDTO
+            .Select(cv => new CharacteristicValueDTO
             {
                 Id = cv.Id,
                 CharacteristicId = cv.CharacteristicId,

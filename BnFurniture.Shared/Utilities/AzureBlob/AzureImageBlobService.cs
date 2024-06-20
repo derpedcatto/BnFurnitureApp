@@ -19,10 +19,25 @@ public class AzureImageBlobService : IAzureImageBlobService
     public AzureImageBlobService(IConfiguration configuration, BlobServiceClient blobServiceClient)
     {
         _blobServiceClient = blobServiceClient;
+
         _azureContainerName = configuration.GetValue<string>("AzureBlobStorage:ImageContainerName")!;
         _azureAccessKey = configuration.GetValue<string>("AzureBlobStorage:AccessKey")!;
         _azureStorageAccountName = configuration.GetValue<string>("AzureBlobStorage:StorageAccountName")!;
         _azureBlobServiceUri = configuration.GetValue<string>("AzureBlobStorage:BlobServiceUri")!;
+
+        /*
+        _azureContainerName = configuration.GetValue<string>("AzureBlobStorageImageContainerName") ??
+            throw new ArgumentException("AzureBlobStorageImageContainerName configuration is missing");
+
+        _azureAccessKey = configuration.GetValue<string>("AzureBlobStorageAccessKey") ??
+            throw new ArgumentException("AzureBlobStorageAccessKey configuration is missing");
+
+        _azureStorageAccountName = configuration.GetValue<string>("AzureBlobStorageAccountName") ??
+            throw new ArgumentException("AzureBlobStorageAccountName configuration is missing");
+
+        _azureBlobServiceUri = configuration.GetValue<string>("AzureBlobStorageBlobServiceUri") ??
+            throw new ArgumentException("AzureBlobStorageBlobServiceUri configuration is missing");
+         */
     }
 
     public Task<string> GetBlobURLAsync(string blobFullName, CancellationToken cancellationToken)
@@ -127,7 +142,7 @@ public class AzureImageBlobService : IAzureImageBlobService
         {
             var newBlobName = (++lastBlobValue) + Path.GetExtension(file.FileName);
             var newFileName = $"{pathPrefix}/{newBlobName}";
-            
+
             var blobClient = containerClient.GetBlobClient(newFileName);
             var blobHttpHeaders = new BlobHttpHeaders
             {
@@ -164,7 +179,7 @@ public class AzureImageBlobService : IAzureImageBlobService
         var tempBlobClient1 = containerClient.GetBlobClient(tempBlobFullName1);
 
         // Check if both blobs exist
-        if ( ! await blobClient1.ExistsAsync(cancellationToken) || !await blobClient2.ExistsAsync(cancellationToken))
+        if (!await blobClient1.ExistsAsync(cancellationToken) || !await blobClient2.ExistsAsync(cancellationToken))
             throw new InvalidOperationException("One or both of the blobs do not exist.");
 
         // Copy first blob to a temporary blob

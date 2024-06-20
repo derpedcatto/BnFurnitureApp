@@ -63,6 +63,13 @@ public class LogAndExceptionHandlerMiddleware
         {
             _logger.LogError(ex, $"[ERROR] {requestFullString} {Environment.NewLine}{ex.GetType().Name}: {ex.Message}");
             await HandleExceptionAsync(context, ex, (int)HttpStatusCode.UnprocessableEntity);
+            return;
+        }
+        catch (OperationCanceledException ex)
+        {
+            _logger.LogInformation($"[CANCEL] {requestFullString} {Environment.NewLine}{ex.GetType().Name}: {ex.Message}");
+            await HandleExceptionAsync(context, ex);
+            return;
         }
         catch (Exception ex)
         {

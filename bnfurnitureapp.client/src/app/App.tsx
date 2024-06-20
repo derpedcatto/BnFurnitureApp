@@ -12,6 +12,7 @@ import { UserRoutes } from "../routes/UserRoutes";
 import { NavLayout } from "../common/components/nav";
 import { getCurrentUser } from "../redux/auth/authThunks";
 import HomePage from "../features/homePage";
+import ProductsPage from "../features/productsPage";
 import "./App.scss";
 
 function App() {
@@ -32,8 +33,7 @@ function App() {
         <Route path="/" element={<NavLayout />}>
           <Route index element={<HomePage />} />
           <Route path="/user/*" element={<UserRoutes />} />
-          <Route path="/products" />
-          <Route path="/sets" />
+          <Route path="/products/*" element={<ProductsPage />} />
         </Route>
         <Route path="/auth/*" element={<AuthRoutes />} />
       </Routes>

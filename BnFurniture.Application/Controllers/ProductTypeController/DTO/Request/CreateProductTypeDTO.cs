@@ -1,6 +1,7 @@
 ﻿using BnFurniture.Application.Extensions;
 using BnFurniture.Infrastructure.Persistence;
 using FluentValidation;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 
@@ -19,6 +20,12 @@ public class CreateProductTypeDTO
 
     [JsonPropertyName("priority")]
     public int? Priority { get; set; }
+
+    [JsonPropertyName("cardImage")]
+    public IFormFile CardImage { get; set; } = null!;
+
+    [JsonPropertyName("thumbnailImage")]
+    public IFormFile ThumbnailImage { get; set; } = null!;
 }
 
 public class CreateProductTypeDTOValidator : AbstractValidator<CreateProductTypeDTO>
@@ -47,6 +54,14 @@ public class CreateProductTypeDTOValidator : AbstractValidator<CreateProductType
         RuleFor(x => x.Priority)
             .GreaterThanOrEqualTo(0).WithMessage("Priority must be a positive integer or zero.")
                 .When(x => x.Priority.HasValue);
+
+        RuleFor(x => x.CardImage)
+            .NotNull().WithMessage("Image cannot be null.")
+            .NotEmpty().WithMessage("Image cannot be empty.");
+
+        RuleFor(x => x.ThumbnailImage)
+            .NotNull().WithMessage("Image cannot be null.")
+            .NotEmpty().WithMessage("Image cannot be empty.");
     }
 
     private async Task<bool> IsCategorySlugUnique(Guid categoryId, string slug, CancellationToken ct)

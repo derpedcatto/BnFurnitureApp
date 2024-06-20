@@ -4,7 +4,7 @@ using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 
-namespace BnFurniture.Application.Controllers.ProductController.DTO;
+namespace BnFurniture.Application.Controllers.ProductController.DTO.Request;
 
 public class CreateProductDTO
 {
@@ -75,6 +75,6 @@ public class CreateProductDTOValidator : AbstractValidator<CreateProductDTO>
 
     private async Task<bool> IsSlugUnique(string slug, CancellationToken ct)
     {
-        return ! await _dbContext.Product.AnyAsync(c => c.Slug == slug, ct);
+        return !await _dbContext.Product.AnyAsync(c => c.Slug == slug, ct);
     }
 }

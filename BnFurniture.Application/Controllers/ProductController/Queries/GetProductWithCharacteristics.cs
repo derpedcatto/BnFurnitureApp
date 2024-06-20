@@ -1,6 +1,7 @@
 ﻿using BnFurniture.Application.Abstractions;
-using BnFurniture.Application.Controllers.CharacteristicValueController.DTO;
-using BnFurniture.Application.Controllers.ProductController.DTO;
+using BnFurniture.Application.Controllers.CharacteristicController.DTO.Response;
+using BnFurniture.Application.Controllers.CharacteristicValueController.DTO.Response;
+using BnFurniture.Application.Controllers.ProductController.DTO.Response;
 using BnFurniture.Domain.Responses;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,9 +11,9 @@ namespace BnFurniture.Application.Controllers.ProductController.Queries
 
     public sealed class GetProductWithCharacteristicsResponse
     {
-        public ResponseProductWithCharacteristicsDTO Product { get; set; }
+        public ProductWithCharacteristicsDTO Product { get; set; }
 
-        public GetProductWithCharacteristicsResponse(ResponseProductWithCharacteristicsDTO product)
+        public GetProductWithCharacteristicsResponse(ProductWithCharacteristicsDTO product)
         {
             Product = product;
         }
@@ -52,13 +53,13 @@ namespace BnFurniture.Application.Controllers.ProductController.Queries
             var characteristicDtos = product.ProductArticles
                 .SelectMany(pa => pa.ProductCharacteristicConfigurations)
                 .GroupBy(pcc => pcc.Characteristic)
-                .Select(g => new ResponseCharacteristicWithValuesDTO
+                .Select(g => new CharacteristicWithValuesDTO
                 {
                     Id = g.Key.Id,
                     Name = g.Key.Name,
                     Slug = g.Key.Slug,
                     Priority = g.Key.Priority,
-                    Values = g.Select(pcc => new ResponseCharacteristicValueDTO
+                    Values = g.Select(pcc => new CharacteristicValueDTO
                     {
                         Id = pcc.CharacteristicValue.Id,
                         CharacteristicId = pcc.CharacteristicValue.CharacteristicId,
@@ -68,7 +69,7 @@ namespace BnFurniture.Application.Controllers.ProductController.Queries
                     }).OrderBy(s => s.Slug).ToList()
                 }).ToList();
 
-            var response = new ResponseProductWithCharacteristicsDTO
+            var response = new ProductWithCharacteristicsDTO
             {
                 Id = product.Id,
                 ProductTypeId = product.ProductTypeId,

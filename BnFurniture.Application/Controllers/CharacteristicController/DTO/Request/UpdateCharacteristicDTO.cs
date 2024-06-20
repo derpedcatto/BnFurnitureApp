@@ -1,4 +1,4 @@
-﻿using BnFurniture.Application.Controllers.CharacteristicValueController.DTO;
+﻿using BnFurniture.Application.Controllers.CharacteristicValueController.DTO.Request;
 using BnFurniture.Infrastructure.Persistence;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
@@ -7,7 +7,7 @@ using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace BnFurniture.Application.Controllers.CharacteristicController.DTO
+namespace BnFurniture.Application.Controllers.CharacteristicController.DTO.Request
 {
     public class UpdateCharacteristicDTO
     {
@@ -99,4 +99,3 @@ namespace BnFurniture.Application.Controllers.CharacteristicController.DTO
         }
     }
 }
-    

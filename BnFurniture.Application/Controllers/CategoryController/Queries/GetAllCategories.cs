@@ -10,11 +10,11 @@ using System.Net;
 namespace BnFurniture.Application.Controllers.CategoryController.Queries;
 
 public sealed record GetAllCategoriesQuery(
-    bool IncludeImages = true,
-    bool FlatList = false,
-    bool RandomOrder = false,
-    int? PageNumber = null,
-    int? PageSize = null);
+    bool IncludeImages,
+    bool FlatList,
+    bool RandomOrder,
+    int? PageNumber,
+    int? PageSize);
 
 public sealed class GetAllCategoriesResponse
 {

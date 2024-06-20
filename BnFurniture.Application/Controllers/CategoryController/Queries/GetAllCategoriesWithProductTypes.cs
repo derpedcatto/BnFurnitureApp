@@ -7,17 +7,17 @@ using System.Net;
 namespace BnFurniture.Application.Controllers.CategoryController.Queries;
 
 public sealed record GetAllCategoriesWithProductTypesQuery(
-    bool IncludeImages = true,
-    bool RandomOrder = false);
+    bool IncludeImages,
+    bool RandomOrder);
 
 public sealed class GetAllCategoriesWithProductTypesResponse 
 {
-    public List<ProductCategoryWithProductTypesDTO> Categories { get; set; }
+    public List<ProductCategoryWithProductTypesDTO> List { get; set; }
 
     public GetAllCategoriesWithProductTypesResponse(
-        List<ProductCategoryWithProductTypesDTO> categories)
+        List<ProductCategoryWithProductTypesDTO> list)
     {
-        Categories = categories;
+        List = list;
     }
 }
 
@@ -42,7 +42,9 @@ public sealed class GetAllCategoriesWithProductTypesHandler : QueryHandler<GetAl
         var categoriesQuery = new GetAllCategoriesQuery(
                 IncludeImages: request.IncludeImages,
                 RandomOrder: request.RandomOrder,
-                FlatList: false);
+                FlatList: false,
+                PageNumber: null,
+                PageSize: null);
 
         var categoriesResponse = await _getAllCategoriesHandler.Handle(
             categoriesQuery, cancellationToken);
@@ -91,7 +93,11 @@ public sealed class GetAllCategoriesWithProductTypesHandler : QueryHandler<GetAl
                 Priority = category.Priority,
                 CardImageUri = category.CardImageUri,
                 ProductTypes = await _sharedLogic.GetProductTypesForCategory(
-                    category.Id, includeImages, cancellationToken),
+                    categoryId: category.Id, 
+                    includeImages: includeImages,
+                    pageSize: null,
+                    pageNumber: null,
+                    cancellationToken: cancellationToken),
             };
 
             if (category.SubCategories != null && category.SubCategories.Count != 0)

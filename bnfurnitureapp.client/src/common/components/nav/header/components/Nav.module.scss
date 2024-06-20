@@ -1,3 +1,10 @@
+.noScroll {
+  /* Small - Extra small screens */
+  @media screen and (max-width: calc($bp-w-md - 1px)) {
+    overflow: hidden;
+  }
+}
+
 .container {
   display: flex;
   flex-direction: column;
@@ -46,23 +53,34 @@
       font-size: 0px;
     }
   }
+  .hamburgerMenuContainer {
+    position: relative;
+    display: inline-block; 
 
-  .hamburger {
-    cursor: pointer;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    height: 45px;
-
-    span {
-      margin-top: -5px;
-      font-size: 1rem;
-      color: $color-text-gray;
+    /* Small - Extra small screens */
+    @media screen and (max-width: calc($bp-w-md - 1px)) {
+      position: inherit;
+      display: block;
     }
 
-    @media screen and (max-width: calc($bp-w-sm - 1px)) {
+    .hamburgerIcon {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      height: 45px;
+      cursor: pointer;
+      user-select: none;
+  
       span {
-        font-size: 0;
+        margin-top: -5px;
+        font-size: 1rem;
+        color: $color-text-gray;
+      }
+  
+      @media screen and (max-width: calc($bp-w-sm - 1px)) {
+        span {
+          font-size: 0;
+        }
       }
     }
   }
@@ -139,22 +157,12 @@
   overflow: auto;
   height: 30px;
   cursor: pointer;
+  overflow-y: hidden;
 }
 
 .loadingIconContainer {
   width: 30px;
   height: 30px;
-}
-
-.hamburgerMenuContainer {
-  position: absolute;
-  top: 50px;
-  left: 0;
-  width: 250px;
-  background: #ffffff;
-  border: 1px solid #ddd;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  z-index: 1000;
 }
 
 .searchBar {

@@ -6,7 +6,7 @@ import { DiscoverCardSectionBProps } from "../../../common/components/discoverSe
 export const useFetchDiscoverCategories = () => {
   const fetchOptions = React.useMemo(
     () => ({
-      includeImages: true,
+      includeImages: false,  // true
       flatList: true,
       randomOrder: false,
       pageNumber: 2,

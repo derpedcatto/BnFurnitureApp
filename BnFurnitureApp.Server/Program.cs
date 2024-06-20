@@ -96,7 +96,7 @@ builder.Services.AddHttpLogging(logging =>
 
 
 // Db Service registration
-var connectionString = builder.Configuration.GetConnectionString("RealDBConnection");
+var connectionString = builder.Configuration.GetConnectionString("ProdDbConnection");
 var serverVersion = new MySqlServerVersion(new Version(8, 0, 30));
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {

@@ -5,7 +5,7 @@ import { GetAllProductTypesApiResponse } from "../../../common/types/api/respons
 
 export const useFetchSliderProductTypes = () => {
   const fetchOptions = React.useMemo(() => ({
-    includeImages: true,
+    includeImages: false, // true
     randomOrder: false,
     pageNumber: 1,
     pageSize: 10,

@@ -1,6 +1,6 @@
-﻿namespace BnFurniture.Application.Controllers.ProductArticleController.DTO;
+﻿namespace BnFurniture.Application.Controllers.ProductArticleController.DTO.Response;
 
-public class ResponseProductArticleDTO
+public class ProductArticleDTO
 {
     public Guid Article { get; set; }
     public Guid ProductId { get; set; }

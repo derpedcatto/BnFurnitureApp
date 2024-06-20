@@ -2,7 +2,7 @@
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 
-namespace BnFurniture.Application.Controllers.CharacteristicController.DTO;
+namespace BnFurniture.Application.Controllers.CharacteristicController.DTO.Request;
 
 public class CreateCharacteristicDTO
 {

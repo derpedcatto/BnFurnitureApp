@@ -1,5 +1,5 @@
 ﻿using BnFurniture.Application.Abstractions;
-using BnFurniture.Application.Controllers.ProductController.DTO;
+using BnFurniture.Application.Controllers.ProductController.DTO.Response;
 using BnFurniture.Domain.Responses;
 using Microsoft.EntityFrameworkCore;
 using System.Net;
@@ -10,9 +10,9 @@ public sealed record GetProductQuery(Guid productId);
 
 public sealed class GetProductResponse
 {
-    public ResponseProductDTO Product { get; set; }
+    public ProductDTO Product { get; set; }
 
-    public GetProductResponse(ResponseProductDTO product)
+    public GetProductResponse(ProductDTO product)
     {
         Product = product;
     }
@@ -30,7 +30,7 @@ public sealed class GetProductHandler : QueryHandler<GetProductQuery, GetProduct
     {
         var product = await HandlerContext.DbContext.Product
             .Where(p => p.Id == query.productId)
-            .Select(p => new ResponseProductDTO
+            .Select(p => new ProductDTO
             {
                 Id = p.Id,
                 ProductTypeId = p.ProductTypeId,

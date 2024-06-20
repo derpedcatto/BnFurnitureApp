@@ -3,7 +3,7 @@ using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 
-namespace BnFurniture.Application.Controllers.CharacteristicValueController.DTO;
+namespace BnFurniture.Application.Controllers.CharacteristicValueController.DTO.Request;
 
 public class CreateCharacteristicValueDTO
 {

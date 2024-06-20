@@ -1,6 +1,6 @@
 ﻿using BnFurniture.Application.Abstractions;
-using BnFurniture.Application.Controllers.CharacteristicValueController.DTO;
-using BnFurniture.Application.Controllers.ProductCharacteristicController.DTO;
+using BnFurniture.Application.Controllers.CharacteristicController.DTO.Response;
+using BnFurniture.Application.Controllers.CharacteristicValueController.DTO.Response;
 using BnFurniture.Domain.Responses;
 using Microsoft.EntityFrameworkCore;
 
@@ -34,7 +34,7 @@ public sealed class GetAllCharacteristicsHandler : QueryHandler<GetAllCharacteri
             .ToListAsync(cancellationToken);
 
         var responseList = characteristics.Select(c => new GetCharacteristicResponse(
-            new ResponseCharacteristicDTO
+            new CharacteristicDTO
             {
                 Id = c.Id,
                 Name = c.Name,
@@ -43,7 +43,7 @@ public sealed class GetAllCharacteristicsHandler : QueryHandler<GetAllCharacteri
             },
             c.CharacteristicValues
                 .OrderBy(cv => cv.Slug)
-                .Select(cv => new ResponseCharacteristicValueDTO
+                .Select(cv => new CharacteristicValueDTO
             {
                 Id = cv.Id,
                 CharacteristicId = cv.CharacteristicId,

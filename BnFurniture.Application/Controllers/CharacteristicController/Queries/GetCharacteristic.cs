@@ -1,6 +1,6 @@
 ﻿using BnFurniture.Application.Abstractions;
-using BnFurniture.Application.Controllers.CharacteristicValueController.DTO;
-using BnFurniture.Application.Controllers.ProductCharacteristicController.DTO;
+using BnFurniture.Application.Controllers.CharacteristicController.DTO.Response;
+using BnFurniture.Application.Controllers.CharacteristicValueController.DTO.Response;
 using BnFurniture.Domain.Responses;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,10 +10,10 @@ public sealed record GetCharacteristicQuery(string Slug);
 
 public sealed class GetCharacteristicResponse
 {
-    public ResponseCharacteristicDTO Characteristic { get; private set; }
-    public List<ResponseCharacteristicValueDTO> CharacteristicValues { get; private set; }
+    public CharacteristicDTO Characteristic { get; private set; }
+    public List<CharacteristicValueDTO> CharacteristicValues { get; private set; }
 
-    public GetCharacteristicResponse(ResponseCharacteristicDTO characteristic, List<ResponseCharacteristicValueDTO> characteristicValues)
+    public GetCharacteristicResponse(CharacteristicDTO characteristic, List<CharacteristicValueDTO> characteristicValues)
     {
         Characteristic = characteristic;
         CharacteristicValues = characteristicValues;
@@ -45,7 +45,7 @@ public sealed class GetCharacteristicHandler : QueryHandler<GetCharacteristicQue
         }
 
         var response = new GetCharacteristicResponse(
-             new ResponseCharacteristicDTO
+             new CharacteristicDTO
              {
                  Id = characteristic.Id,
                  Name = characteristic.Name,
@@ -53,7 +53,7 @@ public sealed class GetCharacteristicHandler : QueryHandler<GetCharacteristicQue
                  Priority = characteristic.Priority,
              },
             characteristic.CharacteristicValues
-                 .Select(cv => new ResponseCharacteristicValueDTO
+                 .Select(cv => new CharacteristicValueDTO
             {
                  Id = cv.Id,
                  CharacteristicId = cv.CharacteristicId,

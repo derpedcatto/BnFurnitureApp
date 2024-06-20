@@ -13,14 +13,16 @@ public class ProductTypeController : Controller
     [HttpGet("all")]
     public async Task<IActionResult> GetAllProductTypes(
         [FromServices] GetAllProductTypesHandler handler,
+        [FromQuery] bool includeImages = true,
         [FromQuery] bool randomOrder = false,
         [FromQuery] int? pageSize = null,
         [FromQuery] int? pageNumber = null)
     {
         var query = new GetAllProductTypesQuery(
-            randomOrder,
-            pageSize,
-            pageNumber);
+            RandomOrder: randomOrder,
+            IncludeImages: includeImages,
+            PageSize: pageSize,
+            PageNumber: pageNumber);
 
         var apiResponse = await handler.Handle(query, HttpContext.RequestAborted);
         return new JsonResult(apiResponse) { StatusCode = apiResponse.StatusCode };
@@ -31,7 +33,7 @@ public class ProductTypeController : Controller
     [HttpPost]
     public async Task<IActionResult> CreateProductType(
         [FromServices] CreateProductTypeHandler handler,
-        [FromBody] CreateProductTypeDTO model)
+        [FromForm] CreateProductTypeDTO model)
     {
         var command = new CreateProductTypeCommand(model);
 
@@ -45,6 +47,17 @@ public class ProductTypeController : Controller
         [FromBody] UpdateProductTypeDTO model)
     {
         var command = new UpdateProductTypeCommand(model);
+
+        var apiResponse = await handler.Handle(command, CancellationToken.None);
+        return new JsonResult(apiResponse) { StatusCode = apiResponse.StatusCode };
+    }
+
+    [HttpPut("image")]
+    public async Task<IActionResult> SetProductTypeImages(
+        [FromServices] SetProductTypeImagesHandler handler,
+        [FromForm] SetProductTypeImageDTO model)
+    {
+        var command = new SetProductTypeImagesCommand(model);
 
         var apiResponse = await handler.Handle(command, CancellationToken.None);
         return new JsonResult(apiResponse) { StatusCode = apiResponse.StatusCode };

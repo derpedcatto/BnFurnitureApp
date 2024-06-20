@@ -1,9 +1,9 @@
 ﻿using BnFurniture.Application.Abstractions;
-using BnFurniture.Application.Controllers.CharacteristicValueController.DTO;
 using BnFurniture.Domain.Responses;
 using Microsoft.EntityFrameworkCore;
 using BnFurniture.Application.Extensions;
 using System.Net;
+using BnFurniture.Application.Controllers.CharacteristicValueController.DTO.Request;
 
 namespace BnFurniture.Application.Controllers.CharacteristicValueController.Commands;
 

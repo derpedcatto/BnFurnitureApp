@@ -93,7 +93,8 @@ builder.Services.AddHttpLogging(logging =>
 
 
 // Db Service registration
-var dbConnectionString = builder.Configuration.GetConnectionString("RealDBConnection");
+// var dbConnectionString = builder.Configuration["ProdDbConnection"];
+var dbConnectionString = builder.Configuration.GetConnectionString("ProdDbConnection");
 var serverVersion = new MySqlServerVersion(new Version(8, 0, 30));
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
@@ -133,12 +134,12 @@ builder.Services.AddScoped<IHandlerContext, HandlerContext>();
 
 
 // Other Services registration
+// builder.Services.AddSingleton(x => new BlobServiceClient(builder.Configuration["AzureBlobStorageConnection"]));
 builder.Services.AddSingleton(x => new BlobServiceClient(builder.Configuration.GetConnectionString("AzureBlobStorageConnection")));
 builder.Services.AddSingleton<IAzureImageBlobService, AzureImageBlobService>();
 builder.Services.AddSingleton<IHashService, Sha256HashService>();
 builder.Services.AddSingleton<IEmailService, EmailService>();
 builder.Services.AddSingleton<IAppImageService, AzureAppImageService>();
-
 
 
 var app = builder.Build();
@@ -235,4 +236,21 @@ logging.LoggingFields =
 
 logging.MediaTypeOptions.AddText("multipart/form-data");
 logging.MediaTypeOptions.AddText("application/x-www-form-urlencoded");
+*/
+
+// Azure config
+/*
+var keyVaultName = builder.Configuration["bnfurnitureappsecrets"];
+if (!string.IsNullOrEmpty(keyVaultName))
+{
+    var keyVaultUri = new Uri($"https://{keyVaultName}.vault.azure.net/");
+    builder.Configuration.AddAzureKeyVault(
+        keyVaultUri,
+        new DefaultAzureCredential(),
+        new AzureKeyVaultConfigurationOptions
+        {
+            Manager = new KeyVaultSecretManager(),
+            ReloadInterval = TimeSpan.FromSeconds(120)
+        });
+}
 */

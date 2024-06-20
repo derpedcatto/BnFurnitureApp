@@ -1,6 +1,6 @@
 ﻿using BnFurniture.Application.Abstractions;
 using BnFurniture.Application.Controllers.ProductCharacteristicConfiguration.DTO;
-using BnFurniture.Application.Controllers.ProductCharacteristicController.DTO;
+using BnFurniture.Application.Controllers.ProductCharacteristicController;
 using BnFurniture.Domain.Entities;
 using BnFurniture.Domain.Responses;
 using System;

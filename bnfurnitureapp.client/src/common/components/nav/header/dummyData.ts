@@ -424,7 +424,7 @@ function mapCategory(category: any): CategoryWithProductTypes {
     priority: category.priority,
     cardImageUri: category.cardImageUri,
     thumbnailImageUri: category.cardImageUri, // Assuming thumbnail is the same as cardImageUri if not provided
-    subCategoryList: category.subCategories ? category.subCategories.map(mapCategory) : null,
+    subCategories: category.subCategories ? category.subCategories.map(mapCategory) : null,
     productTypes: category.productTypes ? category.productTypes.map((pt: any) => ({
       id: pt.id,
       categoryId: pt.categoryId,

@@ -5,7 +5,7 @@ import { useFetchApiQueryResponse } from "../../../common/hooks/useFetchApiQuery
 
 export const useFetchSliderProductCategories = () => {
   const fetchOptions = React.useMemo(() => ({
-    includeImages: true,
+    includeImages: false, // true
     flatList: true,
     randomOrder: false,
     pageNumber: 1,

@@ -1,5 +1,5 @@
 ﻿using BnFurniture.Application.Controllers.CharacteristicValueController.Commands;
-using BnFurniture.Application.Controllers.CharacteristicValueController.DTO;
+using BnFurniture.Application.Controllers.CharacteristicValueController.DTO.Request;
 using BnFurniture.Application.Controllers.CharacteristicValueController.Queries;
 using BnFurniture.Application.Controllers.ProductCharacteristicController.Commands;
 using Microsoft.AspNetCore.Mvc;
@@ -12,8 +12,9 @@ namespace BnFurnitureAdmin.Server.Controllers;
 public class ProductCharacteristicValueController : ControllerBase
 {
     [HttpGet("{CharacteristicSlug}")]
-    public async Task<IActionResult> GetAllCharacteristicValues([FromServices] GetAllCharacteristicValuesHandler handler,
-    string CharacteristicSlug)
+    public async Task<IActionResult> GetAllCharacteristicValues(
+        [FromServices] GetAllCharacteristicValuesHandler handler,
+        string CharacteristicSlug)
     {
         var query = new GetAllCharacteristicValuesQuery(CharacteristicSlug);
 
@@ -22,7 +23,9 @@ public class ProductCharacteristicValueController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateCharacteristicValue([FromServices] CreateCharacteristicValueHandler handler, [FromBody] CreateCharacteristicValueDTO dto)
+    public async Task<IActionResult> CreateCharacteristicValue(
+        [FromServices] CreateCharacteristicValueHandler handler,
+        [FromBody] CreateCharacteristicValueDTO dto)
     {
         var command = new CreateCharacteristicValueCommand(dto);
 
@@ -31,7 +34,9 @@ public class ProductCharacteristicValueController : ControllerBase
     }
 
     [HttpPut]
-    public async Task<IActionResult> UpdateCharacteristicValue([FromServices] UpdateCharacteristicValueHandler handler, [FromBody] UpdateCharacteristicValueDTO dto)
+    public async Task<IActionResult> UpdateCharacteristicValue(
+        [FromServices] UpdateCharacteristicValueHandler handler, 
+        [FromBody] UpdateCharacteristicValueDTO dto)
     {
         var command = new UpdateCharacteristicValueCommand(dto);
 
@@ -40,7 +45,9 @@ public class ProductCharacteristicValueController : ControllerBase
     }
 
     [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteCharacteristicValue([FromServices] DeleteCharacteristicValueHandler handler, Guid id)
+    public async Task<IActionResult> DeleteCharacteristicValue(
+        [FromServices] DeleteCharacteristicValueHandler handler,
+        Guid id)
     {
         var command = new DeleteCharacteristicValueCommand(id);
 

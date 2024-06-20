@@ -2,9 +2,9 @@
 using FluentValidation;
 using System.Text.Json.Serialization;
 
-namespace BnFurniture.Application.Controllers.ProductArticleController.DTO;
+namespace BnFurniture.Application.Controllers.ProductArticleController.DTO.Request;
 
-public class ProductArticleDTO
+public class UpdateProductArticleDTO
 {
     [JsonPropertyName("article")]
     public Guid Article { get; set; }
@@ -37,9 +37,9 @@ public class ProductArticleDTO
     public bool Active { get; set; }
 }
 
-public class ProductArticleDTOValidator : AbstractValidator<ProductArticleDTO>
+public class UpdateProductArticleDTOValidator : AbstractValidator<UpdateProductArticleDTO>
 {
-    public ProductArticleDTOValidator()
+    public UpdateProductArticleDTOValidator()
     {
         RuleFor(x => x.Name)
             .NotEmpty().WithMessage("Product article name cannot be empty.")

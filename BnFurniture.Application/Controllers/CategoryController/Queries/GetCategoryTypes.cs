@@ -8,12 +8,14 @@ using System.Net;
 namespace BnFurniture.Application.Controllers.CategoryController.Queries;
 
 public sealed record GetCategoryTypesQuery(
-    Guid CategoryId,
-    bool IncludeImages);
+    string CategorySlug,
+    bool IncludeImages,
+    int? PageNumber,
+    int? PageSize);
 
 public sealed class GetCategoryTypesResponse
-{
-    public List<ProductTypeDTO>? ProductTypes;
+{ 
+    public List<ProductTypeDTO>? ProductTypes { get; set; }
 
     public GetCategoryTypesResponse(List<ProductTypeDTO>? productTypes)
     {
@@ -37,7 +39,7 @@ public sealed class GetCategoryTypesHandler : QueryHandler<GetCategoryTypesQuery
         CancellationToken cancellationToken)
     {
         var category = await HandlerContext.DbContext.ProductCategory
-            .Where(i => i.Id == request.CategoryId)
+            .Where(i => i.Slug == request.CategorySlug)
             .FirstOrDefaultAsync(cancellationToken);
 
         if (category == null)
@@ -51,12 +53,16 @@ public sealed class GetCategoryTypesHandler : QueryHandler<GetCategoryTypesQuery
         }
 
         var categoryTypes = await _sharedLogic.GetProductTypesForCategory(
-            request.CategoryId, request.IncludeImages, cancellationToken);
+            categorySlug: request.CategorySlug,
+            includeImages: request.IncludeImages,
+            pageNumber: request.PageNumber,
+            pageSize: request.PageSize,
+            cancellationToken: cancellationToken);
 
         return new ApiQueryResponse<GetCategoryTypesResponse>
             (true, (int)HttpStatusCode.OK)
         {
-            Data = new(categoryTypes),
+            Data = new(categoryTypes!),
         };
     }
 }

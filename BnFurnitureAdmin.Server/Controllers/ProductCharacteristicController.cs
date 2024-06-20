@@ -1,4 +1,4 @@
-﻿using BnFurniture.Application.Controllers.CharacteristicController.DTO;
+﻿using BnFurniture.Application.Controllers.CharacteristicController.DTO.Request;
 using BnFurniture.Application.Controllers.CharacteristicController.Queries;
 using BnFurniture.Application.Controllers.ProductCharacteristicConfiguration.DTO;
 using BnFurniture.Application.Controllers.ProductCharacteristicController.Commands;

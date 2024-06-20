@@ -9,7 +9,8 @@ namespace BnFurnitureApp.Server.Controllers;
 public class ProductController : Controller
 {
     [HttpGet("{productId:guid}")]
-    public async Task<IActionResult> GetProduct([FromServices] GetProductHandler handler,
+    public async Task<IActionResult> GetProduct(
+        [FromServices] GetProductHandler handler,
         Guid productId)
     {
         var query = new GetProductQuery(productId);
@@ -19,7 +20,10 @@ public class ProductController : Controller
     }
 
     [HttpGet("{productSlug}-{characteristicValueSlugs}")]
-    public async Task<IActionResult> GetProductArticleByCharacteristics([FromServices] GetProductArticleByCharacteristicsHandler handler, string productSlug, string characteristicValueSlugs)
+    public async Task<IActionResult> GetProductArticleByCharacteristics(
+        [FromServices] GetProductArticleByCharacteristicsHandler handler,
+        string productSlug, 
+        string characteristicValueSlugs)
     {
         var query = new GetProductArticleByCharacteristicsQuery($"{productSlug}-{characteristicValueSlugs}");
 
