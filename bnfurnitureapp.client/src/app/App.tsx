@@ -2,10 +2,10 @@ import { useEffect, useRef } from "react";
 import { AppDispatch } from "./store";
 import { useDispatch } from "react-redux";
 import {
-  BrowserRouter as Router,
   Route,
   Routes,
   Navigate,
+  BrowserRouter,
 } from "react-router-dom";
 import { AuthRoutes } from "../routes/AuthRoutes";
 import { UserRoutes } from "../routes/UserRoutes";
@@ -27,7 +27,7 @@ function App() {
   }, [dispatch]);
 
   return (
-    <Router>
+    <BrowserRouter>
       <Routes>
         <Route path="*" element={<Navigate replace to="/" />} />
         <Route path="/" element={<NavLayout />}>
@@ -37,7 +37,7 @@ function App() {
         </Route>
         <Route path="/auth/*" element={<AuthRoutes />} />
       </Routes>
-    </Router>
+    </BrowserRouter>
   );
 }
 

@@ -139,9 +139,13 @@ const MenuItems: FC<MenuItemsProps> = ({
   onClick,
 }) => (
   <>
-    <NavLink to={`products/${parentSlug}`} className={styles.menuItem}>
-      Переглянути усі
-    </NavLink>
+    {parentSlug != "" ? (
+      <NavLink to={`products/${parentSlug}`} className={styles.menuItem}>
+        Переглянути усі
+      </NavLink>
+    ) : (
+      <></>
+    )}
     {subCategoryList?.map((subCategory, idx) => (
       <NavLink
         to={`#`} // products/${subCategory.slug}

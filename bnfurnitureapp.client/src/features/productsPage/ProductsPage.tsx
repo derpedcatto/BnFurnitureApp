@@ -1,8 +1,7 @@
-import { useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import {
   CardCategoryASlider,
-  CardProductASliderProps,
 } from "../../common/components/sliders";
 import { useFetchSliderProductCategories } from "./hooks/useFetchSliderProductCategories";
 import { useFetchSliderProductTypes } from "./hooks/useFetchSliderProductTypes";
@@ -10,44 +9,38 @@ import styles from "./ProductsPage.module.scss";
 
 const DetermineSliderType: React.FC = () => {
   const location = useLocation();
-  const pathSegments = location.pathname.split("/").filter(Boolean);
-
-  // Assuming the slug is the last segment of the path
+  const pathSegments = location.pathname.split('/').filter(Boolean);
   const categorySlug = pathSegments[pathSegments.length - 1];
   const isProductType = pathSegments.length === 3;
 
-  // Conditional rendering based on path
-  if (isProductType == true) {
+  const { categories, isLoading: isProductCategoriesLoading } = useFetchSliderProductCategories(categorySlug);
+  const { productTypes, isLoading: isProductTypesLoading } = useFetchSliderProductTypes(categorySlug);
+
+  if (isProductType) {
     return null;
   }
 
-  const { categories, isLoading: isProductCategoriesLoading } =
-    FetchProductCategories(categorySlug);
-  const { productTypes, isLoading: isProductTypesLoading } =
-    FetchProductTypes(categorySlug);
-
-  console.log('categories', categories)
-  console.log('productTypes', productTypes)
-
-  if (categories != null) {
+  if (categories) {
     return (
       <CardCategoryASlider
-        key="category-slider"
+        key={categorySlug}
         isLoading={isProductCategoriesLoading}
         categories={categories}
       />
     );
   }
 
-  if (productTypes != null) {
+  if (productTypes) {
     return (
       <CardCategoryASlider
-        key="category-slider"
+        key={categorySlug}
         isLoading={isProductTypesLoading}
         categories={productTypes}
       />
     );
   }
+
+  return null;
 };
 
 function FetchProductCategories(categorySlug: string) {
@@ -63,6 +56,23 @@ function FetchProductTypes(categorySlug: string) {
   return { productTypes, isLoading };
 }
 
+const ProductsPage: React.FC = () => {
+  console.log("ProductsPage render");
+  return (
+    <div className={styles.productsPageContainer}>
+      <div className={styles.filterSideMenu}></div>
+      <div className={styles.contentContainer}>
+        <div className={styles.sectionSlider}>
+          <DetermineSliderType />
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default ProductsPage;
+
+/*
 type SliderComponentProps = {
   productSlug: string;
 };
@@ -95,21 +105,7 @@ const SliderProductTypeComponent: React.FC<SliderComponentProps> = ({
     />
   );
 };
-
-const ProductsPage: React.FC = () => {
-  return (
-    <div className={styles.productsPageContainer}>
-      <div className={styles.filterSideMenu}></div>
-      <div className={styles.contentContainer}>
-        <div className={styles.sectionSlider}>
-          <DetermineSliderType />
-        </div>
-      </div>
-    </div>
-  );
-};
-
-export default ProductsPage;
+*/
 
 /*
 const DetermineSliderType: React.FC = () => {
