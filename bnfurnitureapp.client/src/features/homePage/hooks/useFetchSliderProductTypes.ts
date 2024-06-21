@@ -22,7 +22,7 @@ export const useFetchSliderProductTypes = () => {
       response?.data?.productTypes.map((productType) => ({
         categoryName: productType.name,
         imageSrc: productType.cardImageUri,
-        redirectTo: `/${productType.categorySlug}/${productType.slug}`,
+        redirectTo: `products/${productType.categorySlug}/${productType.slug}`,
       })) || [],
     [response]
   );

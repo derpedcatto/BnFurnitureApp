@@ -27,7 +27,7 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("CorsPolicy",
-        builder => builder.WithOrigins("http://localhost:5173", "http://localhost:5028")
+        builder => builder.WithOrigins("http://localhost:5173", "http://localhost:5028", "https://bnfurnitureapp.azurewebsites.net", "https://bnfurniturefront.azurewebsites.net")
                           .AllowAnyHeader()
                           .AllowAnyMethod()
                           .AllowCredentials());

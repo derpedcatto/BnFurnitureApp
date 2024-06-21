@@ -21,8 +21,8 @@ namespace BnFurniture.Application.Controllers.ProductController.Queries
 
     public sealed class GetProductWithCharacteristicsHandler : QueryHandler<GetProductWithCharacteristicsQuery, GetProductWithCharacteristicsResponse>
     {
-        public GetProductWithCharacteristicsHandler(IHandlerContext context)
-            : base(context)
+        public GetProductWithCharacteristicsHandler(
+            IHandlerContext context) : base(context)
         { 
         
         }

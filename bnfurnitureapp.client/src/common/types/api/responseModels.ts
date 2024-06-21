@@ -2,6 +2,8 @@ import {
   Category,
   ProductType,
   CategoryWithProductTypes,
+  ProductArticle,
+  ProductWithCharacteristics,
 } from "./responseDataModels";
 
 // CategoryController
@@ -25,4 +27,18 @@ export interface GetCategoryTypesApiResponse {
 // ProductTypeController
 export interface GetAllProductTypesApiResponse {
   productTypes: ProductType[];
+}
+
+// ProductController
+export interface GetProductBySlugApiResponse {
+  product: ProductWithCharacteristics;
+}
+
+export interface GetProductArticleByCharacteristicsApiResponse {
+  article: ProductArticle;
+}
+
+// ProductArticleController
+export interface GetProductArticleByCharacteristicsApiResponse {
+  article: ProductArticle;
 }

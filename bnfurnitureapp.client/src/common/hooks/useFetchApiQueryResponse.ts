@@ -4,7 +4,53 @@ import { ApiQueryResponse } from "../types/api/ApiResponseTypes";
 
 export const useFetchApiQueryResponse = <T,>(
   endpoint: string,
-  params: object
+  params?: object
+) => {
+  const [response, setResponse] = useState<ApiQueryResponse<T> | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [error, setError] = useState<AxiosError | null>(null);
+
+  const controllerRef = useRef<AbortController | null>(null);
+
+  const fetchData = useCallback(async () => {
+    setIsLoading(true);
+    setError(null);
+
+    const controller = new AbortController();
+    controllerRef.current = controller;
+
+    try {
+      const { data } = await axios.get<ApiQueryResponse<T>>(endpoint, {
+        params,
+        signal: controller.signal,
+      });
+      setResponse(data);
+    } catch (error) {
+      if (!axios.isCancel(error)) {
+        setError(error as AxiosError);
+      }
+    } finally {
+      if (!controller.signal.aborted) {
+        setIsLoading(false);
+      }
+    }
+  }, [endpoint, params]);
+
+  useEffect(() => {
+    fetchData();
+
+    return () => {
+      controllerRef.current?.abort();
+    };
+  }, [fetchData]);
+
+  return { response, isLoading, error };
+};
+
+/*
+export const useFetchApiQueryResponse = <T,>(
+  endpoint: string,
+  params?: object
 ) => {
   const [response, setResponse] = useState<ApiQueryResponse<T> | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -48,6 +94,7 @@ export const useFetchApiQueryResponse = <T,>(
 
   return { response, isLoading, error };
 };
+*/
 
 /*
 export const useFetchApiQueryResponse = <T>(

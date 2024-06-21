@@ -11,4 +11,6 @@ public class ProductArticleDTO
     public decimal Price { get; set; }
     public int Discount { get; set; }
     public bool Active { get; set; }
+
+    public List<string> GalleryImages { get; set; } = [];
 }

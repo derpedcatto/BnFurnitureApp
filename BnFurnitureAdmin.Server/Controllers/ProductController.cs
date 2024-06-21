@@ -2,6 +2,7 @@
 using BnFurniture.Application.Controllers.ProductController.Commands;
 using BnFurniture.Application.Controllers.ProductController.DTO.Request;
 using BnFurniture.Application.Controllers.ProductController.Queries;
+using BnFurniture.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BnFurnitureAdmin.Server.Controllers;
@@ -17,6 +18,17 @@ public class ProductController : Controller
         Guid productId)
     {
         var query = new GetProductQuery(productId);
+
+        var apiResponse = await handler.Handle(query, HttpContext.RequestAborted);
+        return new JsonResult(apiResponse) { StatusCode = apiResponse.StatusCode };
+    }
+
+    [HttpGet("{productSlug}")]
+    public async Task<IActionResult> GetProductBySlug(
+        [FromServices] GetProductBySlugHandler handler,
+        string productSlug)
+    {
+        var query = new GetProductBySlugQuery(productSlug);
 
         var apiResponse = await handler.Handle(query, HttpContext.RequestAborted);
         return new JsonResult(apiResponse) { StatusCode = apiResponse.StatusCode };

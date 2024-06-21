@@ -14,6 +14,7 @@ import { getCurrentUser } from "../redux/auth/authThunks";
 import HomePage from "../features/homePage";
 import ProductsPage from "../features/productsPage";
 import "./App.scss";
+import ProductDetailsPage from "../features/productDetailsPage";
 
 function App() {
   const dispatch = useDispatch<AppDispatch>();
@@ -34,6 +35,7 @@ function App() {
           <Route index element={<HomePage />} />
           <Route path="/user/*" element={<UserRoutes />} />
           <Route path="/products/*" element={<ProductsPage />} />
+          <Route path="/product-details/*" element={<ProductDetailsPage />} />
         </Route>
         <Route path="/auth/*" element={<AuthRoutes />} />
       </Routes>

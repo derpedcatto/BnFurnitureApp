@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import { NavLink } from "react-router-dom";
 import { RootState } from "../../../../../app/store";
 import { useSelector } from "react-redux";
@@ -25,8 +25,9 @@ const getBreakpoint = () => {
 
 const BREAKPOINT = getBreakpoint();
 
-const HamburgerMenuComponent: React.FC<HamburgerMenuProps> = ({ list }) => {
+const HamburgerMenuComponent: React.FC<HamburgerMenuProps> = React.memo(({ list }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
 
   const handleResize = useCallback(() => {
     if (window.innerWidth >= BREAKPOINT && isMenuOpen) {
@@ -58,8 +59,26 @@ const HamburgerMenuComponent: React.FC<HamburgerMenuProps> = ({ list }) => {
     });
   };
 
+    /*
+  const handleClickOutside = (event: MouseEvent) => {
+    if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+      setIsMenuOpen(false);
+      document.body.classList.remove(styles.noScroll);
+    }
+  };
+
+  useEffect(() => {
+    if (isMenuOpen) {
+      document.addEventListener('click', handleClickOutside);
+    } else {
+      document.removeEventListener('click', handleClickOutside);
+    }
+    return () => document.removeEventListener('click', handleClickOutside);
+  }, [isMenuOpen]);
+  */
+
   return (
-    <div className={styles.hamburgerMenuContainer}>
+    <div className={styles.hamburgerMenuContainer} ref={menuRef}>
       <div
         className={`${styles.iconContainer} ${styles.hamburgerIcon}`}
         onClick={toggleMenu}
@@ -70,9 +89,9 @@ const HamburgerMenuComponent: React.FC<HamburgerMenuProps> = ({ list }) => {
       {isMenuOpen && <HamburgerMenu list={list} />}
     </div>
   );
-};
+});
 
-const Nav = () => {
+const Nav = React.memo(() => {
   const currentUser = useSelector(
     (state: RootState) => state.user.auth.currentUser
   );
@@ -129,7 +148,7 @@ const Nav = () => {
       </div>
     </div>
   );
-};
+});
 
 export default Nav;
 

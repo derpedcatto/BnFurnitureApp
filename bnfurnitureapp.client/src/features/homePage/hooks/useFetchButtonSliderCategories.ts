@@ -23,9 +23,9 @@ export const useFetchButtonSliderCategories = () => {
 
   const categories: CategoryNamesButtonSliderProps['categories'] = React.useMemo(
     () =>
-      response?.data?.categories.map((categories) => ({
-        categoryName: categories.name,
-        redirectTo: `/categories/${categories.slug}`,
+      response?.data?.categories.map((category) => ({
+        categoryName: category.name,
+        redirectTo: `products/${category.slug}`,
       })) || [],
     [response]
   );

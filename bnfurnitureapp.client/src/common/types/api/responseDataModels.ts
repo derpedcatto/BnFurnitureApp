@@ -7,17 +7,6 @@ export interface Category {
   subCategories: Category[] | null;
 }
 
-export interface ProductType {
-  id: string;
-  categoryId: string;
-  name: string;
-  slug: string;
-  priority: number | null;
-  categorySlug: string;
-  cardImageUri: string;
-  thumbnailImageUri: string;
-}
-
 export interface CategoryWithProductTypes {
   id: string;
   name: string;
@@ -27,6 +16,17 @@ export interface CategoryWithProductTypes {
   thumbnailImageUri: string;
   subCategories: CategoryWithProductTypes[] | null;
   productTypes: ProductType[] | null;
+}
+
+export interface ProductType {
+  id: string;
+  categoryId: string;
+  name: string;
+  slug: string;
+  priority: number | null;
+  categorySlug: string;
+  cardImageUri: string;
+  thumbnailImageUri: string;
 }
 
 /* --- */
@@ -46,6 +46,23 @@ export interface ProductWithCharacteristics {
   updatedAt: string | null;
   characteristics: CharacteristicWithValues[];
 }
+
+/* --- */
+
+export interface ProductArticle {
+  article: string;
+  productId: string;
+  authorId: string;
+  name: string;
+  createdAt: string;
+  updatedAt: string | null;
+  price: number;
+  discount: number;
+  active: boolean;
+  galleryImages: string[];
+}
+
+/* --- */
 
 export interface CharacteristicWithValues {
   id: string;

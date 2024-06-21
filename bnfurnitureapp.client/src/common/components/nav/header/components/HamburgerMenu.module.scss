@@ -54,7 +54,11 @@ $speed: 300ms;
     .menuBackButton {
       display: flex;
       flex-direction: row;
+      justify-content: center;
       align-items: center;
+      width: 100%;
+      text-align: center;
+      cursor: pointer;
 
       span {
         color: inherit;

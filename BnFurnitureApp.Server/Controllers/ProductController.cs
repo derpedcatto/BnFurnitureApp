@@ -19,13 +19,26 @@ public class ProductController : Controller
         return new JsonResult(apiResponse) { StatusCode = apiResponse.StatusCode };
     }
 
+    [HttpGet("{productSlug}")]
+    public async Task<IActionResult> GetProductBySlug(
+        [FromServices] GetProductBySlugHandler handler,
+        string productSlug)
+    {
+        var query = new GetProductBySlugQuery(productSlug);
+
+        var apiResponse = await handler.Handle(query, HttpContext.RequestAborted);
+        return new JsonResult(apiResponse) { StatusCode = apiResponse.StatusCode };
+    }
+
     [HttpGet("{productSlug}-{characteristicValueSlugs}")]
     public async Task<IActionResult> GetProductArticleByCharacteristics(
         [FromServices] GetProductArticleByCharacteristicsHandler handler,
         string productSlug, 
         string characteristicValueSlugs)
     {
-        var query = new GetProductArticleByCharacteristicsQuery($"{productSlug}-{characteristicValueSlugs}");
+        var query = new GetProductArticleByCharacteristicsQuery(
+            Slug: $"{productSlug}-{characteristicValueSlugs}",
+            IncludeImages: true);
 
         var apiResponse = await handler.Handle(query, HttpContext.RequestAborted);
         return new JsonResult(apiResponse) { StatusCode = apiResponse.StatusCode };

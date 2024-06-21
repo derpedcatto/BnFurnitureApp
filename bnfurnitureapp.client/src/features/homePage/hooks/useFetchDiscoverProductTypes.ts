@@ -32,7 +32,7 @@ export const useFetchDiscoverProductTypes = ({
     const items =
       response?.data?.productTypes.slice(0, 6).map((productType) => ({
         imageSrc: productType.cardImageUri,
-        link: `/producttype/${productType.slug}`,
+        link: `products/${productType.categorySlug}/${productType.slug}`,
       })) || [];
 
     // Pad the array to ensure it has exactly 6 elements

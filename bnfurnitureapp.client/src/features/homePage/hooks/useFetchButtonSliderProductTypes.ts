@@ -22,9 +22,9 @@ export const useFetchButtonSliderProductTypes = () => {
 
     const productTypes: CategoryNamesButtonSliderProps['categories'] = React.useMemo(
       () =>
-        response?.data?.productTypes.map((productTypes) => ({
-          categoryName: productTypes.name,
-          redirectTo: `/producttype/${productTypes.slug}`,
+        response?.data?.productTypes.map((productType) => ({
+          categoryName: productType.name,
+          redirectTo: `products/${productType.categorySlug}/${productType.slug}`,
         })) || [],
       [response]
     );

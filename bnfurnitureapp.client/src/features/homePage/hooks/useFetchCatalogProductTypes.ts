@@ -22,7 +22,7 @@ export const useFetchCatalogProductTypes = () => {
       response?.data?.productTypes.map((productType) => ({
         categoryName: productType.name,
         imageSrc: productType.thumbnailImageUri,
-        redirectTo: `/${productType.categorySlug}/${productType.slug}`,
+        redirectTo: `products/${productType.categorySlug}/${productType.slug}`,
       })) || [],
     [response]
   );

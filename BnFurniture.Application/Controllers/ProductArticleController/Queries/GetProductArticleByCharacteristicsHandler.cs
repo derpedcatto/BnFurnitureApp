@@ -1,11 +1,15 @@
 ﻿using BnFurniture.Application.Abstractions;
 using BnFurniture.Application.Controllers.ProductArticleController.DTO.Response;
+using BnFurniture.Application.Services.AppImageService;
+using BnFurniture.Domain.Enums;
 using BnFurniture.Domain.Responses;
 using Microsoft.EntityFrameworkCore;
 
 namespace BnFurniture.Application.Controllers.ProductArticleController.Queries;
 
-public sealed record GetProductArticleByCharacteristicsQuery(string Slug);
+public sealed record GetProductArticleByCharacteristicsQuery(
+    string Slug,
+    bool IncludeImages);
 
 public sealed class GetProductArticleByCharacteristicsResponse
 {
@@ -19,13 +23,17 @@ public sealed class GetProductArticleByCharacteristicsResponse
 
 public sealed class GetProductArticleByCharacteristicsHandler : QueryHandler<GetProductArticleByCharacteristicsQuery, GetProductArticleByCharacteristicsResponse>
 {
+    private readonly IAppImageService _appImageService;
+
     public GetProductArticleByCharacteristicsHandler(
+        IAppImageService appImageService,
         IHandlerContext context) : base(context)
     {
-
+        _appImageService = appImageService;
     }
 
-    public override async Task<ApiQueryResponse<GetProductArticleByCharacteristicsResponse>> Handle(GetProductArticleByCharacteristicsQuery request, CancellationToken cancellationToken)
+    public override async Task<ApiQueryResponse<GetProductArticleByCharacteristicsResponse>> Handle(
+        GetProductArticleByCharacteristicsQuery request, CancellationToken cancellationToken)
     {
         // 1 - Get slug and Divide slug to two parts - product | characteristic values
         var slugs = request.Slug.Split(new[] { '-' }, 2);
@@ -92,6 +100,17 @@ public sealed class GetProductArticleByCharacteristicsHandler : QueryHandler<Get
             Discount = matchingArticle.Discount,
             Active = matchingArticle.Active,
         };
+
+        if (request.IncludeImages)
+        {
+            var imageResult = await _appImageService.GetImagesAsync(
+                AppEntityType.ProductArticle,
+                response.Article,
+                AppEntityImageType.Gallery,
+                cancellationToken);
+
+            response.GalleryImages = imageResult.Data!.ToList();
+        }
 
         return new ApiQueryResponse<GetProductArticleByCharacteristicsResponse>
             (true, 200) 

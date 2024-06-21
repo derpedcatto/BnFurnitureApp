@@ -24,7 +24,7 @@ const isCategoryWithProductTypes = (
   return (item as CategoryWithProductTypes).subCategories !== undefined;
 };
 
-const HamburgerMenu: FC<HamburgerMenuProps> = ({ list }) => {
+const HamburgerMenu: FC<HamburgerMenuProps> = React.memo(({ list }) => {
   const [menuStack, setMenuStack] = useState<CategoryWithProductTypes[]>([]);
   const [currentMenuIndex, setCurrentMenuIndex] = useState(0);
   const [menuHeight, setMenuHeight] = useState<number | undefined>(0);
@@ -111,13 +111,12 @@ const HamburgerMenu: FC<HamburgerMenuProps> = ({ list }) => {
         >
           <div ref={menuRefs.current[index]} className={styles.menuContainer}>
             {index > 0 && (
-              <a
-                href="#"
+              <div
                 className={styles.menuBackButton}
                 onClick={handleBackClick}
               >
                 <span>Назад</span>
-              </a>
+              </div>
             )}
             <MenuItems
               subCategoryList={menu.subCategories}
@@ -130,7 +129,7 @@ const HamburgerMenu: FC<HamburgerMenuProps> = ({ list }) => {
       ))}
     </div>
   );
-};
+});
 
 const MenuItems: FC<MenuItemsProps> = ({
   subCategoryList,
@@ -139,13 +138,10 @@ const MenuItems: FC<MenuItemsProps> = ({
   onClick,
 }) => (
   <>
-    {parentSlug != "" ? (
-      <NavLink to={`products/${parentSlug}`} className={styles.menuItem}>
-        Переглянути усі
-      </NavLink>
-    ) : (
-      <></>
-    )}
+    <NavLink to={`products/${parentSlug}`} className={styles.menuItem}>
+      Переглянути усі
+    </NavLink>
+
     {subCategoryList?.map((subCategory, idx) => (
       <NavLink
         to={`#`} // products/${subCategory.slug}

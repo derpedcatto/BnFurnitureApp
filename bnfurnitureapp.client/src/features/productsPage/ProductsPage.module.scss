@@ -1,13 +1,26 @@
 .productsPageContainer {
   display: flex;
   flex-direction: row;
+  padding: 5rem 1rem;
+  max-width: $bp-w-lg;
+  height: 100%;
+  margin: 0 auto;
+  overflow: hidden;
+  gap: 2rem;
 
-  .contentContainer {
+  .filterSideContainer {
     display: flex;
     flex-direction: column;
+    flex: 0 0 30%;
+    height: 100%;
+    background-color: #f0f0f0;
+    border-radius: $radius-card-product;
+  }
 
-    .sectionSlider {
-      
-    }
+  .productsContainer {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    overflow: hidden;
   }
 }

@@ -23,7 +23,7 @@ export const useFetchSliderProductCategories = () => {
       response?.data?.categories.map((category) => ({
         categoryName: category.name,
         imageSrc: category.cardImageUri,
-        redirectTo: `/category/${category.slug}`,
+        redirectTo: `products/${category.slug}`,
       })) || [],
     [response]
   );
