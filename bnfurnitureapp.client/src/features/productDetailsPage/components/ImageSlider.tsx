@@ -1,6 +1,7 @@
 import useEmblaCarousel from "embla-carousel-react";
 import { useEffect, useState } from "react";
 import styles from "./ImageSlider.module.scss";
+import FsLightbox from "fslightbox-react";
 
 export interface ImageSliderProps {
   imageUris: string[];
@@ -24,6 +25,7 @@ export const ImageSlider: React.FC<ImageSliderProps> = ({ imageUris }) => {
       },
     },
   });
+  const [lightboxToggler, setLightboxToggler] = useState<boolean>(false);
 
   // Get CSS breakpoint
   useEffect(() => {
@@ -60,8 +62,13 @@ export const ImageSlider: React.FC<ImageSliderProps> = ({ imageUris }) => {
           src={imageUris[selectedIndex]}
           alt={`Preview ${selectedIndex}`}
           className={styles.mainImage}
+          onClick={() => setLightboxToggler(!lightboxToggler)}
         />
       </div>
+      <FsLightbox
+        toggler={lightboxToggler}
+        sources={[imageUris[selectedIndex]]}
+      />
     </div>
   );
 };
