@@ -66,7 +66,10 @@ namespace BnFurniture.Application.Controllers.ProductController.Queries
                         Value = pcc.CharacteristicValue.Value,
                         Slug = pcc.CharacteristicValue.Slug,
                         Priority = pcc.CharacteristicValue.Priority
-                    }).OrderBy(s => s.Slug).ToList()
+                    })
+                    .DistinctBy(cv => cv.Id)
+                    .OrderBy(s => s.Slug)
+                    .ToList()
                 }).ToList();
 
             var response = new ProductWithCharacteristicsDTO

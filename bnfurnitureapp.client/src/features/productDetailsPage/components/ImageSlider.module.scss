@@ -2,7 +2,7 @@ $image-slider-width: 100%;
 $gap-size: 10px;
 $main-image-max-height: 500px;
 $selected-border-color: $color-accent;
-$hover-border-color: $color-secondary;
+$hover-border-color: #9991c0;
 
 .imageSlider {
   display: flex;
@@ -26,6 +26,7 @@ $hover-border-color: $color-secondary;
     .mainImage {
       height: auto;
       max-height: $main-image-max-height;
+      cursor: pointer;
 
       img {
         width: 100%;
@@ -36,7 +37,6 @@ $hover-border-color: $color-secondary;
   }
 
   .thumbnailContainer {
-    display: flex;
     overflow: hidden;
 
     .emblaContainer {
@@ -59,6 +59,14 @@ $hover-border-color: $color-secondary;
           height: 120px;
         }
 
+        @media screen and (min-width: $bp-w-md) {
+          margin-bottom: 0.5rem;
+
+          &:last-child {
+            margin-bottom: 0;
+          }
+        }
+
         @media screen and (max-width: calc($bp-w-md - 1px)) {
           margin-right: 1rem;
 
@@ -79,11 +87,11 @@ $hover-border-color: $color-secondary;
         transition: border-color 0.3s;
 
         &.selected {
-          border-color: $selected-border-color;
+          border: 3px solid $selected-border-color;
         }
 
         &:hover {
-          border-color: $hover-border-color;
+          border: 3px solid $hover-border-color;
         }
       }
     }
