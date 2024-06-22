@@ -8,53 +8,56 @@ using System.Net;
 
 namespace BnFurniture.Application.Controllers.ProductArticleController.Queries;
 
-public sealed record GetAllProductArticlesQuery(
+public sealed record GetProductArticlesByProductTypeQuery(
+    string CategorySlug,
+    string ProductTypeSlug,
     int PageNumber,
     int PageSize);
 
-public sealed class GetAllProductArticlesResponse
+
+public sealed class GetProductArticlesByProductTypeResponse
 {
-    public List<ProductArticleDTO> Articles { get; private set; }
+    public List<ProductArticleDTO> Articles { get; set; }
     public int TotalCount { get; private set; }
     public int PageNumber { get; private set; }
     public int PageSize { get; private set; }
 
-    public GetAllProductArticlesResponse(List<ProductArticleDTO> productArticles)
+    public GetProductArticlesByProductTypeResponse(List<ProductArticleDTO> articles, int totalCount, int pageNumber, int pageSize)
     {
-        Articles = productArticles;
-    }
-
-    public GetAllProductArticlesResponse(List<ProductArticleDTO> productArticles, int totalCount, int pageNumber, int pageSize)
-    {
-        Articles = productArticles;
+        Articles = articles;
         TotalCount = totalCount;
         PageNumber = pageNumber;
         PageSize = pageSize;
     }
 }
 
-public sealed class GetAllProductArticlesHandler : QueryHandler<GetAllProductArticlesQuery, GetAllProductArticlesResponse>
+public sealed class GetProductArticlesByProductTypeHandler : QueryHandler<GetProductArticlesByProductTypeQuery, GetProductArticlesByProductTypeResponse>
 {
     private readonly IAppImageService _appImageService;
 
-    public GetAllProductArticlesHandler(
+    public GetProductArticlesByProductTypeHandler(
         IAppImageService appImageService,
         IHandlerContext context) : base(context)
     {
         _appImageService = appImageService;
     }
 
-    public override async Task<ApiQueryResponse<GetAllProductArticlesResponse>> Handle(
-        GetAllProductArticlesQuery request, CancellationToken cancellationToken)
+    public override async Task<ApiQueryResponse<GetProductArticlesByProductTypeResponse>> Handle(
+        GetProductArticlesByProductTypeQuery request, CancellationToken cancellationToken)
     {
-        var dbContext = HandlerContext.DbContext;
+        var totalArticlesCount = await HandlerContext.DbContext.ProductArticle
+            .CountAsync(pa => pa.Product.ProductType.Slug == request.ProductTypeSlug
+                              && pa.Product.ProductType.ProductCategory.Slug == request.CategorySlug
+                              && pa.Active,
+                        cancellationToken);
 
-        var totalArticlesCount = await dbContext.ProductArticle.CountAsync(cancellationToken);
-
-        var productArticles = await dbContext.ProductArticle
+        var productArticles = await HandlerContext.DbContext.ProductArticle
             .Include(pa => pa.Product)
-                .ThenInclude(pa => pa.ProductType)
-            .Include(pa => pa.Author)
+                .ThenInclude(p => p.ProductType)
+                .ThenInclude(pt => pt.ProductCategory)
+            .Where(pa => pa.Product.ProductType.Slug == request.ProductTypeSlug
+                         && pa.Product.ProductType.ProductCategory.Slug == request.CategorySlug
+                         && pa.Active)
             .Skip((request.PageNumber - 1) * request.PageSize)
             .Take(request.PageSize)
             .ToListAsync(cancellationToken);
@@ -72,13 +75,13 @@ public sealed class GetAllProductArticlesHandler : QueryHandler<GetAllProductArt
             productArticle.ThumbnailImageUri = thumbnailResult.Data.FirstOrDefault();
         }
 
-        var responseData = new GetAllProductArticlesResponse(
+        var responseData = new GetProductArticlesByProductTypeResponse(
             productArticleDTOList,
             totalArticlesCount,
             request.PageNumber,
             request.PageSize);
 
-        return new ApiQueryResponse<GetAllProductArticlesResponse>(true, (int)HttpStatusCode.OK)
+        return new ApiQueryResponse<GetProductArticlesByProductTypeResponse>(true, (int)HttpStatusCode.OK)
         {
             Data = responseData
         };

@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace BnFurniture.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class Add_230524_Diploma : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -35,6 +35,21 @@ namespace BnFurniture.Infrastructure.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "DeliveryType",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DeliveryType", x => x.Id);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "OrderStatus",
                 columns: table => new
                 {
@@ -46,6 +61,21 @@ namespace BnFurniture.Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_OrderStatus", x => x.Id);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "PaymentType",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PaymentType", x => x.Id);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -447,6 +477,40 @@ namespace BnFurniture.Infrastructure.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "OrderDetails",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    OrderId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    PaymentTypeId = table.Column<int>(type: "int", nullable: false),
+                    DeliveryTypeId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OrderDetails", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_OrderDetails_DeliveryType_DeliveryTypeId",
+                        column: x => x.DeliveryTypeId,
+                        principalTable: "DeliveryType",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_OrderDetails_Order_OrderId",
+                        column: x => x.OrderId,
+                        principalTable: "Order",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_OrderDetails_PaymentType_PaymentTypeId",
+                        column: x => x.PaymentTypeId,
+                        principalTable: "PaymentType",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "OrderItem",
                 columns: table => new
                 {
@@ -455,7 +519,7 @@ namespace BnFurniture.Infrastructure.Migrations
                     ArticleId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     Quantity = table.Column<int>(type: "int", nullable: false),
                     Price = table.Column<decimal>(type: "decimal(19,2)", precision: 19, scale: 2, nullable: false),
-                    Discount = table.Column<int>(type: "int", maxLength: 100, nullable: false)
+                    Discount = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -481,7 +545,7 @@ namespace BnFurniture.Infrastructure.Migrations
                     CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: true),
                     Price = table.Column<decimal>(type: "decimal(19,2)", precision: 19, scale: 2, nullable: false),
-                    Discount = table.Column<int>(type: "int", maxLength: 100, nullable: false),
+                    Discount = table.Column<int>(type: "int", nullable: false),
                     Active = table.Column<bool>(type: "tinyint(1)", nullable: false)
                 },
                 constraints: table =>
@@ -530,7 +594,7 @@ namespace BnFurniture.Infrastructure.Migrations
                     Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     ProductId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     AuthorId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    Rating = table.Column<int>(type: "int", maxLength: 5, nullable: false),
+                    Rating = table.Column<int>(type: "int", nullable: false),
                     Text = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: false),
@@ -666,41 +730,73 @@ namespace BnFurniture.Infrastructure.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.InsertData(
+                table: "DeliveryType",
+                columns: new[] { "Id", "Name" },
+                values: new object[,]
+                {
+                    { 1, "Почтовое отделение" },
+                    { 2, "Курьер" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "OrderStatus",
+                columns: new[] { "Id", "Name" },
+                values: new object[,]
+                {
+                    { 1, "Обрабатывается" },
+                    { 2, "Комплектуется" },
+                    { 3, "Передан в службу доставки" },
+                    { 4, "Доставляется" },
+                    { 5, "Ожидает клиента в пунтке самовывоза" },
+                    { 6, "Выполнен" },
+                    { 7, "Отменён" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "PaymentType",
+                columns: new[] { "Id", "Name" },
+                values: new object[,]
+                {
+                    { 1, "Наличные" },
+                    { 2, "Безнал" }
+                });
+
+            migrationBuilder.InsertData(
                 table: "Permission",
                 columns: new[] { "Id", "Description", "Name" },
                 values: new object[,]
                 {
-                    { new Guid("312471d4-9393-408a-9d71-b84c43e8dc42"), null, "DeleteAccess" },
-                    { new Guid("6807b0d3-e10d-47a3-b8ca-551f9acdf114"), null, "DashboardAccess" },
-                    { new Guid("6c0e4ed2-bf6d-4abb-b3bf-9c9a5811fa88"), null, "UpdateAccess" },
-                    { new Guid("77a78f12-7016-43d5-8d98-c28135fd3335"), null, "CreateAccess" }
+                    { new Guid("3d66b51c-c722-46f0-b6de-e5b566f9d4e1"), null, "DeleteAccess" },
+                    { new Guid("4cf0fd58-9fb7-4518-ba75-b8e993b57367"), null, "CreateAccess" },
+                    { new Guid("81df6233-2a41-4064-9d46-9904fe91e6b6"), null, "UpdateAccess" },
+                    { new Guid("98291723-2120-4185-9b85-33ed8c7eebc5"), null, "DashboardAccess" }
                 });
 
             migrationBuilder.InsertData(
                 table: "User",
                 columns: new[] { "Id", "Address", "Email", "FirstName", "LastLoginAt", "LastName", "Password", "PhoneNumber", "RegisteredAt" },
-                values: new object[] { new Guid("adad13d5-2468-4f9c-9ddc-b0940569df8a"), null, "sashavannovski@gmail.com", "Oleksandr", null, "Vannovskyi", "8C6976E5B5410415BDE908BD4DEE15DFB167A9C873FC4BB8A81F6F2AB448A918", null, new DateTime(2024, 5, 23, 13, 52, 20, 762, DateTimeKind.Local).AddTicks(981) });
+                values: new object[] { new Guid("adad13d5-2468-4f9c-9ddc-b0940569df8a"), null, "sashavannovski@gmail.com", "Oleksandr", null, "Vannovskyi", "8C6976E5B5410415BDE908BD4DEE15DFB167A9C873FC4BB8A81F6F2AB448A918", null, new DateTime(2024, 6, 22, 7, 30, 39, 374, DateTimeKind.Local).AddTicks(5474) });
 
             migrationBuilder.InsertData(
                 table: "UserRole",
                 columns: new[] { "Id", "Description", "Name" },
-                values: new object[] { new Guid("b5748bed-999c-477b-b401-efb6d03672bf"), null, "Admin" });
+                values: new object[] { new Guid("023200d8-af41-4337-8bf2-de1da6c8b4ba"), null, "Admin" });
 
             migrationBuilder.InsertData(
                 table: "UserRole_Permission",
                 columns: new[] { "Id", "PermissionId", "UserRoleId" },
                 values: new object[,]
                 {
-                    { new Guid("009e6ea6-210a-4ed6-9b25-05f966090c8e"), new Guid("77a78f12-7016-43d5-8d98-c28135fd3335"), new Guid("b5748bed-999c-477b-b401-efb6d03672bf") },
-                    { new Guid("1132623c-6631-4ef8-aebc-e858c6e65634"), new Guid("6807b0d3-e10d-47a3-b8ca-551f9acdf114"), new Guid("b5748bed-999c-477b-b401-efb6d03672bf") },
-                    { new Guid("856ce9b2-9ed1-4408-931e-0e5f577679c7"), new Guid("312471d4-9393-408a-9d71-b84c43e8dc42"), new Guid("b5748bed-999c-477b-b401-efb6d03672bf") },
-                    { new Guid("f395d588-76f2-4b45-9b54-2a9d48ea52cb"), new Guid("6c0e4ed2-bf6d-4abb-b3bf-9c9a5811fa88"), new Guid("b5748bed-999c-477b-b401-efb6d03672bf") }
+                    { new Guid("837701d0-8d88-4e9e-9be2-87ba8941c06d"), new Guid("3d66b51c-c722-46f0-b6de-e5b566f9d4e1"), new Guid("023200d8-af41-4337-8bf2-de1da6c8b4ba") },
+                    { new Guid("a8681430-0bd7-4c2f-88b6-c0a866493aa6"), new Guid("4cf0fd58-9fb7-4518-ba75-b8e993b57367"), new Guid("023200d8-af41-4337-8bf2-de1da6c8b4ba") },
+                    { new Guid("c82241b5-8c94-4ff6-bd3e-a02551420b31"), new Guid("81df6233-2a41-4064-9d46-9904fe91e6b6"), new Guid("023200d8-af41-4337-8bf2-de1da6c8b4ba") },
+                    { new Guid("de9b93c6-32ea-4fde-bb63-4823fa279d9a"), new Guid("98291723-2120-4185-9b85-33ed8c7eebc5"), new Guid("023200d8-af41-4337-8bf2-de1da6c8b4ba") }
                 });
 
             migrationBuilder.InsertData(
                 table: "User_UserRole",
                 columns: new[] { "Id", "UserId", "UserRoleId" },
-                values: new object[] { new Guid("2efae994-ec3d-4fdf-84ea-ab10d9028406"), new Guid("adad13d5-2468-4f9c-9ddc-b0940569df8a"), new Guid("b5748bed-999c-477b-b401-efb6d03672bf") });
+                values: new object[] { new Guid("3bbdb907-e134-4420-b862-3dc0b62fe55a"), new Guid("adad13d5-2468-4f9c-9ddc-b0940569df8a"), new Guid("023200d8-af41-4337-8bf2-de1da6c8b4ba") });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AuditLog_UserActivityTypeId",
@@ -732,6 +828,22 @@ namespace BnFurniture.Infrastructure.Migrations
                 name: "IX_Order_UserId",
                 table: "Order",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OrderDetails_DeliveryTypeId",
+                table: "OrderDetails",
+                column: "DeliveryTypeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OrderDetails_OrderId",
+                table: "OrderDetails",
+                column: "OrderId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OrderDetails_PaymentTypeId",
+                table: "OrderDetails",
+                column: "PaymentTypeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_OrderItem_OrderId",
@@ -902,6 +1014,9 @@ namespace BnFurniture.Infrastructure.Migrations
                 name: "AuditLog");
 
             migrationBuilder.DropTable(
+                name: "OrderDetails");
+
+            migrationBuilder.DropTable(
                 name: "PasswordResetToken");
 
             migrationBuilder.DropTable(
@@ -930,6 +1045,12 @@ namespace BnFurniture.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "UserActivityType");
+
+            migrationBuilder.DropTable(
+                name: "DeliveryType");
+
+            migrationBuilder.DropTable(
+                name: "PaymentType");
 
             migrationBuilder.DropTable(
                 name: "OrderItem");

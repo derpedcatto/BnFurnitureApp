@@ -31,7 +31,10 @@ public class ApplicationDbContext(DbContextOptions options) : DbContext(options)
     public DbSet<UserRole_Permission> UserRole_Permission { get; set; }
     public DbSet<UserWishlist> UserWishlist { get; set; }
     public DbSet<UserWishlistItem> UserWishlistItem { get; set; }
-    public DbSet<OrderItem> ProductArticleOrderItem { get; set; }
+    public DbSet<ProductArticle_OrderItem> ProductArticle_OrderItem { get; set; }
+    public DbSet<OrderDetails> OrderDetails { get; set; }
+    public DbSet<PaymentType> PaymentType { get; set; }
+    public DbSet<DeliveryType> DeliveryType { get; set; }
 
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -100,6 +103,26 @@ public class ApplicationDbContext(DbContextOptions options) : DbContext(options)
                 UserId = adminId,
                 UserRoleId = adminRoleId
             });
+
+        modelBuilder.Entity<OrderStatus>().HasData(
+           new OrderStatus { Id = 1, Name = "Обрабатывается" },
+           new OrderStatus { Id = 2, Name = "Комплектуется" },
+           new OrderStatus { Id = 3, Name = "Передан в службу доставки" },
+           new OrderStatus { Id = 4, Name = "Доставляется" },
+           new OrderStatus { Id = 5, Name = "Ожидает клиента в пунтке самовывоза" },
+           new OrderStatus { Id = 6, Name = "Выполнен" },
+           new OrderStatus { Id = 7, Name = "Отменён" }
+        );
+
+        modelBuilder.Entity<PaymentType>().HasData(
+            new PaymentType { Id = 1, Name = "Наличные"},
+            new PaymentType { Id = 2, Name = "Безнал"}
+        );
+
+        modelBuilder.Entity<DeliveryType>().HasData(
+            new DeliveryType { Id = 1, Name = "Почтовое отделение" },
+            new DeliveryType { Id = 2, Name = "Курьер" }
+        );
     }
 
     private void ConfigureProperties(ModelBuilder modelBuilder)
@@ -112,20 +135,7 @@ public class ApplicationDbContext(DbContextOptions options) : DbContext(options)
             .Property(e => e.Price)
             .HasPrecision(19, 2);
 
-        // 5-star rating
-        modelBuilder.Entity<ProductReview>()
-            .Property(e => e.Rating)
-            .HasMaxLength(5);
-
-        // Max discount value - 100
-        modelBuilder.Entity<OrderItem>()
-            .Property(e => e.Discount)
-            .HasMaxLength(100);
-        modelBuilder.Entity<ProductArticle>()
-            .Property(e => e.Discount)
-            .HasMaxLength(100);
-
-        // Set `Unique` attribute to all `Slug` fields
+        // Set `Unique` attribute to `Slug` fields
 
         modelBuilder.Entity<ProductCategory>()
             .HasIndex(e => e.Slug)
@@ -162,6 +172,50 @@ public class ApplicationDbContext(DbContextOptions options) : DbContext(options)
 
     private void ConfigureRelationship(ModelBuilder modelBuilder)
     {
+        // Order - * OrderItem
+        modelBuilder.Entity<Order>()
+            .HasMany(a => a.OrderItems)
+            .WithOne(b => b.Order)
+            .HasForeignKey(c => c.OrderId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        // Order - - OrderDetails
+        modelBuilder.Entity<Order>()
+            .HasOne(a => a.Details)
+            .WithOne(b => b.Order)
+            .HasForeignKey<OrderDetails>(c => c.OrderId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        // User - * Order
+        modelBuilder.Entity<User>()
+            .HasMany(a => a.Orders)
+            .WithOne(b => b.User)
+            .HasForeignKey(c => c.UserId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        // PaymentType - * OrderDetails
+        modelBuilder.Entity<PaymentType>()
+            .HasMany(a => a.Details)
+            .WithOne(b => b.PaymentType)
+            .HasForeignKey(c => c.PaymentTypeId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        // DeliveryType - * OrderDetails
+        modelBuilder.Entity<DeliveryType>()
+            .HasMany(a => a.Details)
+            .WithOne(b => b.DeliveryType)
+            .HasForeignKey(c => c.DeliveryTypeId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        // OrderDetails - 1 Order
+        modelBuilder.Entity<OrderDetails>()
+            .HasOne(a => a.Order)
+            .WithOne(b => b.Details)
+            .HasForeignKey<OrderDetails>(c => c.OrderId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+
+
         // Characteristic - * CharacteristicValue
         modelBuilder.Entity<Characteristic>()
             .HasMany(a => a.CharacteristicValues)

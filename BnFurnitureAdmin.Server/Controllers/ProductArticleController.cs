@@ -39,7 +39,9 @@ public class ProductArticleController : ControllerBase
         string productSlug, 
         string characteristicValueSlugs)
     {
-        var query = new GetProductArticleByCharacteristicsQuery($"{productSlug}-{characteristicValueSlugs}");
+        var query = new GetProductArticleByCharacteristicsQuery(
+            Slug: $"{productSlug}-{characteristicValueSlugs}",
+            IncludeImages: false);
 
         var apiResponse = await handler.Handle(query, HttpContext.RequestAborted);
         return new JsonResult(apiResponse) { StatusCode = apiResponse.StatusCode };

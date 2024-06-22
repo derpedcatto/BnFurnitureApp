@@ -18,5 +18,6 @@ public class Order
 
     [ForeignKey(nameof(UserId))]
     public User User { get; set; } = null!;
+    public OrderDetails Details { get; set; } = null!;
     public ICollection<OrderItem> OrderItems { get; set; } = null!;
 }

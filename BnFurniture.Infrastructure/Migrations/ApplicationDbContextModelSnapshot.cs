@@ -101,6 +101,35 @@ namespace BnFurniture.Infrastructure.Migrations
                     b.ToTable("CharacteristicValue");
                 });
 
+            modelBuilder.Entity("BnFurniture.Domain.Entities.DeliveryType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("DeliveryType");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Почтовое отделение"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Курьер"
+                        });
+                });
+
             modelBuilder.Entity("BnFurniture.Domain.Entities.Order", b =>
                 {
                     b.Property<Guid>("Id")
@@ -128,6 +157,35 @@ namespace BnFurniture.Infrastructure.Migrations
                     b.ToTable("Order");
                 });
 
+            modelBuilder.Entity("BnFurniture.Domain.Entities.OrderDetails", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("DeliveryTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("OrderId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<int>("PaymentTypeId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DeliveryTypeId");
+
+                    b.HasIndex("OrderId")
+                        .IsUnique();
+
+                    b.HasIndex("PaymentTypeId");
+
+                    b.ToTable("OrderDetails");
+                });
+
             modelBuilder.Entity("BnFurniture.Domain.Entities.OrderItem", b =>
                 {
                     b.Property<Guid>("Id")
@@ -138,7 +196,6 @@ namespace BnFurniture.Infrastructure.Migrations
                         .HasColumnType("char(36)");
 
                     b.Property<int>("Discount")
-                        .HasMaxLength(100)
                         .HasColumnType("int");
 
                     b.Property<Guid>("OrderId")
@@ -173,6 +230,43 @@ namespace BnFurniture.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("OrderStatus");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Обрабатывается"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Комплектуется"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Передан в службу доставки"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "Доставляется"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Name = "Ожидает клиента в пунтке самовывоза"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Name = "Выполнен"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Name = "Отменён"
+                        });
                 });
 
             modelBuilder.Entity("BnFurniture.Domain.Entities.PasswordResetToken", b =>
@@ -198,6 +292,35 @@ namespace BnFurniture.Infrastructure.Migrations
                     b.ToTable("PasswordResetToken");
                 });
 
+            modelBuilder.Entity("BnFurniture.Domain.Entities.PaymentType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("PaymentType");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Наличные"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Безнал"
+                        });
+                });
+
             modelBuilder.Entity("BnFurniture.Domain.Entities.Permission", b =>
                 {
                     b.Property<Guid>("Id")
@@ -218,22 +341,22 @@ namespace BnFurniture.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("6807b0d3-e10d-47a3-b8ca-551f9acdf114"),
+                            Id = new Guid("98291723-2120-4185-9b85-33ed8c7eebc5"),
                             Name = "DashboardAccess"
                         },
                         new
                         {
-                            Id = new Guid("6c0e4ed2-bf6d-4abb-b3bf-9c9a5811fa88"),
+                            Id = new Guid("81df6233-2a41-4064-9d46-9904fe91e6b6"),
                             Name = "UpdateAccess"
                         },
                         new
                         {
-                            Id = new Guid("312471d4-9393-408a-9d71-b84c43e8dc42"),
+                            Id = new Guid("3d66b51c-c722-46f0-b6de-e5b566f9d4e1"),
                             Name = "DeleteAccess"
                         },
                         new
                         {
-                            Id = new Guid("77a78f12-7016-43d5-8d98-c28135fd3335"),
+                            Id = new Guid("4cf0fd58-9fb7-4518-ba75-b8e993b57367"),
                             Name = "CreateAccess"
                         });
                 });
@@ -307,7 +430,6 @@ namespace BnFurniture.Infrastructure.Migrations
                         .HasColumnType("datetime(6)");
 
                     b.Property<int>("Discount")
-                        .HasMaxLength(100)
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
@@ -446,7 +568,6 @@ namespace BnFurniture.Infrastructure.Migrations
                         .HasColumnType("char(36)");
 
                     b.Property<int>("Rating")
-                        .HasMaxLength(5)
                         .HasColumnType("int");
 
                     b.Property<string>("Text")
@@ -636,7 +757,7 @@ namespace BnFurniture.Infrastructure.Migrations
                             FirstName = "Oleksandr",
                             LastName = "Vannovskyi",
                             Password = "8C6976E5B5410415BDE908BD4DEE15DFB167A9C873FC4BB8A81F6F2AB448A918",
-                            RegisteredAt = new DateTime(2024, 5, 23, 13, 52, 20, 762, DateTimeKind.Local).AddTicks(981)
+                            RegisteredAt = new DateTime(2024, 6, 22, 7, 30, 39, 374, DateTimeKind.Local).AddTicks(5474)
                         });
                 });
 
@@ -678,7 +799,7 @@ namespace BnFurniture.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("b5748bed-999c-477b-b401-efb6d03672bf"),
+                            Id = new Guid("023200d8-af41-4337-8bf2-de1da6c8b4ba"),
                             Name = "Admin"
                         });
                 });
@@ -706,27 +827,27 @@ namespace BnFurniture.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("1132623c-6631-4ef8-aebc-e858c6e65634"),
-                            PermissionId = new Guid("6807b0d3-e10d-47a3-b8ca-551f9acdf114"),
-                            UserRoleId = new Guid("b5748bed-999c-477b-b401-efb6d03672bf")
+                            Id = new Guid("de9b93c6-32ea-4fde-bb63-4823fa279d9a"),
+                            PermissionId = new Guid("98291723-2120-4185-9b85-33ed8c7eebc5"),
+                            UserRoleId = new Guid("023200d8-af41-4337-8bf2-de1da6c8b4ba")
                         },
                         new
                         {
-                            Id = new Guid("f395d588-76f2-4b45-9b54-2a9d48ea52cb"),
-                            PermissionId = new Guid("6c0e4ed2-bf6d-4abb-b3bf-9c9a5811fa88"),
-                            UserRoleId = new Guid("b5748bed-999c-477b-b401-efb6d03672bf")
+                            Id = new Guid("c82241b5-8c94-4ff6-bd3e-a02551420b31"),
+                            PermissionId = new Guid("81df6233-2a41-4064-9d46-9904fe91e6b6"),
+                            UserRoleId = new Guid("023200d8-af41-4337-8bf2-de1da6c8b4ba")
                         },
                         new
                         {
-                            Id = new Guid("856ce9b2-9ed1-4408-931e-0e5f577679c7"),
-                            PermissionId = new Guid("312471d4-9393-408a-9d71-b84c43e8dc42"),
-                            UserRoleId = new Guid("b5748bed-999c-477b-b401-efb6d03672bf")
+                            Id = new Guid("837701d0-8d88-4e9e-9be2-87ba8941c06d"),
+                            PermissionId = new Guid("3d66b51c-c722-46f0-b6de-e5b566f9d4e1"),
+                            UserRoleId = new Guid("023200d8-af41-4337-8bf2-de1da6c8b4ba")
                         },
                         new
                         {
-                            Id = new Guid("009e6ea6-210a-4ed6-9b25-05f966090c8e"),
-                            PermissionId = new Guid("77a78f12-7016-43d5-8d98-c28135fd3335"),
-                            UserRoleId = new Guid("b5748bed-999c-477b-b401-efb6d03672bf")
+                            Id = new Guid("a8681430-0bd7-4c2f-88b6-c0a866493aa6"),
+                            PermissionId = new Guid("4cf0fd58-9fb7-4518-ba75-b8e993b57367"),
+                            UserRoleId = new Guid("023200d8-af41-4337-8bf2-de1da6c8b4ba")
                         });
                 });
 
@@ -794,9 +915,9 @@ namespace BnFurniture.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("2efae994-ec3d-4fdf-84ea-ab10d9028406"),
+                            Id = new Guid("3bbdb907-e134-4420-b862-3dc0b62fe55a"),
                             UserId = new Guid("adad13d5-2468-4f9c-9ddc-b0940569df8a"),
-                            UserRoleId = new Guid("b5748bed-999c-477b-b401-efb6d03672bf")
+                            UserRoleId = new Guid("023200d8-af41-4337-8bf2-de1da6c8b4ba")
                         });
                 });
 
@@ -847,6 +968,33 @@ namespace BnFurniture.Infrastructure.Migrations
                     b.Navigation("Status");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("BnFurniture.Domain.Entities.OrderDetails", b =>
+                {
+                    b.HasOne("BnFurniture.Domain.Entities.DeliveryType", "DeliveryType")
+                        .WithMany("Details")
+                        .HasForeignKey("DeliveryTypeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("BnFurniture.Domain.Entities.Order", "Order")
+                        .WithOne("Details")
+                        .HasForeignKey("BnFurniture.Domain.Entities.OrderDetails", "OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BnFurniture.Domain.Entities.PaymentType", "PaymentType")
+                        .WithMany("Details")
+                        .HasForeignKey("PaymentTypeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("DeliveryType");
+
+                    b.Navigation("Order");
+
+                    b.Navigation("PaymentType");
                 });
 
             modelBuilder.Entity("BnFurniture.Domain.Entities.OrderItem", b =>
@@ -1133,8 +1281,16 @@ namespace BnFurniture.Infrastructure.Migrations
                     b.Navigation("ProductCharacteristicConfigurations");
                 });
 
+            modelBuilder.Entity("BnFurniture.Domain.Entities.DeliveryType", b =>
+                {
+                    b.Navigation("Details");
+                });
+
             modelBuilder.Entity("BnFurniture.Domain.Entities.Order", b =>
                 {
+                    b.Navigation("Details")
+                        .IsRequired();
+
                     b.Navigation("OrderItems");
                 });
 
@@ -1146,6 +1302,11 @@ namespace BnFurniture.Infrastructure.Migrations
             modelBuilder.Entity("BnFurniture.Domain.Entities.OrderStatus", b =>
                 {
                     b.Navigation("Orders");
+                });
+
+            modelBuilder.Entity("BnFurniture.Domain.Entities.PaymentType", b =>
+                {
+                    b.Navigation("Details");
                 });
 
             modelBuilder.Entity("BnFurniture.Domain.Entities.Permission", b =>

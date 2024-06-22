@@ -47,6 +47,7 @@ public sealed class GetProductArticleByCharacteristicsHandler : QueryHandler<Get
 
         // Get product by slug and include characteristic configurations
         var product = await HandlerContext.DbContext.Product
+            .Include(p => p.ProductType)
             .Include(p => p.ProductArticles)
                 .ThenInclude(pa => pa.ProductCharacteristicConfigurations)
                     .ThenInclude(pcc => pcc.CharacteristicValue)
@@ -99,17 +100,25 @@ public sealed class GetProductArticleByCharacteristicsHandler : QueryHandler<Get
             Price = matchingArticle.Price,
             Discount = matchingArticle.Discount,
             Active = matchingArticle.Active,
+            ProductTypeName = product.ProductType.Name
         };
 
         if (request.IncludeImages)
         {
-            var imageResult = await _appImageService.GetImagesAsync(
+            var imageGalleryResult = await _appImageService.GetImagesAsync(
                 AppEntityType.ProductArticle,
                 response.Article,
                 AppEntityImageType.Gallery,
                 cancellationToken);
 
-            response.GalleryImages = imageResult.Data!.ToList();
+            var imageThumbResult = await _appImageService.GetImagesAsync(
+                AppEntityType.Product,
+                response.ProductId,
+                AppEntityImageType.Thumbnail,
+                cancellationToken);
+
+            response.GalleryImages = imageGalleryResult.Data!.ToList();
+            response.ThumbnailImageUri = imageThumbResult.Data.FirstOrDefault();
         }
 
         return new ApiQueryResponse<GetProductArticleByCharacteristicsResponse>

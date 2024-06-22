@@ -1,18 +1,21 @@
 import { GetAllCategoriesWithProductTypesApiResponse } from "../../../../types/api/responseModels";
 import { useFetchApiQueryResponse } from "../../../../hooks/useFetchApiQueryResponse";
 import { CategoryWithProductTypes } from "../../../../types/api/responseDataModels";
+import React from "react";
 
-export const useFetchCategoriesWithTypes = (
-  includeImages: boolean = false,
-  randomOrder: boolean = false
-) => {
+export const useFetchCategoriesWithTypes = () => {
+  const fetchOptions = React.useMemo(
+    () => ({
+      includeImages: false,
+      randomOrder: false,
+    }),
+    []
+  );
+
   const { response, isLoading, error } =
     useFetchApiQueryResponse<GetAllCategoriesWithProductTypesApiResponse>(
       "category/all-with-types",
-      {
-        includeImages,
-        randomOrder,
-      }
+      fetchOptions
     );
     
   const categoriesWithTypes: CategoryWithProductTypes[] = response?.data

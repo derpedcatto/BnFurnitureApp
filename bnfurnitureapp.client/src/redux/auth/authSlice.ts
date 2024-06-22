@@ -68,14 +68,17 @@ const authSlice = createSlice({
       .addCase(
         getCurrentUser.fulfilled,
         (state, action: PayloadAction<ApiQueryResponse<ApiUserData>>) => {
-          state.isLoading = false;
-          state.isSuccess = true;
           console.log("Action payload data:", action.payload.data);
           state.currentUser = (action.payload.data as ApiUserData).user;
           console.log("Updated state.currentUser:", state.currentUser);
+          state.isLoading = false;
+          state.isSuccess = true;
         }
       )
-      .addCase(getCurrentUser.rejected, handleRejected);
+      .addCase(getCurrentUser.rejected, (state, action) => {
+        console.log("getCurrentUser rejected:", action.payload);
+        handleRejected(state, action);
+      })
   },
 });
 

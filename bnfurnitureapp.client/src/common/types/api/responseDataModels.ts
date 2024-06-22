@@ -65,6 +65,10 @@ export interface ProductArticle {
   productTypeName: string;
 }
 
+export interface ProductArticleSlug {
+  slug: string;
+}
+
 /* --- */
 
 export interface CharacteristicWithValues {

@@ -54,7 +54,7 @@ export const loginUser = createAsyncThunk<
       });
     }
 
-    await dispatch(getCurrentUser());
+    await dispatch(getCurrentUser()).unwrap();
     return response.data;
   } catch (error) {
     return rejectWithValue(handleApiError(error, "loginUser"));
