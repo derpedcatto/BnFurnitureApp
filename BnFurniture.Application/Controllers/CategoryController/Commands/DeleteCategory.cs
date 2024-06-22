@@ -5,7 +5,7 @@ using System.Net;
 
 namespace BnFurniture.Application.Controllers.CategoryController.Commands;
 
-public sealed record DeleteCategoryCommand(Guid categoryId);
+public sealed record DeleteCategoryCommand(Guid CategoryId);
 
 public sealed class DeleteCategoryHandler : CommandHandler<DeleteCategoryCommand>
 {
@@ -15,28 +15,29 @@ public sealed class DeleteCategoryHandler : CommandHandler<DeleteCategoryCommand
 
     }
 
-    public override async Task<ApiCommandResponse> Handle(DeleteCategoryCommand command, CancellationToken cancellationToken)
+    public override async Task<ApiCommandResponse> Handle(
+        DeleteCategoryCommand request,
+        CancellationToken cancellationToken)
     {
-        var dbContext = HandlerContext.DbContext;
-        var categoryId = command.categoryId;
-
-        var category = await dbContext.ProductCategory
-            .Where(c => c.Id == categoryId)
-            .SingleOrDefaultAsync(cancellationToken: cancellationToken);
+        var category = await HandlerContext.DbContext.ProductCategory
+            .Where(c => c.Id == request.CategoryId)
+            .SingleOrDefaultAsync(cancellationToken);
 
         if (category == null)
         {
-            return new ApiCommandResponse(false, (int)HttpStatusCode.UnprocessableEntity)
+            return new ApiCommandResponse
+                (false, (int)HttpStatusCode.UnprocessableEntity)
             {
                 Message = "Валідація не пройшла перевірку",
                 Errors = new() { ["categoryId"] = ["Category ID not found in database."] }
             };
         }
 
-        dbContext.ProductCategory.Remove(category);
-        await dbContext.SaveChangesAsync(cancellationToken);
+        HandlerContext.DbContext.ProductCategory.Remove(category);
+        await HandlerContext.DbContext.SaveChangesAsync(cancellationToken);
 
-        return new ApiCommandResponse(true, (int)HttpStatusCode.OK)
+        return new ApiCommandResponse
+            (true, (int)HttpStatusCode.OK)
         {
             Message = "Category deleted successfully."
         };

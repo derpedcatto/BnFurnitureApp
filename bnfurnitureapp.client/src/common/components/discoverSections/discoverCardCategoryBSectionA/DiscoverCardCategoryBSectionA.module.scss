@@ -1,0 +1,18 @@
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  align-items: stretch;
+  row-gap: 3vh;
+  column-gap: 2vw;
+
+  .loadingSpinnerContainer {
+    width: 100px;
+    height: 100px;
+    margin-top: 3rem;
+  }
+
+  .cardContainer {
+    
+  }
+}

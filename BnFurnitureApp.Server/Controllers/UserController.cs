@@ -1,19 +1,20 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using BnFurniture.Application.Controllers.UserController.Commands;
-using BnFurniture.Application.Controllers.UserController.DTO;
 using BnFurniture.Application.Controllers.UserController.Queries;
 using System.Security.Claims;
 using BnFurniture.Domain.Responses;
 using System.Net;
+using BnFurniture.Application.Controllers.UserController.DTO.Request;
 
-namespace BnFurnitureAdmin.Server.Controllers;
+namespace BnFurnitureApp.Server.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
 public class UserController : ControllerBase
 {
     [HttpPost("signup")]
-    public async Task<IActionResult> SignUp([FromServices] SignUpHandler handler,
+    public async Task<IActionResult> SignUp(
+        [FromServices] SignUpHandler handler,
         [FromBody] UserSignUpDTO model)
     {
         var command = new SignUpCommand(model);
@@ -23,7 +24,8 @@ public class UserController : ControllerBase
     }
 
     [HttpPost("login")]
-    public async Task<IActionResult> Login([FromServices] UserLoginHandler handler,
+    public async Task<IActionResult> Login(
+        [FromServices] UserLoginHandler handler,
         [FromBody] UserLoginDTO model)
     {
         var command = new UserLoginCommand(model);
@@ -33,7 +35,8 @@ public class UserController : ControllerBase
     }
 
     [HttpPost("passforgot")]
-    public async Task<IActionResult> PassForgot([FromServices] PassForgotHandler handler,
+    public async Task<IActionResult> PassForgot(
+        [FromServices] PassForgotHandler handler,
         [FromBody] UserPassForgotDTO model)
     {
         var command = new PassForgotCommand(model);
@@ -43,7 +46,8 @@ public class UserController : ControllerBase
     }
 
     [HttpGet("{userId:guid}")]
-    public async Task<IActionResult> GetUserById([FromServices] GetUserByIdHandler handler,
+    public async Task<IActionResult> GetUserById(
+        [FromServices] GetUserByIdHandler handler,
         Guid userId)
     {
         var query = new GetUserByIdQuery(userId);
@@ -52,23 +56,29 @@ public class UserController : ControllerBase
         return new JsonResult(apiResponse) { StatusCode = apiResponse.StatusCode };
     }
 
-    [HttpGet("current-user")]
-    public async Task<IActionResult> GetCurrentUser([FromServices] GetUserByIdHandler handler)
+    [HttpGet("current")]
+    public async Task<IActionResult> GetCurrentUser(
+        [FromServices] GetCurrentUserHandler handler)
     {
-        var userIdClaim = HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Sid);
-        if (userIdClaim == null)
-        {
-            var responseData = new ApiQueryResponse<object>(false, (int)HttpStatusCode.Unauthorized)
-            {
-                Message = "User is not authenticated",
-                Data = null
-            };
-            return new JsonResult(responseData) { StatusCode = responseData.StatusCode };
-        }
-
-        var query = new GetUserByIdQuery(Guid.Parse(userIdClaim.Value));
+        var query = new GetCurrentUserQuery();
 
         var apiResponse = await handler.Handle(query, HttpContext.RequestAborted);
         return new JsonResult(apiResponse) { StatusCode = apiResponse.StatusCode };
     }
 }
+
+/*
+var userIdClaim = HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Sid);
+if (userIdClaim == null)
+{
+    var responseData = new ApiQueryResponse<object>
+        (false, (int)HttpStatusCode.Unauthorized)
+    {
+        Message = "User is not authenticated",
+        Data = null
+    };
+    return new JsonResult(responseData) { StatusCode = responseData.StatusCode };
+}
+
+var query = new GetUserByIdQuery(Guid.Parse(userIdClaim.Value));
+*/

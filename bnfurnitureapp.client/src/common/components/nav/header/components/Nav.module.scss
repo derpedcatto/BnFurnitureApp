@@ -1,3 +1,10 @@
+.noScroll {
+  /* Small - Extra small screens */
+  @media screen and (max-width: calc($bp-w-md - 1px)) {
+    overflow: hidden;
+  }
+}
+
 .container {
   display: flex;
   flex-direction: column;
@@ -14,19 +21,18 @@
     text-decoration: none;
   }
 
-  p,
+  span,
   a,
   a:visited {
     color: $color-text-gray;
   }
 
-  /* Small - Extra small screens */
   @media screen and (max-width: calc($bp-w-md - 1px)) {
     padding: $padding-base-sm;
   }
 }
 
-nav {
+.navbar {
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
@@ -35,77 +41,66 @@ nav {
   height: 30px;
 }
 
-.svg-logo-container {
-  overflow: auto;
-  height: 50px;
-  cursor: pointer;
-  // border: 1px dashed #aaa;
-}
-
-.svg-icon-container {
-  overflow: auto;
-  height: 30px;
-  cursor: pointer;
-  // border: 1px dashed #aaa;
-}
-
-svg {
-  width: 100%;
-  height: 100%;
-}
-
-.nav-leftside {
+.navLeft {
   display: flex;
   justify-content: center;
   align-items: center;
   padding-left: 100px;
   gap: 2rem;
 
-  a {
-    /* Small - Extra small screens */
+  .navElementLabel {
     @media screen and (max-width: calc($bp-w-md - 1px)) {
       font-size: 0px;
     }
   }
+  .hamburgerMenuContainer {
+    position: relative;
+    display: inline-block; 
 
-  .hamburger {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    height: 45px;
-  
-    p {
-      margin-top: -5px;
-      font-size: 1rem;
+    /* Small - Extra small screens */
+    @media screen and (max-width: calc($bp-w-md - 1px)) {
+      position: inherit;
+      display: block;
     }
+
+    .hamburgerIcon {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      height: 45px;
+      cursor: pointer;
+      user-select: none;
   
-    /* Extra small screens */
-    @media screen and (max-width: calc($bp-w-sm - 1px)) {
-      p {
-        font-size: 0;
+      span {
+        margin-top: -5px;
+        font-size: 1rem;
+        color: $color-text-gray;
+      }
+  
+      @media screen and (max-width: calc($bp-w-sm - 1px)) {
+        span {
+          font-size: 0;
+        }
       }
     }
   }
 
-  /* Medium screens */
   @media screen and (min-width: $bp-w-md) and (max-width: calc($bp-w-lg - 1px)) {
     padding-left: 50px;
   }
 
-  /* Small screens */
   @media screen and (min-width: $bp-w-sm) and (max-width: calc($bp-w-md - 1px)) {
     padding-left: 20px;
     gap: 1rem;
   }
 
-  /* Extra small screens */
   @media screen and (max-width: calc($bp-w-sm - 1px)) {
     padding-left: 0;
     gap: 1.2rem;
   }
 }
 
-.nav-rightside {
+.navRight {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -118,55 +113,72 @@ svg {
     align-items: center;
     gap: 0;
 
-    .user-icon {
+    .userIcon {
       width: 30px;
     }
 
-    p {
+    span {
       font-size: 0;
       user-select: none;
     }
 
-    /* Large screens */
     @media screen and (min-width: $bp-w-lg) {
       gap: 1rem;
 
-      p {
+      span {
         font-size: 0.9rem;
         margin-right: 2rem;
       }
     }
   }
 
-  /* Medium screens */
   @media screen and (min-width: $bp-w-md) and (max-width: calc($bp-w-lg - 1px)) {
     padding-right: 50px;
   }
 
-  /* Small screens */
   @media screen and (min-width: $bp-w-sm) and (max-width: calc($bp-w-md - 1px)) {
     padding-right: 20px;
     gap: 1rem;
   }
 
-  /* Extra small screens */
   @media screen and (max-width: calc($bp-w-sm - 1px)) {
     padding-right: 0;
     gap: 0.8rem;
   }
 }
 
-.search-bar {
+.logoContainer {
+  overflow: auto;
+  height: 50px;
+  cursor: pointer;
+}
+
+.iconContainer {
+  overflow: auto;
+  height: 30px;
+  cursor: pointer;
+  overflow-y: hidden;
+}
+
+.loadingIconContainer {
+  width: 30px;
+  height: 30px;
+}
+
+.searchBar {
   margin: 0 auto;
   width: 75%;
 
-  /* Small screens */
   @media screen and (min-width: $bp-w-sm) and (max-width: calc($bp-w-md - 1px)) {
     width: 95%;
   }
 
-  /* Extra small screens */
   @media screen and (max-width: calc($bp-w-sm - 1px)) {
     width: 100%;
   }
+}
+
+svg {
+  width: 100%;
+  height: 100%;
 }

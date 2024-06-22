@@ -5,7 +5,7 @@ const MaestroLogo = () => {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <g clip-path="url(#clip0_241_753)">
+      <g clipPath="url(#clip0_241_753)">
         <path
           d="M15.2444 13.2556H8.75488V1.58643H15.2444V13.2556Z"
           fill="#6C6BBD"

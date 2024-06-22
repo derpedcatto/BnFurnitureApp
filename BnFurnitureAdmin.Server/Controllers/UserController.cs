@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using BnFurniture.Application.Controllers.UserController.Commands;
-using BnFurniture.Application.Controllers.UserController.DTO;
 using BnFurniture.Application.Controllers.UserController.Queries;
 using BnFurniture.Domain.Responses;
 using System.Net;
 using System.Security.Claims;
+using BnFurniture.Application.Controllers.UserController.DTO.Request;
 
 namespace BnFurnitureAdmin.Server.Controllers;
 
@@ -52,21 +52,11 @@ public class UserController : ControllerBase
         return new JsonResult(apiResponse) { StatusCode = apiResponse.StatusCode };
     }
 
-    [HttpGet("current-user")]
-    public async Task<IActionResult> GetCurrentUser([FromServices] GetUserByIdHandler handler)
+    [HttpGet("current")]
+    public async Task<IActionResult> GetCurrentUser(
+        [FromServices] GetCurrentUserHandler handler)
     {
-        var userIdClaim = HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Sid);
-        if (userIdClaim == null)
-        {
-            var responseData = new ApiQueryResponse<object>(false, (int)HttpStatusCode.Unauthorized)
-            {
-                Message = "User is not authenticated",
-                Data = null
-            };
-            return new JsonResult(responseData) { StatusCode = responseData.StatusCode };
-        }
-
-        var query = new GetUserByIdQuery(Guid.Parse(userIdClaim.Value));
+        var query = new GetCurrentUserQuery();
 
         var apiResponse = await handler.Handle(query, HttpContext.RequestAborted);
         return new JsonResult(apiResponse) { StatusCode = apiResponse.StatusCode };

@@ -1,5 +1,5 @@
 ﻿using BnFurniture.Application.Controllers.ProductTypeController.Commands;
-using BnFurniture.Application.Controllers.ProductTypeController.DTO;
+using BnFurniture.Application.Controllers.ProductTypeController.DTO.Request;
 using BnFurniture.Application.Controllers.ProductTypeController.Queries;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,17 +11,29 @@ namespace BnFurnitureAdmin.Server.Controllers;
 public class ProductTypeController : Controller
 {
     [HttpGet("all")]
-    public async Task<IActionResult> GetAllProductTypes([FromServices] GetAllProductTypesHandler handler)
+    public async Task<IActionResult> GetAllProductTypes(
+        [FromServices] GetAllProductTypesHandler handler,
+        [FromQuery] bool includeImages = true,
+        [FromQuery] bool randomOrder = false,
+        [FromQuery] int? pageSize = null,
+        [FromQuery] int? pageNumber = null)
     {
-        var query = new GetAllProductTypesQuery();
+        var query = new GetAllProductTypesQuery(
+            RandomOrder: randomOrder,
+            IncludeImages: includeImages,
+            PageSize: pageSize,
+            PageNumber: pageNumber);
 
         var apiResponse = await handler.Handle(query, HttpContext.RequestAborted);
         return new JsonResult(apiResponse) { StatusCode = apiResponse.StatusCode };
     }
 
+
+
     [HttpPost]
-    public async Task<IActionResult> CreateProductType([FromServices] CreateProductTypeHandler handler,
-        [FromBody] CreateProductTypeDTO model)
+    public async Task<IActionResult> CreateProductType(
+        [FromServices] CreateProductTypeHandler handler,
+        [FromForm] CreateProductTypeDTO model)
     {
         var command = new CreateProductTypeCommand(model);
 
@@ -30,7 +42,8 @@ public class ProductTypeController : Controller
     }
 
     [HttpPut]
-    public async Task<IActionResult> UpdateProductType([FromServices] UpdateProductTypeHandler handler,
+    public async Task<IActionResult> UpdateProductType(
+        [FromServices] UpdateProductTypeHandler handler,
         [FromBody] UpdateProductTypeDTO model)
     {
         var command = new UpdateProductTypeCommand(model);
@@ -39,8 +52,20 @@ public class ProductTypeController : Controller
         return new JsonResult(apiResponse) { StatusCode = apiResponse.StatusCode };
     }
 
+    [HttpPut("image")]
+    public async Task<IActionResult> SetProductTypeImages(
+        [FromServices] SetProductTypeImagesHandler handler,
+        [FromForm] SetProductTypeImageDTO model)
+    {
+        var command = new SetProductTypeImagesCommand(model);
+
+        var apiResponse = await handler.Handle(command, CancellationToken.None);
+        return new JsonResult(apiResponse) { StatusCode = apiResponse.StatusCode };
+    }
+
     [HttpDelete("{productTypeId:guid}")]
-    public async Task<IActionResult> DeleteProductType([FromServices] DeleteProductTypeHandler handler,
+    public async Task<IActionResult> DeleteProductType(
+        [FromServices] DeleteProductTypeHandler handler,
         Guid productTypeId)
     {
         var command = new DeleteProductTypeCommand(productTypeId);

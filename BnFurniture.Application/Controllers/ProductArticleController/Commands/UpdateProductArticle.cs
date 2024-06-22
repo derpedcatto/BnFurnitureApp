@@ -1,7 +1,6 @@
 ﻿using BnFurniture.Application.Abstractions;
-using BnFurniture.Application.Controllers.ProductArticleController.DTO;
+using BnFurniture.Application.Controllers.ProductArticleController.DTO.Request;
 using BnFurniture.Application.Extensions;
-using BnFurniture.Domain.Entities;
 using BnFurniture.Domain.Responses;
 using Microsoft.EntityFrameworkCore;
 using System.Net;
@@ -23,6 +22,7 @@ public sealed class UpdateProductArticleHandler : CommandHandler<UpdateProductAr
     public override async Task<ApiCommandResponse> Handle(UpdateProductArticleCommand command, CancellationToken cancellationToken)
     {
         var dto = command.dto;
+        var dbContext = HandlerContext.DbContext;
 
         var validationResult = await _validator.ValidateAsync(dto, cancellationToken);
         if (!validationResult.IsValid)
@@ -33,8 +33,6 @@ public sealed class UpdateProductArticleHandler : CommandHandler<UpdateProductAr
                 Errors = validationResult.ToApiResponseErrors()
             };
         }
-
-        var dbContext = HandlerContext.DbContext;
 
         var article = await dbContext.ProductArticle
             .FirstOrDefaultAsync(pa => pa.Article == dto.Article, cancellationToken);

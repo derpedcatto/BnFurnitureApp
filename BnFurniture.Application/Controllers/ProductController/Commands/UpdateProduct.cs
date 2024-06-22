@@ -1,5 +1,5 @@
 ﻿using BnFurniture.Application.Abstractions;
-using BnFurniture.Application.Controllers.ProductController.DTO;
+using BnFurniture.Application.Controllers.ProductController.DTO.Request;
 using BnFurniture.Application.Extensions;
 using BnFurniture.Domain.Responses;
 using Microsoft.EntityFrameworkCore;

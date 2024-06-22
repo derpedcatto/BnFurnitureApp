@@ -19,8 +19,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BnFurniture.Application", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BnFurnitureAdmin.Server", "BnFurnitureAdmin.Server\BnFurnitureAdmin.Server.csproj", "{B5D5EE5A-4737-474D-A5A4-E575031E49F8}"
 EndProject
-Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "bnfurnitureadmin.client", "bnfurnitureadmin.client\bnfurnitureadmin.client.esproj", "{4143435B-1F34-443A-876D-37A6B642C2AB}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -56,12 +54,6 @@ Global
 		{B5D5EE5A-4737-474D-A5A4-E575031E49F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B5D5EE5A-4737-474D-A5A4-E575031E49F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B5D5EE5A-4737-474D-A5A4-E575031E49F8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4143435B-1F34-443A-876D-37A6B642C2AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4143435B-1F34-443A-876D-37A6B642C2AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4143435B-1F34-443A-876D-37A6B642C2AB}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
-		{4143435B-1F34-443A-876D-37A6B642C2AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4143435B-1F34-443A-876D-37A6B642C2AB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4143435B-1F34-443A-876D-37A6B642C2AB}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

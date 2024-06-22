@@ -1,41 +1,47 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { AppDispatch } from "./store";
 import { useDispatch } from "react-redux";
 import {
-  BrowserRouter as Router,
   Route,
   Routes,
   Navigate,
+  BrowserRouter,
 } from "react-router-dom";
 import { AuthRoutes } from "../routes/AuthRoutes";
 import { UserRoutes } from "../routes/UserRoutes";
 import { NavLayout } from "../common/components/nav";
-import { getCurrentUser } from "../redux/userSlice";
+import { getCurrentUser } from "../redux/auth/authThunks";
 import HomePage from "../features/homePage";
+import ProductsPage from "../features/productsPage";
 import "./App.scss";
+import ProductDetailsPage from "../features/productDetailsPage";
+import ArticleRedirector from "../features/articleRedirector";
 
 function App() {
   const dispatch = useDispatch<AppDispatch>();
+  const hasFetchedUser = useRef(false);
 
   useEffect(() => {
-    dispatch(getCurrentUser());
+    if (!hasFetchedUser.current) {
+      dispatch(getCurrentUser());
+      hasFetchedUser.current = true;
+    }
   }, [dispatch]);
 
   return (
-    <>
-      <Router>
-        <Routes>
-          <Route path="*" element={<Navigate replace to="/" />} />
-          <Route path="/" element={<NavLayout />}>
-            <Route index element={<HomePage />} />
-            <Route path="/user/*" element={<UserRoutes />} />
-            <Route path="/products" />
-            <Route path="/sets" />
-          </Route>
-          <Route path="/auth/*" element={<AuthRoutes />} />
-        </Routes>
-      </Router>
-    </>
+    <BrowserRouter>
+      <Routes>
+        <Route path="*" element={<Navigate replace to="/" />} />
+        <Route path="/" element={<NavLayout />}>
+          <Route index element={<HomePage />} />
+          <Route path="/user/*" element={<UserRoutes />} />
+          <Route path="/products/*" element={<ProductsPage />} />
+          <Route path="/product-details/*" element={<ProductDetailsPage />} />
+          <Route path="/article-redirect/:article" element={<ArticleRedirector />} />
+        </Route>
+        <Route path="/auth/*" element={<AuthRoutes />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 

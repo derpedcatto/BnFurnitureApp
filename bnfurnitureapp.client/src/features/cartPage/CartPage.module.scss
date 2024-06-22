@@ -1,0 +1,107 @@
+.cartPageContainer {
+  max-width: $bp-w-lg;
+  padding: $padding-base;
+  margin: 3rem auto;
+
+  h1 {
+    margin-bottom: 1rem;
+  }
+
+  .loadingSpinnerContainer {
+    width: 30px;
+    height: 30px;
+  }
+}
+
+.loadingSpinnerPageContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 30vh;
+  width: 100%;
+
+  .loadingSpinnerContainer {
+    width: 100px;
+    height: 100px;
+    margin: 0 auto;
+  }
+}
+
+.cardsContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+
+  .cardContainer {
+    position: relative;
+    max-width: 210px;
+    max-height: 280px;
+
+    /* Small - Extra small screens */
+    @media screen and (max-width: calc($bp-w-md - 1px)) {
+      max-width: 160px;
+      max-height: 280px;
+    }
+
+    .removeButton {
+      position: absolute; /* Absolute positioning */
+      top: 5px; /* Position from top */
+      right: 5px; /* Position from right */
+      background: white;
+      border: 2px solid rgb(80, 80, 80);
+      border-radius: 50%;
+      font-size: 2rem;
+      cursor: pointer;
+      color: #f44336; /* Red color for the 'X' */
+      font-weight: bold;
+      line-height: 1;
+      padding: 0;
+      width: 35px;
+      height: 35px;
+      text-align: center;
+      z-index: 999;
+      transition: 100ms ease-in-out;
+
+      &:hover {
+        background-color: rgb(234, 234, 234);
+        color: #d32f2f; /* Darker red on hover */
+      }
+    }
+  }
+}
+
+.buyButton {
+  padding: 10px 30px;
+  cursor: pointer;
+  border: 2px solid $color-icon-gray;
+  border-radius: $radius-btn-default;
+  background-color: transparent;
+  transition: background-color 0.3s;
+  display: flex;
+  flex-direction: row; // Changed from column to row
+  align-items: center; // Added to center vertically
+  justify-content: center;
+  width: 100%;
+  max-width: 500px;
+  text-align: center;
+  gap: 0.3em;
+  font-weight: 700;
+  margin: 2rem auto 0;
+
+  &:hover {
+    background-color: $color-primary;
+    color: white;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    background-color: rgb(221, 221, 221);
+    opacity: 0.6;
+  }
+
+  /* Small - Extra small screens */
+  @media screen and (max-width: calc($bp-w-sm - 1px)) {
+    max-width: 100%;
+  }
+}

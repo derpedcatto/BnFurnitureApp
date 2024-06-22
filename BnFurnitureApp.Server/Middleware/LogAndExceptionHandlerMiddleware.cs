@@ -29,6 +29,29 @@ public class LogAndExceptionHandlerMiddleware
 
         try
         {
+            // Check if the request contains multipart/form-data
+            if (context.Request.ContentType != null && context.Request.ContentType.Contains("multipart/form-data"))
+            {
+                context.Request.EnableBuffering();
+
+                var memoryStream = new MemoryStream();
+                await context.Request.Body.CopyToAsync(memoryStream);
+                memoryStream.Position = 0;
+
+                context.Request.Body = memoryStream; // Reset the stream for further processing
+
+                var form = await context.Request.ReadFormAsync();
+                foreach (var field in form)
+                {
+                    if (!field.Key.Equals("file", StringComparison.OrdinalIgnoreCase))
+                    {
+                        _logger.LogInformation($"Form Field: {field.Key} = {field.Value}");
+                    }
+                }
+
+                memoryStream.Position = 0; // Reset again for the next middleware
+            }
+
             await _next(context);
         }
         catch (MySqlException ex)
@@ -40,6 +63,13 @@ public class LogAndExceptionHandlerMiddleware
         {
             _logger.LogError(ex, $"[ERROR] {requestFullString} {Environment.NewLine}{ex.GetType().Name}: {ex.Message}");
             await HandleExceptionAsync(context, ex, (int)HttpStatusCode.UnprocessableEntity);
+            return;
+        }
+        catch (OperationCanceledException ex)
+        {
+            _logger.LogInformation($"[CANCEL] {requestFullString} {Environment.NewLine}{ex.GetType().Name}: {ex.Message}");
+            await HandleExceptionAsync(context, ex);
+            return;
         }
         catch (Exception ex)
         {
@@ -54,8 +84,8 @@ public class LogAndExceptionHandlerMiddleware
     }
 
     private async Task HandleExceptionAsync(
-        HttpContext context, 
-        Exception exception, 
+        HttpContext context,
+        Exception exception,
         int statusCode = (int)HttpStatusCode.InternalServerError)
     {
         context.Response.ContentType = "application/json";
@@ -63,7 +93,7 @@ public class LogAndExceptionHandlerMiddleware
 
         var responseModel = new ApiBaseResponse(false, statusCode)
         {
-            Message = $"{exception.GetType().Name}: {exception.Message}"    
+            Message = $"{exception.GetType().Name}: {exception.Message}"
         };
 
         await context.Response.WriteAsJsonAsync(responseModel);

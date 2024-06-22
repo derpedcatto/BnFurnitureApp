@@ -1,21 +1,33 @@
 ﻿using BnFurniture.Application.Abstractions;
-using BnFurniture.Application.Controllers.ProductCharacteristicController.DTO;
-using BnFurniture.Application.Controllers.ProductController.DTO;
+using BnFurniture.Application.Controllers.CharacteristicController.DTO.Response;
+using BnFurniture.Application.Controllers.CharacteristicValueController.DTO.Response;
+using BnFurniture.Application.Controllers.ProductController.DTO.Response;
 using BnFurniture.Domain.Responses;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace BnFurniture.Application.Controllers.ProductController.Queries
 {
     public sealed record GetProductWithCharacteristicsQuery(string Slug);
 
-    public sealed class GetProductWithCharacteristicsHandler : QueryHandler<GetProductWithCharacteristicsQuery, ResponseProductDTO>
+    public sealed class GetProductWithCharacteristicsResponse
     {
-        public GetProductWithCharacteristicsHandler(IHandlerContext context) : base(context) { }
+        public ProductWithCharacteristicsDTO Product { get; set; }
 
-        public override async Task<ApiQueryResponse<ResponseProductDTO>> Handle(GetProductWithCharacteristicsQuery request, CancellationToken cancellationToken)
+        public GetProductWithCharacteristicsResponse(ProductWithCharacteristicsDTO product)
+        {
+            Product = product;
+        }
+    }
+
+    public sealed class GetProductWithCharacteristicsHandler : QueryHandler<GetProductWithCharacteristicsQuery, GetProductWithCharacteristicsResponse>
+    {
+        public GetProductWithCharacteristicsHandler(
+            IHandlerContext context) : base(context)
+        { 
+        
+        }
+
+        public override async Task<ApiQueryResponse<GetProductWithCharacteristicsResponse>> Handle(GetProductWithCharacteristicsQuery request, CancellationToken cancellationToken)
         {
             var product = await HandlerContext.DbContext.Product
                 .Include(p => p.ProductType)
@@ -32,7 +44,7 @@ namespace BnFurniture.Application.Controllers.ProductController.Queries
 
             if (product == null)
             {
-                return new ApiQueryResponse<ResponseProductDTO>(false, 404)
+                return new ApiQueryResponse<GetProductWithCharacteristicsResponse>(false, 404)
                 {
                     Message = "Product not found."
                 };
@@ -41,7 +53,7 @@ namespace BnFurniture.Application.Controllers.ProductController.Queries
             var characteristicDtos = product.ProductArticles
                 .SelectMany(pa => pa.ProductCharacteristicConfigurations)
                 .GroupBy(pcc => pcc.Characteristic)
-                .Select(g => new ResponseCharacteristicWithValuesDTO
+                .Select(g => new CharacteristicWithValuesDTO
                 {
                     Id = g.Key.Id,
                     Name = g.Key.Name,
@@ -54,10 +66,13 @@ namespace BnFurniture.Application.Controllers.ProductController.Queries
                         Value = pcc.CharacteristicValue.Value,
                         Slug = pcc.CharacteristicValue.Slug,
                         Priority = pcc.CharacteristicValue.Priority
-                    }).ToList()
+                    })
+                    .DistinctBy(cv => cv.Id)
+                    .OrderBy(s => s.Slug)
+                    .ToList()
                 }).ToList();
 
-            var response = new ResponseProductDTO
+            var response = new ProductWithCharacteristicsDTO
             {
                 Id = product.Id,
                 ProductTypeId = product.ProductTypeId,
@@ -74,7 +89,7 @@ namespace BnFurniture.Application.Controllers.ProductController.Queries
                 Characteristics = characteristicDtos
             };
 
-            return new ApiQueryResponse<ResponseProductDTO>(true, 200) { Data = response };
+            return new ApiQueryResponse<GetProductWithCharacteristicsResponse>(true, 200) { Data = new(response) };
         }
     }
 }

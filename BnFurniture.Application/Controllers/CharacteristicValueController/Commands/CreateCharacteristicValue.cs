@@ -1,34 +1,48 @@
 ﻿using BnFurniture.Application.Abstractions;
-using BnFurniture.Application.Controllers.CharacteristicValueController.DTO;
-using BnFurniture.Application.Controllers.ProductCharacteristicController.DTO;
+using BnFurniture.Application.Controllers.CharacteristicValueController.DTO.Request;
+using BnFurniture.Application.Extensions;
 using BnFurniture.Domain.Entities;
 using BnFurniture.Domain.Responses;
-using System.Threading;
-using System.Threading.Tasks;
+using System.Net;
 
-namespace BnFurniture.Application.Controllers.ProductCharacteristicController.Commands
+namespace BnFurniture.Application.Controllers.ProductCharacteristicController.Commands;
+
+public sealed record CreateCharacteristicValueCommand(CreateCharacteristicValueDTO Dto);
+
+public sealed class CreateCharacteristicValueHandler : CommandHandler<CreateCharacteristicValueCommand>
 {
-    public sealed record CreateCharacteristicValueCommand(CreateCharacteristicValueDTO Dto);
+    private readonly CreateCharacteristicValueDTOValidator _validator;
 
-    public sealed class CreateCharacteristicValueHandler : CommandHandler<CreateCharacteristicValueCommand>
+    public CreateCharacteristicValueHandler(CreateCharacteristicValueDTOValidator validator,
+        IHandlerContext context) : base(context) 
     {
-        public CreateCharacteristicValueHandler(IHandlerContext context) : base(context) { }
+        _validator = validator;
+    }
 
-        public override async Task<ApiCommandResponse> Handle(CreateCharacteristicValueCommand request, CancellationToken cancellationToken)
+    public override async Task<ApiCommandResponse> Handle(CreateCharacteristicValueCommand request, CancellationToken cancellationToken)
+    {
+        var validationResult = await _validator.ValidateAsync(request.Dto, cancellationToken);
+        if (!validationResult.IsValid)
         {
-            var characteristicValue = new CharacteristicValue
+            return new ApiCommandResponse(false, (int)HttpStatusCode.UnprocessableEntity)
             {
-                Id = Guid.NewGuid(),
-                CharacteristicId = request.Dto.CharacteristicId,
-                Value = request.Dto.Value,
-                Slug = request.Dto.Slug,
-                Priority = request.Dto.Priority
+                Message = "Валідація не пройшла перевірку",
+                Errors = validationResult.ToApiResponseErrors()
             };
-
-            await HandlerContext.DbContext.CharacteristicValue.AddAsync(characteristicValue, cancellationToken);
-            await HandlerContext.DbContext.SaveChangesAsync(cancellationToken);
-
-            return new ApiCommandResponse(true, 201) { Message = "Characteristic value created successfully." };
         }
+
+        var characteristicValue = new CharacteristicValue
+        {
+            Id = Guid.NewGuid(),
+            CharacteristicId = request.Dto.CharacteristicId,
+            Value = request.Dto.Value,
+            Slug = request.Dto.Slug,
+            Priority = request.Dto.Priority
+        };
+
+        await HandlerContext.DbContext.CharacteristicValue.AddAsync(characteristicValue, cancellationToken);
+        await HandlerContext.DbContext.SaveChangesAsync(cancellationToken);
+
+        return new ApiCommandResponse(true, 201) { Message = "Characteristic value created successfully." };
     }
 }

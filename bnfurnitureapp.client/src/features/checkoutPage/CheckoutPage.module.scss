@@ -1,0 +1,53 @@
+.styles.checkoutPageContainer {
+
+}
+
+.formContainer {
+  display: flex;
+  flex-direction: column;
+
+  .formFieldContainer {
+    display: flex;
+    flex-direction: column;
+  }
+
+  input {
+    padding: 10px 5px;
+    border-radius: 5px;
+    border: 1px solid $color-text-gray;
+    font-size: 1rem;
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  label {
+    user-select: none;
+    margin-top: 1rem;
+    margin-bottom: 0.2rem;
+    font-size: 1rem;
+    font-weight: 500;
+  }
+
+  button {
+    margin-top: 3rem;
+  }
+
+  .required {
+    display: flex;
+    align-items: center;
+
+    &::before {
+      content: "*";
+      color: #cc0000;
+      margin-right: 5px;
+      font-size: 1.2rem;
+      align-self: flex-start;
+    }
+  }
+
+  .error {
+    color: #cc0000;
+  }
+}

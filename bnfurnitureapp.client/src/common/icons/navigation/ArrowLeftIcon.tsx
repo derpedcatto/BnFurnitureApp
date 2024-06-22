@@ -6,7 +6,7 @@ type ArrowLeftIconProps = {
 
 const ArrowLeftIcon = ({
   fillColor = "var(--color-icon-black)",
-  viewBox = "0 0 24 24",
+  viewBox = "0 0 40 40",
   className,
 }: ArrowLeftIconProps) => {
   return (
