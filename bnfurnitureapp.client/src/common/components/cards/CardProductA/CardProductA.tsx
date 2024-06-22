@@ -42,17 +42,17 @@ const CardProductA: React.FC<CardProductAProps> = ({
             {hasDiscount ? (
               <>
                 <div className={styles.detailsPriceChangeContainer}>
-                  <div className={styles.priceOld}>{price}</div>
-                  <div className={`${styles.discount}`}>{discount}%</div>
+                  <div className={styles.priceOld}>{price}₴</div>
+                  <div className={`${styles.discount}`}>-{discount}%</div>
                 </div>
                 <div
                   className={`${styles.detailsFinalPrice} ${styles.colorDiscount}`}
                 >
-                  {finalPrice}
+                  {finalPrice}₴
                 </div>
               </>
             ) : (
-              <div className={styles.detailsFinalPrice}>{finalPrice}</div>
+              <div className={styles.detailsFinalPrice}>{finalPrice}₴</div>
             )}
           </div>
         </div>

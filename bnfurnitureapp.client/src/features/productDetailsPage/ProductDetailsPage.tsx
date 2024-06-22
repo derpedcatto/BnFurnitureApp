@@ -1,14 +1,19 @@
 import styles from "./ProductDetailsPage.module.scss";
 import React, { useEffect, useState, useMemo } from "react";
-import { NavLink, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useFetchProduct } from "./hooks/useFetchProduct";
 import { useFetchProductArticle } from "./hooks/useFetchProductArticle";
 import {
+  CharacteristicWithValues,
   ProductArticle,
   ProductWithCharacteristics,
 } from "../../common/types/api/responseDataModels";
 import { LoadingSpinner } from "../../common/components/ui";
 import { ImageSlider } from "./components/ImageSlider";
+import {
+  isItemInCart,
+  toggleItemInCart,
+} from "../../common/utils/CartUtils";
 
 function useProductSlug() {
   const location = useLocation();
@@ -26,6 +31,19 @@ function useProductArticle() {
   const productSlug = useProductSlug();
   const { article, isLoading } = useFetchProductArticle(productSlug);
   return { article, isLoading };
+}
+
+function generateSortedUrl(
+  productSlug: string,
+  selectedOptions: { [key: string]: string },
+  characteristics: CharacteristicWithValues[]
+): string {
+  const sortedCharacteristics = characteristics
+    .filter((char) => selectedOptions[char.slug] !== undefined) // Filter to only include selected characteristics
+    .sort((a, b) => a.slug.localeCompare(b.slug)) // Alphabetically sort by the characteristic slugs
+    .map((char) => selectedOptions[char.slug]); // Use the slugs from the selected options for the URL
+
+  return `/product-details/${productSlug}-${sortedCharacteristics.join("-")}`;
 }
 
 export interface ExtractedCharacteristic {
@@ -123,10 +141,23 @@ const ProductOptionsComponent: React.FC<ProductOptionsComponentProps> = ({
   article,
   currentCharacteristics,
 }) => {
+  const navigate = useNavigate();
+  const productSlug = useProductSlug().split("-")[0];
+  const currentSlug = location.pathname.split('/').pop() || '';
   const [selectedOptions, setSelectedOptions] = useState<{
     [key: string]: string;
   }>({});
   const [visibleMenu, setVisibleMenu] = useState<string | null>(null);
+  const [isInCart, setIsInCart] = useState<boolean>(false);
+
+  useEffect(() => {
+    setIsInCart(isItemInCart(article.article));
+  }, [article.article]);
+
+  const handleAddToCart = () => {
+    toggleItemInCart(article.article, currentSlug);
+    setIsInCart(!isInCart);
+  };
 
   useEffect(() => {
     const initialSelectedOptions = currentCharacteristics.reduce(
@@ -140,10 +171,24 @@ const ProductOptionsComponent: React.FC<ProductOptionsComponentProps> = ({
     setSelectedOptions(initialSelectedOptions);
   }, [currentCharacteristics]);
 
-  const handleOptionSelect = (characteristicId: string, valueId: string) => {
-    setSelectedOptions((prev) => ({ ...prev, [characteristicId]: valueId }));
-    console.log('selectedOptions', selectedOptions);
-    setVisibleMenu(null);
+  const handleOptionSelect = (characteristicId: string, valueSlug: string) => {
+    setSelectedOptions((prev) => {
+      const updatedOptions = { ...prev };
+      const characteristicSlug = product.characteristics.find(
+        (c) => c.id === characteristicId
+      )?.slug;
+      if (characteristicSlug) {
+        updatedOptions[characteristicSlug] = valueSlug; // Update with the new value slug
+      }
+
+      const newPath = generateSortedUrl(
+        productSlug,
+        updatedOptions,
+        product.characteristics
+      );
+      navigate(newPath); // Navigate to the new URL
+      return updatedOptions;
+    });
   };
 
   const toggleMenu = (characteristicId: string) => {
@@ -154,7 +199,27 @@ const ProductOptionsComponent: React.FC<ProductOptionsComponentProps> = ({
 
   return (
     <div className={styles.productOptionsContainer}>
+      <div className={styles.sectionGeneralInfo}>
+        <div className={styles.generalInfoProductName}>{product.name}</div>
+        <div className={styles.generalInfoProductArticleName}>
+          {article.name}
+        </div>
+        <div className={styles.generalInfoPriceContainer}>
+          {article.discount > 0 ? (
+            <>
+              <div className={styles.discountContainer}>
+                <div className={styles.oldPrice}>{article.price}₴</div>
+                <div className={styles.discount}>-{article.discount}%</div>
+              </div>
+              <div className={styles.priceFinal}>{article.finalPrice}₴</div>
+            </>
+          ) : (
+            <div className={styles.priceFinal}>{article.finalPrice}₴</div>
+          )}
+        </div>
+      </div>
       <div className={styles.sectionCharacteristicButtons}>
+        <div className={styles.characteristicSectionLabel}>ХАРАКТЕРИСТИКИ</div>
         {product.characteristics.map((characteristic) => (
           <div key={characteristic.id}>
             <button
@@ -185,7 +250,7 @@ const ProductOptionsComponent: React.FC<ProductOptionsComponentProps> = ({
                     onClick={() =>
                       handleOptionSelect(
                         characteristic.id,
-                        characteristicValue.id
+                        characteristicValue.slug
                       )
                     }
                     className={
@@ -207,6 +272,11 @@ const ProductOptionsComponent: React.FC<ProductOptionsComponentProps> = ({
           </div>
         ))}
       </div>
+      <div className={styles.sectionActionButtons}>
+        <button onClick={handleAddToCart}>
+          {isInCart ? "ВИДАЛИТИ З КОШИКА" : "ДОДАТИ ДО КОШИКУ"}
+        </button>
+      </div>
     </div>
   );
 };
@@ -217,9 +287,6 @@ const ProductDetailsPage: React.FC = () => {
   const isLoading = productLoading || articleLoading;
   const currentCharacteristics: ExtractedCharacteristic[] =
     useExtractCharacteristics(product);
-
-  console.log("ProductDetailsPage render");
-  console.log("characteristics", currentCharacteristics);
 
   return isLoading ? (
     <div className={styles.loadingSpinnerPageContainer}>
@@ -237,6 +304,18 @@ const ProductDetailsPage: React.FC = () => {
             article={article}
             currentCharacteristics={currentCharacteristics}
           />
+        )}
+      </div>
+      <div className={styles.productDescriptionContainer}>
+        {product && (
+          <>
+            <div className={styles.label}>КОРОТКИЙ ЗМІСТ</div>
+            <div className={styles.content}>{product.summary}</div>
+            <div className={styles.label}>ПРО ПРОДУКТ</div>
+            <div className={styles.content}>{product.description}</div>
+            <div className={styles.label}>ДЕТАЛІ</div>
+            <div className={styles.content}>{product.productDetails}</div>
+          </>
         )}
       </div>
     </div>

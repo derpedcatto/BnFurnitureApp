@@ -58,8 +58,11 @@ export interface ProductArticle {
   updatedAt: string | null;
   price: number;
   discount: number;
+  finalPrice: string;
   active: boolean;
+  thumbnailImageUri: string;
   galleryImages: string[];
+  productTypeName: string;
 }
 
 /* --- */

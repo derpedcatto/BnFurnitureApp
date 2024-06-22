@@ -42,3 +42,11 @@ export interface GetProductArticleByCharacteristicsApiResponse {
 export interface GetProductArticleByCharacteristicsApiResponse {
   article: ProductArticle;
 }
+
+export interface GetProductArticleByIdApiResponse {
+  article: ProductArticle;
+}
+
+export interface GetProductArticlesByIdsResponse {
+  productArticles: ProductArticle[];
+}
