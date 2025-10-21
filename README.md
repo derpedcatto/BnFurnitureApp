@@ -1,6 +1,6 @@
 # BnFurniture – E-Commerce Furniture Platform
 
-This is an ITStep Diploma Project showcasing a full-featured e-commerce platform for furniture sales with comprehensive administration capabilities, built with modern web technologies and cloud infrastructure. [See live presentation here (starting from 25:10)](https://drive.google.com/file/d/1vLotWC50-OHavhYtRW6AX-XQKAsF6-ug/view?usp=drive_link)
+This is an ITStep Diploma Project showcasing a full-featured e-commerce platform for furniture sales with comprehensive administration capabilities, built with modern web technologies and cloud infrastructure. 
 <img width="2209" height="1075" alt="vivaldi_k4lez75zWV" src="https://github.com/user-attachments/assets/c86049dd-9f0b-4a7e-bb52-9b50944b8fd5" />
 <img width="2205" height="1076" alt="vivaldi_4jLx6sw09Z" src="https://github.com/user-attachments/assets/f7cdb8a9-c0be-4015-a278-05f44ca02d1e" />
 <img width="2213" height="1075" alt="vivaldi_n0lBhLwmwk" src="https://github.com/user-attachments/assets/a23f8225-ef25-41fc-a3d6-93e326b5c17f" />
@@ -24,6 +24,8 @@ This application cannot be demonstrated locally as it requires:
 - Configured cloud infrastructure and connection strings
 
 To run this project, you must have access to Azure resources or set up your own cloud infrastructure.
+
+[See live presentation here (starting from 25:10)](https://drive.google.com/file/d/1vLotWC50-OHavhYtRW6AX-XQKAsF6-ug/view?usp=drive_link)
 
 ## Architecture Overview
 
