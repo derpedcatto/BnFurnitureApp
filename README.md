@@ -38,7 +38,6 @@ RESTful API handling business logic, authentication, and data management
 - [Database Schema Overview](https://drive.google.com/file/d/18pzEe2dgFcoMstyx1c48AzRamwSQ6KJO/view?usp=sharing)
 - [Database Schema Detailed Description & Changelog](https://derpedcatto.notion.site/Database-d60b8c2a033147b1bb53e583fa64e041)
 
-
 ## Technologies Used
 
 ### Core Technologies
@@ -106,29 +105,28 @@ cd BnFurnitureApp
 ```
 
 2. **Configure Azure Services:**
-   - Create an Azure SQL Database
-   - Create an Azure Blob Storage account
-   - Note down connection strings
+- Create an Azure SQL Database
+- Create an Azure Blob Storage account
+- Note down connection strings
 
 3. **Update Configuration:**
-   
-   Create or update `appsettings.json` in the backend project:
-   ```json
-   {
-     "ConnectionStrings": {
-       "DefaultConnection": "YOUR_AZURE_SQL_CONNECTION_STRING"
-     },
-     "AzureStorage": {
-       "ConnectionString": "YOUR_BLOB_STORAGE_CONNECTION_STRING",
-       "ContainerName": "furniture-images"
-     },
-     "Jwt": {
-       "Key": "YOUR_SECRET_KEY",
-       "Issuer": "BnFurnitureApp",
-       "Audience": "BnFurnitureApp"
-     }
-   }
-   ```
+Create or update `appsettings.json` in the backend project:
+```json
+{
+  "ConnectionStrings": {
+    "DefaultConnection": "YOUR_AZURE_SQL_CONNECTION_STRING"
+  },
+  "AzureStorage": {
+    "ConnectionString": "YOUR_BLOB_STORAGE_CONNECTION_STRING",
+    "ContainerName": "furniture-images"
+  },
+  "Jwt": {
+    "Key": "YOUR_SECRET_KEY",
+    "Issuer": "BnFurnitureApp",
+    "Audience": "BnFurnitureApp"
+  }
+}
+```
 
 4. **Apply Database Migrations:**
 ```bash
@@ -153,17 +151,17 @@ npm install
 ```
 
 3. **Configure API endpoint:**
-   Update the API base URL in your configuration file (e.g., `src/config.ts` or `.env`):
-   ```
-   REACT_APP_API_URL=https://localhost:5001/api
-   ```
+Update the API base URL in your configuration file (e.g., `src/config.ts` or `.env`):
+```
+REACT_APP_API_URL=https://localhost:5001/api
+```
 
 4. **Run the Frontend:**
 ```bash
 npm start
 ```
 
-## 🔐 Environment Variables
+## Environment Variables
 
 Create appropriate configuration files for sensitive data:
 
