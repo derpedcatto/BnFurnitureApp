@@ -8,9 +8,9 @@ This is an ITStep Diploma Project showcasing a full-featured e-commerce platform
 ## Project Information
 
 **ITStep Diploma Project – Team Members:**
-- **Олександр Ванновський** – Team Lead, Full-stack Developer, Documentation, Dashboard
-- **Олексій Горін** – Back-end Developer
-- **Олександр Гурнік** – Front-end Developer
+- **Oleksandr Vannovskyi** – Team Lead, Full-stack Developer, Documentation, Dashboard
+- **Oleksii Gorin** – Back-end Developer
+- **Oleksandr Gurnik** – Front-end Developer
 
 **Diploma Materials**
 - [Project Presentation Slideshow](https://docs.google.com/presentation/d/1A6jJgtKOd_kN29p8xEgQB9y1iHCAUAGV/edit?usp=drive_link&ouid=114272261084941485988&rtpof=true&sd=true)
