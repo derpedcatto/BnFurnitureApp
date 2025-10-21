@@ -37,8 +37,7 @@ Modern responsive web application for browsing and purchasing furniture
 
 ### Backend (API)
 RESTful API handling business logic, authentication, and data management
-- [Database Schema Overview](https://drive.google.com/file/d/18pzEe2dgFcoMstyx1c48AzRamwSQ6KJO/view?usp=sharing)
-- [Database Schema Detailed Description & Changelog](https://derpedcatto.notion.site/Database-d60b8c2a033147b1bb53e583fa64e041)
+- [Database Schema Detailed Overview & Changelog](https://derpedcatto.notion.site/Database-d60b8c2a033147b1bb53e583fa64e041)
 
 ## Technologies Used
 
